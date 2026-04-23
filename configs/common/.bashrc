@@ -26,7 +26,7 @@ fi
 #export PATH=$PATH:/usr/local/go/bin
 
 export PATH="$PATH:/home/noirelab/.lmstudio/bin"
-
+export PATH="$PATH:/home/noirelab/flutter/bin"
 export PATH=$PATH:$HOME/go/bin
 
 
