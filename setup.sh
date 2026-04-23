@@ -216,6 +216,12 @@ if confirm "Install Applications (Code, Spotify, Discord, Firefox)?"; then
     fi
 fi
 
+# --- 3.5 OPENCODE ---
+if confirm "Install OpenCode (AI Assistant)?"; then
+    echo -e "${GREEN}[+] Installing OpenCode...${NC}"
+    curl -fsSL https://opencode.ai/install | bash
+fi
+
 # --- 4. DEV TOOLS (Docker, Nvidia, Conda) ---
 if confirm "Install Dev Tools (Docker, Nvidia Toolkit, Miniconda)?"; then
 
