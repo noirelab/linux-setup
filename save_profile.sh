@@ -9,6 +9,8 @@ echo "Saving configuration to $REPO_DIR..."
 # Create base directories if they don't exist
 mkdir -p "$REPO_DIR/configs/common/fish"
 mkdir -p "$REPO_DIR/configs/common/kitty"
+mkdir -p "$REPO_DIR/configs/common/opencode/skills"
+mkdir -p "$REPO_DIR/configs/common/opencode/plugins"
 mkdir -p "$REPO_DIR/configs/arch/hypr"
 mkdir -p "$REPO_DIR/configs/arch/waybar"
 
@@ -17,6 +19,12 @@ echo "[+] Backing up Common Configs..."
 
 # Backup Kitty
 cp -r ~/.config/kitty/* "$REPO_DIR/configs/common/kitty/" 2>/dev/null
+
+# Backup OpenCode
+if [ -d ~/.config/opencode ]; then
+    cp -r ~/.config/opencode/* "$REPO_DIR/configs/common/opencode/" 2>/dev/null
+    echo "    - OpenCode configs saved."
+fi
 
 # Backup Starship
 cp ~/.config/starship.toml "$REPO_DIR/configs/common/starship.toml"

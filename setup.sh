@@ -157,6 +157,13 @@ if confirm "Install Kitty, Starship & Nerd Fonts?"; then
     cp -r "$SCRIPT_DIR/configs/common/kitty/"* ~/.config/kitty/ 2>/dev/null
     cp "$SCRIPT_DIR/configs/common/starship.toml" ~/.config/starship.toml 2>/dev/null
 
+    # Deploy OpenCode
+    if [ -d "$SCRIPT_DIR/configs/common/opencode" ]; then
+        mkdir -p ~/.config/opencode
+        cp -r "$SCRIPT_DIR/configs/common/opencode/"* ~/.config/opencode/ 2>/dev/null
+        echo "    - OpenCode config deployed."
+    fi
+
     # Deploy Fish config
     if [ -f "$SCRIPT_DIR/configs/common/fish/config.fish" ]; then
         mkdir -p ~/.config/fish
