@@ -1,52 +1,52 @@
 {
     "layer": "top",
     "position": "top",
-    "mod": "dock",
     "exclusive": true,
-    "passthrough": false,
-    "gtk-layer-shell": true,
-    "height": 0,
+    "height": 26,
+
     "modules-left": [
-        "clock",
+        "custom/launcher",
         "hyprland/workspaces",
         "custom/window"
     ],
-    "modules-center": ["wlr/taskbar"],
+    "modules-center": [
+        "custom/weather",
+        "clock",
+        "custom/system-update"
+    ],
     "modules-right": [
         "tray",
         "custom/cpu",
-        //"memory",
         "custom/gpu",
+        "bluetooth",
+        "network",
         "pulseaudio",
+        "custom/monitor",
         "custom/power"
     ],
 
-    "wlr/taskbar": {
-        "format": "{icon}",
-        "icon-size": 24,
-        "tooltip-format": "{title}",
-        "on-click": "activate",
-        "on-click-middle": "close",
-        "ignore-list": [
-           "Alacritty"
-        ],
-        "app_ids-mapping": {
-            "firefoxdeveloperedition": "firefox-developer-edition"
-        },
-        "rewrite": {
-            "Firefox Web Browser": "Firefox",
-            "Foot Server": "Terminal"
-        }
+    // ----------------------------------------------------------
+    // custom/launcher
+    // ----------------------------------------------------------
+    "custom/launcher": {
+        "format": "  󰣇  ",
+        "on-click": "rofi -show drun",
+        "tooltip": false
     },
-    "clock": {
-        "format": "{:%B %d - %I:%M %p}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "on-click": "gsimplecal"
-    },
+
+    // ----------------------------------------------------------
+    // hyprland/workspaces
+    // ----------------------------------------------------------
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
         "on-click": "activate",
+        "format": "{icon}",
+        "format-icons": {
+            "active": "●",
+            "default": "○",
+            "empty": "○"
+        },
         "persistent_workspaces": {
             "1": [],
             "2": [],
@@ -56,51 +56,131 @@
             "6": []
         }
     },
-    "cpu": {
-        "format": "󰘚  {usage}%",
-        "tooltip": true,
-        "interval": 0.5,
-        "on-click": "kitty -e btop"
-    },
 
-    "memory": {
-        "format": "󰍛  {}%",
+    // ----------------------------------------------------------
+    // custom/window (active window title)
+    // ----------------------------------------------------------
+    "custom/window": {
+        "exec": "~/.config/waybar/scripts/window.sh",
+        "return-type": "json",
+        "format": "{}",
         "interval": 1,
-        "on-click": "kitty -e btop"
+        "max-length": 60
     },
 
+    // ----------------------------------------------------------
+    // custom/weather
+    // ----------------------------------------------------------
+    "custom/weather": {
+        "exec": "~/.config/waybar/scripts/weather.sh",
+        "return-type": "json",
+        "interval": 900,
+        "tooltip": true
+    },
+
+    // ----------------------------------------------------------
+    // clock
+    // ----------------------------------------------------------
+    "clock": {
+        "format": "{:%b %d  %I:%M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+
+    // ----------------------------------------------------------
+    // custom/system-update
+    // ----------------------------------------------------------
+    "custom/system-update": {
+        "exec": "~/.config/waybar/scripts/system-update.sh",
+        "return-type": "json",
+        "interval": 3600,
+        "on-click": "kitty -e sudo pacman -Syu",
+        "tooltip": true
+    },
+
+    // ----------------------------------------------------------
+    // tray
+    // ----------------------------------------------------------
+    "tray": {
+        "icon-size": 16,
+        "spacing": 4
+    },
+
+    // ----------------------------------------------------------
+    // custom/cpu
+    // ----------------------------------------------------------
     "custom/cpu": {
-        "exec": "/home/noirelab/.config/waybar/scripts/cpu.sh",
+        "exec": "~/.config/waybar/scripts/cpu.sh",
         "return-type": "json",
         "interval": 1,
         "on-click": "kitty -e btop"
     },
 
+    // ----------------------------------------------------------
+    // custom/gpu
+    // ----------------------------------------------------------
     "custom/gpu": {
         "exec": "~/.config/waybar/scripts/gpu.sh",
         "return-type": "json",
         "interval": 1,
-        "on-click": "kitty -e nvtop" // nvtop is great for watching AI/ML tasks
+        "on-click": "kitty -e nvtop"
     },
 
-    "custom/window": {
-        "exec": "/home/noirelab/.config/waybar/scripts/window.sh",
-        "return-type": "json",
-        "format": "{}",
-        "interval": 1,
-        "max-length": 50
-    },
-
-    "pulseaudio": {
-        "format": "<span color='#fab387'>{icon}</span>  {volume}%",
-        "format-muted": "󰝟 Muted",
+    // ----------------------------------------------------------
+    // bluetooth
+    // ----------------------------------------------------------
+    "bluetooth": {
+        "format": "{icon}",
         "format-icons": {
-            "default": ["", "", ""]
-        }
+            "on": "󰂯",
+            "off": "󰂲",
+            "connected": "󰂱",
+            "discoverable": "󰂰"
+        },
+        "on-click": "blueman-manager",
+        "tooltip": true
     },
 
+    // ----------------------------------------------------------
+    // network
+    // ----------------------------------------------------------
+    "network": {
+        "format": "{icon}",
+        "format-icons": {
+            "wifi": "󰖩",
+            "ethernet": "󰈀",
+            "disconnected": "󰖪"
+        },
+        "on-click": "kitty -e nmtui",
+        "tooltip": true
+    },
+
+    // ----------------------------------------------------------
+    // pulseaudio
+    // ----------------------------------------------------------
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-muted": "󰝟",
+        "format-icons": {
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "on-click": "pavucontrol",
+        "tooltip": true
+    },
+
+    // ----------------------------------------------------------
+    // custom/monitor
+    // ----------------------------------------------------------
+    "custom/monitor": {
+        "format": "󰍹",
+        "on-click": "kitty -e wdisplays",
+        "tooltip": false
+    },
+
+    // ----------------------------------------------------------
+    // custom/power
+    // ----------------------------------------------------------
     "custom/power": {
-        "format": "<span color='#f38ba8'>⏻</span>",
+        "format": "⏻",
         "on-click": "wlogout -b 2",
         "tooltip": false
     }

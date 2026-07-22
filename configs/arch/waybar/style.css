@@ -1,176 +1,184 @@
-/* =============================================================================
-   GLOBAL STYLES
-   ============================================================================= */
-
 * {
     border: none;
     border-radius: 0;
     font-family: "Inter", "Symbols Nerd Font", sans-serif;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
     min-height: 0;
 }
 
 window#waybar {
-    background: rgba(21, 18, 27, 0); /* Fully transparent background */
-    color: #cdd6f4;
+    background: #101315;
+    color: #cacccc;
 }
 
-tooltip {
-    background: #1e1e2e;
-    border-radius: 10px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: #11111b;
+window#waybar.empty {
+    background: #101315;
 }
 
-/* =============================================================================
-   PILL CONTAINERS (SHARED STYLING)
-   ============================================================================= */
-
-/* Main Containers (Left & Center focus) */
-#workspaces,
-#clock,
-#battery,
-#taskbar {
-    background: #1e1e2e;
-    opacity: 0.9;
-    padding: 5px 15px;
-    margin: 6px 10px;
-    border-radius: 15px;
-    border: 1px solid #11111b;
+.modules-left {
+    margin-left: 8px;
 }
 
-/* System Monitor Containers (Right focus) */
-#cpu,
-#memory,
-#custom-cpu,
-#disk,
-#pulseaudio,
-#custom-power {
-    background: #1e1e2e;
-    opacity: 0.9;
-    color: #cdd6f4;
-    padding: 5px 10px;
-    margin: 6px 10px;
-    border-radius: 15px;
-    border: 1px solid #11111b;
+.modules-right {
+    margin-right: 8px;
 }
 
-/* =============================================================================
-   SPECIFIC MODULE OVERRIDES
-   ============================================================================= */
-
-#custom-cpu {
-    color: #89b4fa;
+/* ----------------------------------------------------------
+   Workspaces
+   ---------------------------------------------------------- */
+#workspaces {
+    background: transparent;
+    padding: 0;
+    margin: 0;
 }
 
-/* Workspaces */
 #workspaces button {
-    padding: 0 5px;
-    color: #a6adc8;
+    padding: 0 6px;
+    margin: 0;
+    color: #cacccc;
+    background: transparent;
+    font-size: 13px;
+    transition: background 160ms;
+}
+
+#workspaces button:hover {
+    background: rgba(202, 204, 204, 0.08);
+    box-shadow: none;
+    text-shadow: none;
 }
 
 #workspaces button.active {
-    color: #cba6f7;
+    color: #cacccc;
 }
 
-/* Taskbar */
-#taskbar {
-    background: transparent; /* This stops the ghost pill from showing */
-    border: none;
-    margin: 6px 10px;
+#workspaces button.urgent {
+    color: #a55555;
+}
+
+/* ----------------------------------------------------------
+   Text-based modules
+   ---------------------------------------------------------- */
+#clock,
+#custom-window {
+    padding: 0 8.5px;
+    margin: 0;
+    font-size: 12px;
+}
+
+#custom-window.empty {
+    background: transparent;
     padding: 0;
+    margin: 0;
 }
 
-/* 2. Apply the "Pill" look to the actual app buttons instead */
-#taskbar button {
-    background: #1e1e2e;
-    opacity: 0.9;
-    padding: 5px 12px; /* Adjust padding for the icon pill */
-    margin: 0 4px;      /* Spacing between multiple app icons */
-    border-radius: 15px;
-    border: 1px solid #11111b;
-    transition: all 0.3s ease;
+/* ----------------------------------------------------------
+   Icon-button modules (match Omarchy 27px slot / 13px font)
+   ---------------------------------------------------------- */
+#bluetooth,
+#network,
+#pulseaudio,
+#custom-launcher,
+#custom-power,
+#custom-monitor,
+#custom-weather,
+#custom-system-update {
+    padding: 0 6px;
+    margin: 0;
+    font-size: 13px;
 }
 
-/* 3. States for active/hover */
-#taskbar button.active {
-    background-color: #313244;
-    border-bottom: 2px solid #cba6f7;
+/* ----------------------------------------------------------
+   Stats modules
+   ---------------------------------------------------------- */
+#custom-cpu,
+#custom-gpu {
+    padding: 0 8.5px;
+    margin: 0;
+    font-size: 12px;
 }
 
-#taskbar button:hover {
-    background: #45475a;
+#custom-cpu {
+    color: #cacccc;
 }
 
-/* System Tray */
+#custom-gpu {
+    color: #a6e3a1;
+}
+
+/* ----------------------------------------------------------
+   Power
+   ---------------------------------------------------------- */
+#custom-power {
+    color: #a55555;
+}
+
+/* ----------------------------------------------------------
+   Hover states
+   ---------------------------------------------------------- */
+#bluetooth:hover,
+#network:hover,
+#pulseaudio:hover,
+#custom-launcher:hover,
+#custom-power:hover,
+#custom-monitor:hover,
+#custom-weather:hover,
+#custom-system-update:hover {
+    background: rgba(202, 204, 204, 0.08);
+}
+
+/* ----------------------------------------------------------
+   Dimmed / disconnected states
+   ---------------------------------------------------------- */
+#network.disconnected,
+#bluetooth.off {
+    color: rgba(202, 204, 204, 0.45);
+}
+
+#pulseaudio.muted {
+    color: rgba(202, 204, 204, 0.45);
+}
+
+/* ----------------------------------------------------------
+   System tray
+   ---------------------------------------------------------- */
 #tray {
-    margin: 6px 10px; /* Removed background to prevent empty pill look */
+    background: transparent;
+    padding: 0;
+    margin: 0;
 }
 
 #tray menu {
-    background: #1e1e2e;
-    color: #cdd6f4;
+    background: rgba(16, 19, 21, 0.97);
+    color: #cacccc;
+    border: 1px solid #cacccc;
+    border-radius: 0;
 }
 
 #tray > .passive {
     -gtk-icon-effect: dim;
 }
 
-/* Power Button */
-#custom-power {
-    padding: 5px 12px;
-    font-size: 16px;
-}
-/* =============================================================================
-   STABILIZED STATS (FIXED WIDTHS)
-   ============================================================================= */
-
-#custom-cpu{
-    min-width: 170px;
-    transition: none;
+#tray > .active {
+    color: #cacccc;
 }
 
-#custom-gpu {
-    background: #1e1e2e;
-    opacity: 0.9;
-    color: #a6e3a1;
-    padding: 5px 15px;
-    margin: 6px 10px;
-    border-radius: 15px;
-    border: 1px solid #11111b;
-    min-width: 170px;
-    transition: none;
+/* ----------------------------------------------------------
+   Tooltips
+   ---------------------------------------------------------- */
+tooltip {
+    background: rgba(16, 19, 21, 0.97);
+    border: 1px solid #cacccc;
+    border-radius: 0;
+    padding: 7px 10px;
+    font-size: 12px;
+    color: #cacccc;
 }
 
-/* =============================================================================
-   DYNAMIC WINDOW & APP COLORS
-   ============================================================================= */
-
-/* Base Pill Style */
-#custom-window {
-    background: #1e1e2e;
-    color: #cdd6f4;
-    padding: 5px 15px;
-    margin: 6px 4px;
-    border-radius: 15px;
-    border: 1px solid #11111b;
-    transition: all 0.3s ease;
+tooltip label {
+    font-weight: 700;
 }
 
-/* Hidden state when no window is active */
-#custom-window.empty {
-    background: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
+label {
+    font-weight: 700;
 }
-
-/* Application specific colors */
-#custom-window.firefox { background-color: #fab387; color: #11111b; }
-#custom-window.code    { background-color: #89dceb; color: #11111b; }
-#custom-window.discord { background-color: #b4befe; color: #11111b; }
-#custom-window.spotify { background-color: #a6e3a1; color: #11111b; }
-#custom-window.kitty   { background-color: #cdd6f4; color: #11111b; }
-#custom-window.default { background: #1e1e2e;        color: #cdd6f4; }
