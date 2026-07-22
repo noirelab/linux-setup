@@ -26,7 +26,7 @@ fi
 #export PATH=$PATH:/usr/local/go/bin
 
 export PATH="$PATH:/home/noirelab/.lmstudio/bin"
-export PATH="$PATH:/home/noirelab/flutter/bin"
+
 export PATH=$PATH:$HOME/go/bin
 
 
@@ -666,3 +666,17 @@ unset __conda_setup
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/noirelab/.lmstudio/bin"
 # End of LM Studio CLI section
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export LD_LIBRARY_PATH=$CONDA_PREFIX/lib/python3.11/site-packages/nvidia/cublas/lib:$CONDA_PREFIX/lib/python3.11/site-packages/nvidia/cudnn/lib:$LD_LIBRARY_PATH
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# opencode
+export PATH=/home/noirelab/.opencode/bin:$PATH
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/noirelab/.local/bin:$PATH"

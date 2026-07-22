@@ -7,12 +7,15 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "Saving configuration to $REPO_DIR..."
 
 # Create base directories if they don't exist
-mkdir -p "$REPO_DIR/configs/common/fish"
+mkdir -p "$REPO_DIR/configs/common/fish/functions"
 mkdir -p "$REPO_DIR/configs/common/kitty"
+mkdir -p "$REPO_DIR/configs/common/wallpapers"
 mkdir -p "$REPO_DIR/configs/common/opencode/skills"
 mkdir -p "$REPO_DIR/configs/common/opencode/plugins"
 mkdir -p "$REPO_DIR/configs/arch/hypr"
 mkdir -p "$REPO_DIR/configs/arch/waybar"
+mkdir -p "$REPO_DIR/configs/arch/rofi"
+mkdir -p "$REPO_DIR/configs/arch/dunst"
 
 # --- 1. SAVE COMMON CONFIGS (Kitty, Fish, Starship) ---
 echo "[+] Backing up Common Configs..."
@@ -29,10 +32,32 @@ fi
 # Backup Starship
 cp ~/.config/starship.toml "$REPO_DIR/configs/common/starship.toml"
 
-# Backup Fish (Replacing .bashrc)
+# Backup Fish
 if [ -f ~/.config/fish/config.fish ]; then
     cp ~/.config/fish/config.fish "$REPO_DIR/configs/common/fish/config.fish"
     echo "    - Fish config saved."
+fi
+
+if [ -d ~/.config/fish/functions ]; then
+    cp -r ~/.config/fish/functions/* "$REPO_DIR/configs/common/fish/functions/" 2>/dev/null
+    echo "    - Fish functions saved."
+fi
+
+if [ -f ~/.config/fish/fish_variables ]; then
+    cp ~/.config/fish/fish_variables "$REPO_DIR/configs/common/fish/fish_variables"
+    echo "    - Fish variables saved."
+fi
+
+# Backup .bashrc
+if [ -f ~/.bashrc ]; then
+    cp ~/.bashrc "$REPO_DIR/configs/common/.bashrc"
+    echo "    - .bashrc saved."
+fi
+
+# Backup wallpapers
+if [ -f ~/Pictures/wallpaper.jpg ]; then
+    cp ~/Pictures/wallpaper.jpg "$REPO_DIR/configs/common/wallpapers/wallpaper.jpg"
+    echo "    - Wallpaper saved."
 fi
 
 # --- 2. DETECT OS AND SAVE SPECIFIC CONFIGS ---
@@ -49,6 +74,18 @@ if [ -f /etc/arch-release ] || [ -f /etc/cachyos-release ]; then
     if [ -d ~/.config/waybar ]; then
         cp -r ~/.config/waybar/* "$REPO_DIR/configs/arch/waybar/"
         echo "    - Waybar folder saved."
+    fi
+
+    # Copy Rofi
+    if [ -d ~/.config/rofi ]; then
+        cp -r ~/.config/rofi/* "$REPO_DIR/configs/arch/rofi/"
+        echo "    - Rofi folder saved."
+    fi
+
+    # Copy Dunst
+    if [ -d ~/.config/dunst ]; then
+        cp -r ~/.config/dunst/* "$REPO_DIR/configs/arch/dunst/"
+        echo "    - Dunst folder saved."
     fi
 
     echo "Arch/CachyOS specific configs saved."
