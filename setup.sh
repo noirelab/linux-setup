@@ -177,6 +177,27 @@ if confirm "Install Kitty, Starship & Nerd Fonts?"; then
         cp -r "$SCRIPT_DIR/configs/common/wallpapers/"* ~/.config/wallpapers/ 2>/dev/null
         echo "    - Wallpapers deployed to ~/.config/wallpapers/"
     fi
+
+    # Deploy tmux
+    if [ -f "$SCRIPT_DIR/configs/common/tmux/tmux.conf" ]; then
+        cp "$SCRIPT_DIR/configs/common/tmux/tmux.conf" ~/.tmux.conf
+        echo "    - Tmux config deployed."
+    fi
+fi
+
+# --- 2.5 TERMINAL TOOLS (Tmux) ---
+if confirm "Install Tmux?"; then
+    echo -e "${GREEN}[+] Installing Tmux...${NC}"
+    if [ "$DISTRO" == "arch" ]; then
+        sudo pacman -S --noconfirm tmux
+    else
+        sudo apt install -y tmux
+    fi
+
+    if [ -f "$SCRIPT_DIR/configs/common/tmux/tmux.conf" ]; then
+        cp "$SCRIPT_DIR/configs/common/tmux/tmux.conf" ~/.tmux.conf
+        echo "    - Tmux config deployed."
+    fi
 fi
 
 # --- 3. APPLICATIONS ---
@@ -268,6 +289,7 @@ if [ "$DISTRO" == "arch" ]; then
         cp -r "$SCRIPT_DIR/configs/arch/hypr/"* ~/.config/hypr/ 2>/dev/null
         cp -r "$SCRIPT_DIR/configs/arch/waybar/"* ~/.config/waybar/ 2>/dev/null
         cp -r "$SCRIPT_DIR/configs/arch/rofi/"* ~/.config/rofi/ 2>/dev/null
+        cp -r "$SCRIPT_DIR/configs/arch/dunst/"* ~/.config/dunst/ 2>/dev/null
 
         echo "Hyprland configs deployed. Your shortcuts are defined in ~/.config/hypr/hyprland.conf"
     fi

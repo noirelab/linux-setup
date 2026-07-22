@@ -15,6 +15,7 @@ mkdir -p "$REPO_DIR/configs/common/opencode/plugins"
 mkdir -p "$REPO_DIR/configs/arch/hypr"
 mkdir -p "$REPO_DIR/configs/arch/waybar"
 mkdir -p "$REPO_DIR/configs/arch/rofi"
+mkdir -p "$REPO_DIR/configs/common/tmux"
 mkdir -p "$REPO_DIR/configs/arch/dunst"
 
 # --- 1. SAVE COMMON CONFIGS (Kitty, Fish, Starship) ---
@@ -58,6 +59,12 @@ fi
 if [ -f ~/Pictures/wallpaper.jpg ]; then
     cp ~/Pictures/wallpaper.jpg "$REPO_DIR/configs/common/wallpapers/wallpaper.jpg"
     echo "    - Wallpaper saved."
+fi
+
+# Backup tmux
+if [ -f ~/.tmux.conf ]; then
+    cp ~/.tmux.conf "$REPO_DIR/configs/common/tmux/tmux.conf"
+    echo "    - Tmux config saved."
 fi
 
 # --- 2. DETECT OS AND SAVE SPECIFIC CONFIGS ---
