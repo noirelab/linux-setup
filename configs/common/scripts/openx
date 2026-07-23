@@ -19,5 +19,5 @@ for ((i = 1; i < COUNT; i++)); do
 done
 
 tmux select-layout -t "$SESSION" tiled
-tmux set-window-option -t "$SESSION" synchronize-panes on
+tmux set-window-option -t "$SESSION" synchronize-panes off
 tmux attach-session -t "$SESSION"
