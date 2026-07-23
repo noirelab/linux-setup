@@ -352,19 +352,20 @@ install_hyprlock() {
     cat > "$HOME/.config/hypr/hypridle.conf" <<EOF
 general {
     lock_cmd = pidof hyprlock || hyprlock
-    before_sleep_cmd = loginctl lock-session
+    before_sleep_cmd = pidof hyprlock || hyprlock
     after_sleep_cmd = hyprctl dispatch dpms on
+    ignore_dbus_inhibit = false
 }
 
 listener {
-    timeout = 150
+    timeout = 120
     on-timeout = brightnessctl -s set 10
     on-resume = brightnessctl -r
 }
 
 listener {
     timeout = 300
-    on-timeout = loginctl lock-session
+    on-timeout = pidof hyprlock || hyprlock
 }
 
 listener {
@@ -374,16 +375,8 @@ listener {
 }
 EOF
 
-    # 5. Add to Hyprland Autostart
-    HYPR_CONF="$HOME/.config/hypr/hyprland.conf"
-    if grep -q "hypridle" "$HYPR_CONF"; then
-        echo ":: hypridle already in autostart."
-    else
-        echo ":: Adding hypridle to Hyprland autostart..."
-        echo "" >> "$HYPR_CONF"
-        echo "# Auto-Lock Logic" >> "$HYPR_CONF"
-        echo "exec-once = hypridle" >> "$HYPR_CONF"
-    fi
+    # 5. Hypridle is already in autostart via hyprland.conf + exec.conf
+    echo ":: Hypridle & Hyprlock setup complete."
 }
 
 # --- 6. DOTFILES (Bashrc) ---

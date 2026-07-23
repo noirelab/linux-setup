@@ -12,11 +12,13 @@ mkdir -p "$REPO_DIR/configs/common/kitty"
 mkdir -p "$REPO_DIR/configs/common/wallpapers"
 mkdir -p "$REPO_DIR/configs/common/opencode/skills"
 mkdir -p "$REPO_DIR/configs/common/opencode/plugins"
+mkdir -p "$REPO_DIR/configs/common/scripts"
 mkdir -p "$REPO_DIR/configs/arch/hypr"
 mkdir -p "$REPO_DIR/configs/arch/waybar"
 mkdir -p "$REPO_DIR/configs/arch/rofi"
 mkdir -p "$REPO_DIR/configs/common/tmux"
 mkdir -p "$REPO_DIR/configs/arch/dunst"
+mkdir -p "$REPO_DIR/configs/arch/noctalia"
 
 # --- 1. SAVE COMMON CONFIGS (Kitty, Fish, Starship) ---
 echo "[+] Backing up Common Configs..."
@@ -93,6 +95,18 @@ if [ -f /etc/arch-release ] || [ -f /etc/cachyos-release ]; then
     if [ -d ~/.config/dunst ]; then
         cp -r ~/.config/dunst/* "$REPO_DIR/configs/arch/dunst/"
         echo "    - Dunst folder saved."
+    fi
+
+    # Copy Noctalia
+    if [ -d ~/.config/noctalia ]; then
+        cp -r ~/.config/noctalia/* "$REPO_DIR/configs/arch/noctalia/"
+        echo "    - Noctalia config saved."
+    fi
+
+    # Copy custom scripts (~/.local/bin)
+    if [ -d ~/.local/bin ]; then
+        cp -r ~/.local/bin/* "$REPO_DIR/configs/common/scripts/"
+        echo "    - Custom scripts saved."
     fi
 
     echo "Arch/CachyOS specific configs saved."

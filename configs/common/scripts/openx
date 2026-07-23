@@ -1,0 +1,23 @@
+#!/bin/bash
+usage() {
+    echo "Usage: openx -N       open N opencode terminals in tmux (e.g. openx -4)"
+    exit 1
+}
+
+[[ "$1" =~ ^-[1-9][0-9]*$ ]] || usage
+COUNT="${1#-}"
+SESSION="oc-$$"
+
+if [[ $COUNT -eq 1 ]]; then
+    exec tmux new-session -A -s "$SESSION" opencode
+fi
+
+tmux new-session -d -s "$SESSION" opencode
+
+for ((i = 1; i < COUNT; i++)); do
+    tmux split-window -t "$SESSION" opencode
+done
+
+tmux select-layout -t "$SESSION" tiled
+tmux set-window-option -t "$SESSION" synchronize-panes on
+tmux attach-session -t "$SESSION"
