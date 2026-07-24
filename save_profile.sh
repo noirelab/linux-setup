@@ -29,6 +29,10 @@ cp -r ~/.config/kitty/* "$REPO_DIR/configs/common/kitty/" 2>/dev/null
 # Backup OpenCode
 if [ -d ~/.config/opencode ]; then
     cp -r ~/.config/opencode/* "$REPO_DIR/configs/common/opencode/" 2>/dev/null
+    # Remove runtime-generated directories (excluded by gitignore, but keep working tree clean)
+    rm -rf "$REPO_DIR/configs/common/opencode/skills/seo/.venv" 2>/dev/null
+    rm -rf "$REPO_DIR/configs/common/opencode/skills/seo/ms-playwright" 2>/dev/null
+    rm -rf "$REPO_DIR/configs/common/opencode/skills/seo/scripts/__pycache__" 2>/dev/null
     echo "    - OpenCode configs saved."
 fi
 
