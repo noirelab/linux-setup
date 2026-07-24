@@ -243,6 +243,16 @@ if confirm "Install OpenCode (AI Assistant)?"; then
     curl -fsSL https://opencode.ai/install | bash
 fi
 
+# --- 3.6 OPENCODE SEO SKILLS ---
+if confirm "Install OpenCode SEO Skills (25 skills, python3 required)?"; then
+    echo -e "${GREEN}[+] Installing OpenCode SEO Skills...${NC}"
+    if [ -f "$SCRIPT_DIR/install-opencode-seo.sh" ]; then
+        bash "$SCRIPT_DIR/install-opencode-seo.sh"
+    else
+        echo -e "${YELLOW}Warning: install-opencode-seo.sh not found. Skipping.${NC}"
+    fi
+fi
+
 # --- 4. DEV TOOLS (Docker, Nvidia, Conda) ---
 if confirm "Install Dev Tools (Docker, Nvidia Toolkit, Miniconda)?"; then
 
@@ -390,7 +400,40 @@ if confirm "Install .bashrc?"; then
     echo "Bashrc updated."
 fi
 
-# --- 7. HYPRLOCK (Arch Only) ---
+# --- 7. SDDM THEME (Arch Only) ---
+if [ "$DISTRO" == "arch" ]; then
+    if confirm "Install Custom SDDM Theme?"; then
+        echo -e "${GREEN}[+] Installing SDDM theme...${NC}"
+        sudo pacman -S --noconfirm sddm
+
+        # Create theme directory
+        sudo mkdir -p /usr/share/sddm/themes/custom
+
+        # Copy theme files
+        sudo cp "$SCRIPT_DIR/configs/arch/sddm/Main.qml" /usr/share/sddm/themes/custom/
+        sudo cp "$SCRIPT_DIR/configs/arch/sddm/theme.conf" /usr/share/sddm/themes/custom/
+        sudo cp "$SCRIPT_DIR/configs/arch/sddm/metadata.desktop" /usr/share/sddm/themes/custom/
+
+        # Copy wallpaper so sddm user can read it
+        if [ -f "$HOME/Pictures/wallpaper.jpg" ]; then
+            sudo cp "$HOME/Pictures/wallpaper.jpg" /usr/share/sddm/themes/custom/wallpaper.jpg
+        elif [ -f "$SCRIPT_DIR/configs/common/wallpapers/wallpaper.jpg" ]; then
+            sudo cp "$SCRIPT_DIR/configs/common/wallpapers/wallpaper.jpg" /usr/share/sddm/themes/custom/wallpaper.jpg
+        fi
+
+        # Configure SDDM to use the custom theme
+        echo '[Autologin]
+Session=hyprland
+
+[Theme]
+Current=custom' | sudo tee /etc/sddm.conf
+
+        sudo systemctl enable sddm
+        echo "SDDM theme installed with your wallpaper! Reboot to see it."
+    fi
+fi
+
+# --- 8. HYPRLOCK (Arch Only) ---
 if [ "$DISTRO" == "arch" ]; then
     if confirm "Install Hyprlock & Hypridle?"; then
         install_hyprlock

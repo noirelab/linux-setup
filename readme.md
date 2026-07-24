@@ -42,9 +42,10 @@ The installer walks you through each section with y/n prompts.
 | **Starship** | Nord-themed prompt with git, language versions, conda env, docker context |
 | **Fish** | Modern shell with eza/bat/rg aliases, conda integration, auto-ls |
 | **Bash** | 680+ line custom `.bashrc` — zoxide, eza, bat, rg, fzf, trash-cli, 80+ aliases, archive helpers, Docker clean, auto-startx |
-| **Tmux** | Prefix `Ctrl-a`, `\|`/`-` splits, vi copy mode, mouse, 10k history |
+| **Tmux** | Prefix `Ctrl-b`, `\|`/`-` splits, vi copy mode, mouse, 10k history |
 | **Nerd Fonts** | FiraCode + JetBrains Mono (Arch via pacman, Debian downloaded manually) |
 | **OpenCode** | AI assistant CLI — installed via `curl` + config deployed from repo |
+| **OpenCode SEO** | 25 SEO sub-skills — site audits, technical SEO, schema, content (E-E-A-T), GEO/AI search, backlinks, local SEO, maps, e-commerce, Google APIs, SPA-aware rendering |
 | **Wallpapers** | Deployed to `~/.config/wallpapers/` |
 
 ### Desktop Environment (Arch/CachyOS)
@@ -167,10 +168,11 @@ Interactive installer. Detects your OS and offers each section:
 3. Terminal & Shell (Kitty, Starship, Nerd Fonts, Fish, OpenCode, Tmux)
 4. Applications (Firefox, Discord, VS Code, Spotify, Nemo)
 5. OpenCode AI assistant
-6. Dev tools (Docker + NVIDIA toolkit, Miniconda3)
-7. Desktop config (Hyprland+Waybar+Rofi+Dunst or GNOME/Cinnamon shortcuts)
-8. Hyprlock + Hypridle (Arch only)
-9. .bashrc
+6. OpenCode SEO Skills (25 SEO sub-skills with Python runtime)
+7. Dev tools (Docker + NVIDIA toolkit, Miniconda3)
+8. Desktop config (Hyprland+Waybar+Rofi+Dunst or GNOME/Cinnamon shortcuts)
+9. Hyprlock + Hypridle (Arch only)
+10. .bashrc
 
 ### `save_profile.sh`
 

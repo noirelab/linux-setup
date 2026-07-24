@@ -680,3 +680,4 @@ export PATH=/home/noirelab/.opencode/bin:$PATH
 
 # Added by Antigravity CLI installer
 export PATH="/home/noirelab/.local/bin:$PATH"
+. "$HOME/.cargo/env"

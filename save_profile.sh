@@ -103,6 +103,13 @@ if [ -f /etc/arch-release ] || [ -f /etc/cachyos-release ]; then
         echo "    - Noctalia config saved."
     fi
 
+    # Copy SDDM theme
+    mkdir -p "$REPO_DIR/configs/arch/sddm"
+    if [ -d /usr/share/sddm/themes/custom ]; then
+        sudo cp -r /usr/share/sddm/themes/custom/* "$REPO_DIR/configs/arch/sddm/" 2>/dev/null
+        echo "    - SDDM theme saved."
+    fi
+
     # Copy custom scripts (~/.local/bin)
     if [ -d ~/.local/bin ]; then
         cp -r ~/.local/bin/* "$REPO_DIR/configs/common/scripts/"

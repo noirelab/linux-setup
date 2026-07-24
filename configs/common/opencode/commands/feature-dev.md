@@ -1,0 +1,1 @@
+/home/noirelab/code/opencode-power-pack/commands/feature-dev.md

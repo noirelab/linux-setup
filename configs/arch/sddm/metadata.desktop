@@ -1,0 +1,11 @@
+[SddmGreeterTheme]
+Name=Custom
+Description=Clean multi-monitor theme with wallpaper
+Author=noirelab
+Type=sddm-theme
+Version=1.0
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=custom
+Theme-API=2.0
+QtVersion=6
