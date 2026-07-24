@@ -164,6 +164,13 @@ if confirm "Install Kitty, Starship & Nerd Fonts?"; then
         echo "    - OpenCode config deployed."
     fi
 
+    # Deploy OpenCode npm skills (~/.opencode/skills/)
+    if [ -d "$SCRIPT_DIR/configs/common/opencode_skills" ]; then
+        mkdir -p ~/.opencode/skills
+        cp -r "$SCRIPT_DIR/configs/common/opencode_skills/"* ~/.opencode/skills/ 2>/dev/null
+        echo "    - OpenCode npm skills deployed ($(ls "$SCRIPT_DIR/configs/common/opencode_skills" | wc -l) skills)."
+    fi
+
     # Deploy Fish config
     if [ -f "$SCRIPT_DIR/configs/common/fish/config.fish" ]; then
         mkdir -p ~/.config/fish

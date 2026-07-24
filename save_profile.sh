@@ -12,6 +12,7 @@ mkdir -p "$REPO_DIR/configs/common/kitty"
 mkdir -p "$REPO_DIR/configs/common/wallpapers"
 mkdir -p "$REPO_DIR/configs/common/opencode/skills"
 mkdir -p "$REPO_DIR/configs/common/opencode/plugins"
+mkdir -p "$REPO_DIR/configs/common/opencode_skills"
 mkdir -p "$REPO_DIR/configs/common/scripts"
 mkdir -p "$REPO_DIR/configs/arch/hypr"
 mkdir -p "$REPO_DIR/configs/arch/waybar"
@@ -34,6 +35,12 @@ if [ -d ~/.config/opencode ]; then
     rm -rf "$REPO_DIR/configs/common/opencode/skills/seo/ms-playwright" 2>/dev/null
     rm -rf "$REPO_DIR/configs/common/opencode/skills/seo/scripts/__pycache__" 2>/dev/null
     echo "    - OpenCode configs saved."
+fi
+
+# Backup ~/.opencode/skills/ (npm-installed skills, e.g. opencode-power-pack)
+if [ -d ~/.opencode/skills ]; then
+    cp -r ~/.opencode/skills/* "$REPO_DIR/configs/common/opencode_skills/" 2>/dev/null
+    echo "    - OpenCode npm skills saved ($(ls ~/.opencode/skills/ | wc -l) skills)."
 fi
 
 # Backup Starship
