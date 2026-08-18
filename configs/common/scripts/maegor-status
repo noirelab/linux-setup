@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+echo "== host =="
+hostname
+
+echo
+echo "== tailscale =="
+systemctl is-active tailscaled
+tailscale ip -4 2>&1
+tailscale status 2>&1
+
+echo
+echo "== ssh =="
+systemctl is-active sshd
+
+echo
+echo "== herdr =="
+herdr status 2>&1
+herdr session list 2>&1

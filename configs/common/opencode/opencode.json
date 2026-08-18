@@ -1,4 +1,30 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["superpowers@git+https://github.com/obra/superpowers.git", "ecc-universal"]
+  "model": "deepseek/deepseek-v4-flash",
+  "instructions": [
+    "/home/noirelab/.config/opencode/AGENTS.caveman.md"
+  ],
+  "mcp": {
+    "21st": {
+      "type": "remote",
+      "url": "https://21st.dev/api/mcp",
+      "enabled": true,
+      "headers": {
+        "x-api-key": "REPLACE_ME"
+      }
+    }
+  },
+  "permission": {
+    "skill": {
+      "caveman": "allow",
+      "caveman-commit": "allow",
+      "caveman-review": "allow",
+      "caveman-help": "allow",
+      "caveman-compress": "allow"
+    }
+  },
+  "plugin": [
+    "./plugins/claude-mem.js",
+    "./plugins/caveman/plugin.js"
+  ]
 }

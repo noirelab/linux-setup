@@ -1,0 +1,15 @@
+[Unit]
+Description=Chico - Speech-to-Text Dictation Tool
+After=sound.target dbus.socket
+Wants=sound.target
+
+# Started explicitly by Hyprland (see ~/.config/hypr/config/autostart.lua).
+# graphical-session.target is never activated in this session, so no [Install].
+
+[Service]
+Type=simple
+ExecStart=/home/noirelab/chico/chico-start.sh
+Restart=on-failure
+RestartSec=3
+# o script sai com 143 ao receber SIGTERM; nao e falha
+SuccessExitStatus=143

@@ -12,7 +12,7 @@ radius_bottom_right = 12
 radius_top_left = 0
 radius_top_right = 0
 scale = 1.10
-start = [ "launcher", "clock", "spacer_1", "group:g1" ]
+start = [ "launcher", "clock", "spacer_1", "group:g1", "spacer_1", "group:g2" ]
 thickness = 35
 
     [[bar.default.capsule_group]]
@@ -22,6 +22,14 @@ thickness = 35
     members = [ "temp", "sysmon_2", "sysmon_3" ]
     opacity = 1.0
     padding = 6.0
+
+    [[bar.default.capsule_group]]
+    border = ""
+    fill = "on_secondary"
+    id = "g2"
+    members = [ "noirelab/claude-usage:session", "spacer_g2a", "noirelab/claude-usage:week", "spacer_g2b", "noirelab/claude-usage:deepseek" ]
+    opacity = 1.0
+    padding = 10.0
 
 [shell]
 clipboard_image_action_command = "satty -f -"
@@ -108,6 +116,14 @@ color = "error"
 
 [widget.spacer_1]
 type = "spacer"
+
+[widget.spacer_g2a]
+type = "spacer"
+length = 8
+
+[widget.spacer_g2b]
+type = "spacer"
+length = 8
 
 [widget.temp]
 show_label = false

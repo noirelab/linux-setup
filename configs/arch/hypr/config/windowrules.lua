@@ -45,6 +45,7 @@ hl.window_rule({
 })
 
 -- Apps
+hl.window_rule({ match = { class = "^(chico)$" }, float = true, pin = true, no_focus = true })
 hl.window_rule({ match = { class = "^(.*\\.exe)$", float = true }, monitor = PRIMARY_MONITOR, center = true, fullscreen_state = 0 })
 hl.window_rule({ match = { class = "^(.*[Ll]auncher.*)$" }, float = true, monitor = PRIMARY_MONITOR })
 hl.window_rule({ match = { class = "^(vesktop|discord)$" }, monitor = PRIMARY_MONITOR })
@@ -69,7 +70,7 @@ hl.window_rule({
 -- Opacity Overrides
 local terminals = "^(kitty|ghostty|[Kk]onsole|Alacritty|gnome-terminal|xfce[0-9]?-terminal)$"
 
-hl.window_rule({ match = { class = "^(firefox|zen)$" }, opacity = "1.0 override" })
+hl.window_rule({ match = { class = "^(zen)$" }, opacity = "1.0 override" })
 hl.window_rule({ match = { class = terminals }, opacity = "1.0 override" }) -- Override opacity in favor of terminal settings for opacity. If your terminal doesn't support transparency, you can remove this rule.
 hl.window_rule({ match = { class = "^(mpv|org.kde.haruna|.*plex.*|org\\.kde\\.gwenview|.*vlc.*)$" }, opacity = "1.0 override" })
 

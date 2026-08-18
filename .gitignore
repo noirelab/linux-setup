@@ -1,6 +1,13 @@
-configs/common/opencode/node_modules/
-configs/common/opencode/skills/seo/.venv/
-configs/common/opencode/skills/seo/ms-playwright/
-configs/common/opencode/skills/seo/scripts/__pycache__/
+# Reinstallable/build artifacts - never vendored into this repo
+node_modules/
+.venv/
+venv/
+ms-playwright/
+__pycache__/
+*.pyc
+*.log
 
-
+# Machine-local / secret-bearing
+configs/common/claude/settings.local.json
+configs/common/opencode/opencode.json.bak
+configs/common/opencode/auth.json

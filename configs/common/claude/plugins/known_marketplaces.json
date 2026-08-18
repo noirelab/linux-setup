@@ -1,0 +1,67 @@
+{
+  "thedotmack": {
+    "source": {
+      "source": "github",
+      "repo": "thedotmack/claude-mem"
+    },
+    "installLocation": "/home/noirelab/.claude/plugins/marketplaces/thedotmack",
+    "lastUpdated": "2026-08-18T15:24:07.964Z",
+    "autoUpdate": true
+  },
+  "claude-market": {
+    "source": {
+      "source": "github",
+      "repo": "claude-market/marketplace"
+    },
+    "installLocation": "/home/noirelab/.claude/plugins/marketplaces/claude-market",
+    "lastUpdated": "2026-07-30T13:06:30.080Z"
+  },
+  "ui-ux-pro-max-skill": {
+    "source": {
+      "source": "github",
+      "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
+    },
+    "installLocation": "/home/noirelab/.claude/plugins/marketplaces/ui-ux-pro-max-skill",
+    "lastUpdated": "2026-07-28T23:23:54.013Z"
+  },
+  "claude-plugins-official": {
+    "source": {
+      "source": "github",
+      "repo": "anthropics/claude-plugins-official"
+    },
+    "installLocation": "/home/noirelab/.claude/plugins/marketplaces/claude-plugins-official",
+    "lastUpdated": "2026-08-18T15:24:06.298Z"
+  },
+  "ponytail": {
+    "source": {
+      "source": "github",
+      "repo": "DietrichGebert/ponytail"
+    },
+    "installLocation": "/home/noirelab/.claude/plugins/marketplaces/ponytail",
+    "lastUpdated": "2026-07-31T12:41:33.389Z"
+  },
+  "caveman": {
+    "source": {
+      "source": "github",
+      "repo": "JuliusBrussee/caveman"
+    },
+    "installLocation": "/home/noirelab/.claude/plugins/marketplaces/caveman",
+    "lastUpdated": "2026-08-05T14:13:49.882Z"
+  },
+  "trailofbits": {
+    "source": {
+      "source": "github",
+      "repo": "trailofbits/skills"
+    },
+    "installLocation": "/home/noirelab/.claude/plugins/marketplaces/trailofbits",
+    "lastUpdated": "2026-08-08T13:41:40.300Z"
+  },
+  "21st": {
+    "source": {
+      "source": "github",
+      "repo": "21st-dev/claude-code-plugin"
+    },
+    "installLocation": "/home/noirelab/.claude/plugins/marketplaces/21st",
+    "lastUpdated": "2026-08-10T14:17:48.614Z"
+  }
+}

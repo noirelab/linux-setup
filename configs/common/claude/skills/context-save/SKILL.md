@@ -1,0 +1,1 @@
+/home/noirelab/.claude/skills/gstack/context-save/SKILL.md

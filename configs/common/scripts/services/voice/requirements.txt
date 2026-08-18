@@ -1,0 +1,9 @@
+faster-whisper
+torch
+torchaudio
+nvidia-cublas-cu12; platform_system == "Linux"
+nvidia-cudnn-cu12==9.*; platform_system == "Linux"
+sounddevice
+numpy
+fastapi
+uvicorn

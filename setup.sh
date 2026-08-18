@@ -113,7 +113,7 @@ if confirm "Update System & Install Build Tools?"; then
     if [ "$DISTRO" == "arch" ]; then
         sudo pacman -Syu --noconfirm
         sudo pacman -S --needed --noconfirm base-devel git wget curl
-        sudo pacman -S --needed --noconfirm swww grim slurp wl-clipboard brightnessctl playerctl
+        sudo pacman -S --needed --noconfirm grim slurp wl-clipboard brightnessctl playerctl
     else
         sudo apt update && sudo apt upgrade -y
         sudo apt install -y curl wget git build-essential
@@ -130,18 +130,14 @@ if confirm "Install gaming packages and optimizations?"; then
 fi
 
 # --- 2. TERMINAL & SHELL (Common) ---
-if confirm "Install Kitty, Starship & Nerd Fonts?"; then
+if confirm "Install Kitty & Nerd Fonts?"; then
     echo -e "${GREEN}[+] Installing Terminal Essentials...${NC}"
 
     # Install Packages
     if [ "$DISTRO" == "arch" ]; then
-        sudo pacman -S --noconfirm kitty starship ttf-firacode-nerd ttf-jetbrains-mono-nerd
+        sudo pacman -S --noconfirm kitty ttf-firacode-nerd ttf-jetbrains-mono-nerd
     else
         sudo apt install -y kitty
-        # Starship manual install for Debian
-        if ! command -v starship &> /dev/null; then
-            curl -sS https://starship.rs/install.sh | sh -s -- -y
-        fi
         # Fonts manual install for Debian
         mkdir -p ~/.local/share/fonts
         if [ ! -f ~/.local/share/fonts/FiraCodeNerdFont-Regular.ttf ]; then
@@ -152,37 +148,49 @@ if confirm "Install Kitty, Starship & Nerd Fonts?"; then
     fi
 
     # Configs (Shared)
-    echo -e "${GREEN}[+] Deploying Kitty & Starship Configs...${NC}"
+    echo -e "${GREEN}[+] Deploying Kitty Config...${NC}"
     mkdir -p ~/.config/kitty
     cp -r "$SCRIPT_DIR/configs/common/kitty/"* ~/.config/kitty/ 2>/dev/null
-    cp "$SCRIPT_DIR/configs/common/starship.toml" ~/.config/starship.toml 2>/dev/null
 
-    # Deploy OpenCode
+    # Deploy OpenCode (~/.config/opencode + ~/.opencode)
     if [ -d "$SCRIPT_DIR/configs/common/opencode" ]; then
         mkdir -p ~/.config/opencode
         cp -r "$SCRIPT_DIR/configs/common/opencode/"* ~/.config/opencode/ 2>/dev/null
         echo "    - OpenCode config deployed."
+        if grep -q "REPLACE_ME" ~/.config/opencode/opencode.json 2>/dev/null; then
+            echo -e "${YELLOW}    ! opencode.json has redacted MCP headers. Fill in REPLACE_ME with your API keys.${NC}"
+        fi
     fi
 
-    # Deploy OpenCode npm skills (~/.opencode/skills/)
-    if [ -d "$SCRIPT_DIR/configs/common/opencode_skills" ]; then
-        mkdir -p ~/.opencode/skills
-        cp -r "$SCRIPT_DIR/configs/common/opencode_skills/"* ~/.opencode/skills/ 2>/dev/null
-        echo "    - OpenCode npm skills deployed ($(ls "$SCRIPT_DIR/configs/common/opencode_skills" | wc -l) skills)."
+    if [ -d "$SCRIPT_DIR/configs/common/opencode_home" ]; then
+        mkdir -p ~/.opencode
+        cp -r "$SCRIPT_DIR/configs/common/opencode_home/"* ~/.opencode/ 2>/dev/null
+        echo "    - OpenCode home deployed ($(ls "$SCRIPT_DIR/configs/common/opencode_home/skills" 2>/dev/null | wc -l) skills)."
+        if [ -f ~/.opencode/package.json ] && command -v npm &> /dev/null; then
+            (cd ~/.opencode && npm install --silent) && echo "    - OpenCode home deps installed."
+        fi
     fi
 
-    # Deploy Fish config
-    if [ -f "$SCRIPT_DIR/configs/common/fish/config.fish" ]; then
+    # Deploy Fish (config, functions, conf.d, variables)
+    if [ -d "$SCRIPT_DIR/configs/common/fish" ]; then
         mkdir -p ~/.config/fish
-        cp "$SCRIPT_DIR/configs/common/fish/config.fish" ~/.config/fish/config.fish
-        echo "    - Fish config deployed."
+        cp -r "$SCRIPT_DIR/configs/common/fish/"* ~/.config/fish/ 2>/dev/null
+        echo "    - Fish config, functions and conf.d deployed."
     fi
 
-    # Deploy wallpapers
-    if [ -d "$SCRIPT_DIR/configs/common/wallpapers" ]; then
-        mkdir -p ~/.config/wallpapers
-        cp -r "$SCRIPT_DIR/configs/common/wallpapers/"* ~/.config/wallpapers/ 2>/dev/null
-        echo "    - Wallpapers deployed to ~/.config/wallpapers/"
+    # Deploy custom scripts (~/.local/bin)
+    if [ -d "$SCRIPT_DIR/configs/common/scripts" ]; then
+        mkdir -p ~/.local/bin
+        cp -r "$SCRIPT_DIR/configs/common/scripts/"* ~/.local/bin/ 2>/dev/null
+        chmod +x ~/.local/bin/* 2>/dev/null
+        echo "    - Custom scripts deployed."
+    fi
+
+    # Deploy wallpaper (awww, Hyprlock and SDDM all read ~/Pictures/wallpaper.jpg)
+    if [ -f "$SCRIPT_DIR/configs/common/wallpapers/wallpaper.jpg" ]; then
+        mkdir -p ~/Pictures
+        cp "$SCRIPT_DIR/configs/common/wallpapers/wallpaper.jpg" ~/Pictures/wallpaper.jpg
+        echo "    - Wallpaper deployed to ~/Pictures/wallpaper.jpg"
     fi
 
     # Deploy tmux
@@ -260,6 +268,52 @@ if confirm "Install OpenCode SEO Skills (25 skills, python3 required)?"; then
     fi
 fi
 
+# --- 3.7 CLAUDE CODE ---
+if confirm "Install/restore Claude Code config (skills, plugins, hooks)?"; then
+    echo -e "${GREEN}[+] Restoring Claude Code...${NC}"
+    CLAUDE_SRC="$SCRIPT_DIR/configs/common/claude"
+
+    if ! command -v claude &> /dev/null; then
+        echo -e "${YELLOW}Claude Code not found. Installing...${NC}"
+        curl -fsSL https://claude.ai/install.sh | bash
+    fi
+
+    mkdir -p ~/.claude/skills ~/.claude/hooks
+
+    [ -f "$CLAUDE_SRC/CLAUDE.md" ]     && cp "$CLAUDE_SRC/CLAUDE.md" ~/.claude/CLAUDE.md
+    [ -f "$CLAUDE_SRC/settings.json" ] && cp "$CLAUDE_SRC/settings.json" ~/.claude/settings.json
+    for d in hooks agents commands skills; do
+        [ -d "$CLAUDE_SRC/$d" ] && mkdir -p ~/.claude/$d && cp -r "$CLAUDE_SRC/$d/"* ~/.claude/$d/ 2>/dev/null
+    done
+    chmod +x ~/.claude/hooks/* 2>/dev/null
+    echo "    - Skills, hooks, agents, commands and settings deployed."
+
+    # Plugins: re-add marketplaces, then reinstall each plugin from its manifest.
+    if command -v jq &> /dev/null && [ -f "$CLAUDE_SRC/plugins/known_marketplaces.json" ]; then
+        jq -r 'to_entries[] | select(.value.source.source == "github") | .value.source.repo' \
+            "$CLAUDE_SRC/plugins/known_marketplaces.json" | while read -r repo; do
+            claude plugin marketplace add "$repo" 2>/dev/null && echo "    - marketplace: $repo"
+        done
+
+        jq -r '.plugins | keys[]' "$CLAUDE_SRC/plugins/installed_plugins.json" 2>/dev/null | while read -r plugin; do
+            claude plugin install "$plugin" 2>/dev/null && echo "    - plugin: $plugin"
+        done
+    else
+        echo -e "${YELLOW}    ! jq missing or no plugin manifest. Skipping plugin restore.${NC}"
+    fi
+
+    # gstack lives in its own git repo (too large to vendor here).
+    GSTACK_JSON="$CLAUDE_SRC/external-skills.json"
+    if [ -f "$GSTACK_JSON" ] && [ ! -d ~/.claude/skills/gstack ] && command -v jq &> /dev/null; then
+        if confirm "  Clone gstack skill (~1.6G after install)?"; then
+            git clone "$(jq -r .gstack.repo "$GSTACK_JSON")" ~/.claude/skills/gstack
+            git -C ~/.claude/skills/gstack checkout "$(jq -r .gstack.commit "$GSTACK_JSON")" 2>/dev/null
+            command -v bun &> /dev/null && (cd ~/.claude/skills/gstack && bun install)
+            echo "    - gstack cloned. Run /gstack-upgrade later to move to latest."
+        fi
+    fi
+fi
+
 # --- 4. DEV TOOLS (Docker, Nvidia, Conda) ---
 if confirm "Install Dev Tools (Docker, Nvidia Toolkit, Miniconda)?"; then
 
@@ -294,21 +348,37 @@ echo -e "${BLUE}=== Configuring Desktop Environment ===${NC}"
 
 if [ "$DISTRO" == "arch" ]; then
     # --- ARCH / HYPRLAND PATH ---
-    if confirm "Deploy Hyprland & Waybar Configs?"; then
+    if confirm "Deploy Hyprland & Noctalia Configs?"; then
         echo -e "${GREEN}[+] Copying Arch Configs...${NC}"
 
         # Install Hyprland Basics if missing
-        sudo pacman -S --noconfirm hyprland waybar rofi-wayland dunst polkit-kde-agent
-        sudo pacman -S --noconfirm pipewire pipewire-pulse pipewire-alsa wireplumber nvtop btop
+        sudo pacman -S --noconfirm hyprland rofi dunst polkit-kde-agent hyprlock hypridle hyprpicker
+        sudo pacman -S --noconfirm pipewire pipewire-pulse pipewire-alsa wireplumber nvtop btop wl-clipboard ydotool
+
+        # Noctalia is the current bar/shell (Waybar is kept only as a fallback)
+        install_aur "noctalia"
+        install_aur "awww"
 
         # Copy Configs
-        mkdir -p ~/.config/hypr ~/.config/waybar ~/.config/rofi ~/.config/dunst
-        cp -r "$SCRIPT_DIR/configs/arch/hypr/"* ~/.config/hypr/ 2>/dev/null
-        cp -r "$SCRIPT_DIR/configs/arch/waybar/"* ~/.config/waybar/ 2>/dev/null
-        cp -r "$SCRIPT_DIR/configs/arch/rofi/"* ~/.config/rofi/ 2>/dev/null
-        cp -r "$SCRIPT_DIR/configs/arch/dunst/"* ~/.config/dunst/ 2>/dev/null
+        mkdir -p ~/.config/hypr ~/.config/noctalia ~/.config/rofi ~/.config/dunst
+        cp -r "$SCRIPT_DIR/configs/arch/hypr/"*     ~/.config/hypr/ 2>/dev/null
+        cp -r "$SCRIPT_DIR/configs/arch/noctalia/"* ~/.config/noctalia/ 2>/dev/null
+        cp -r "$SCRIPT_DIR/configs/arch/rofi/"*     ~/.config/rofi/ 2>/dev/null
+        cp -r "$SCRIPT_DIR/configs/arch/dunst/"*    ~/.config/dunst/ 2>/dev/null
 
-        echo "Hyprland configs deployed. Your shortcuts are defined in ~/.config/hypr/hyprland.conf"
+        echo "    - Hyprland + Noctalia configs deployed."
+        echo "      Keybinds: ~/.config/hypr/config/binds.lua"
+        echo "      Noctalia bar + plugins: ~/.config/noctalia/"
+    fi
+
+    # systemd user units (chico, awww-daemon, ydotool) referenced by hypr autostart
+    if [ -d "$SCRIPT_DIR/configs/common/systemd" ]; then
+        if confirm "Deploy systemd user units?"; then
+            mkdir -p ~/.config/systemd/user
+            cp "$SCRIPT_DIR/configs/common/systemd/"*.service ~/.config/systemd/user/ 2>/dev/null
+            systemctl --user daemon-reload
+            echo "    - systemd user units deployed. Enable with: systemctl --user enable --now <unit>"
+        fi
     fi
 
 else
@@ -349,7 +419,7 @@ install_hyprlock() {
 
     # 2. Ensure Wallpaper is in the right place for the User
     # We copy the setup wallpaper to the user's Pictures folder so config finds it
-    WALLPAPER_SRC="./configs/common/wallpapers/wallpaper.jpg"
+    WALLPAPER_SRC="$SCRIPT_DIR/configs/common/wallpapers/wallpaper.jpg"
     DEST_DIR="$HOME/Pictures"
     mkdir -p "$DEST_DIR"
 

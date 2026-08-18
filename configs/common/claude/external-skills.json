@@ -1,0 +1,8 @@
+{
+  "gstack": {
+    "repo": "https://github.com/garrytan/gstack.git",
+    "commit": "a3259400a366593e0c909dd9ac3e59752efd2488",
+    "version": "1.60.1.0",
+    "install": "git clone + bun install"
+  }
+}

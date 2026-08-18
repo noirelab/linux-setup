@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# he — abre herdr com dois Claude Code lado a lado em auto mode.
+# Porta da funcao fish original (~/.config/fish/functions/he.fish) para bash,
+# pra funcionar de qualquer shell, inclusive de plugins (sh -c).
+
+herdr="$HOME/.local/bin/herdr"
+cwd="$(pwd)"
+
+if ! pgrep -f "kitty herdr" >/dev/null; then
+    kitty herdr &
+    disown
+    tries=0
+    while ! "$herdr" status >/dev/null 2>&1 && [ "$tries" -lt 20 ]; do
+        sleep 0.5
+        tries=$((tries + 1))
+    done
+else
+    hyprctl dispatch focuswindow 'title:^herdr - herdr$' >/dev/null 2>&1
+fi
+
+suffix="$(date +%s)"
+
+pane1="$("$herdr" workspace create --cwd "$cwd" --label claude --focus | jq -r '.result.root_pane.pane_id')"
+pane2="$("$herdr" pane split --pane "$pane1" --direction right --cwd "$cwd" | jq -r '.result.pane.pane_id')"
+
+"$herdr" agent start "c1-$suffix" --kind claude --pane "$pane1" -- --permission-mode auto >/dev/null
+"$herdr" agent start "c2-$suffix" --kind claude --pane "$pane2" -- --permission-mode auto >/dev/null

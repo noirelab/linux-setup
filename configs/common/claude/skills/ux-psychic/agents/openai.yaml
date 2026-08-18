@@ -1,0 +1,4 @@
+interface:
+  display_name: "UX-PSYCHIC"
+  short_description: "Behavioral UX without dark patterns"
+  default_prompt: "Use $ux-psychic to audit this product flow and implement the highest-impact ethical UX improvements."

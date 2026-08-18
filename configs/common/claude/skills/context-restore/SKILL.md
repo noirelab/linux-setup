@@ -1,0 +1,1 @@
+/home/noirelab/.claude/skills/gstack/context-restore/SKILL.md

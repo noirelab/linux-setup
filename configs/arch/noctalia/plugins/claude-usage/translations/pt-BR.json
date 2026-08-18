@@ -1,0 +1,44 @@
+{
+  "settings": {
+    "poll_seconds": {
+      "label": "Intervalo de atualização (segundos)",
+      "description": "Com que frequência consultar o uso do Claude. Mínimo de 20s."
+    },
+    "credentials_path": {
+      "label": "Arquivo de credenciais",
+      "description": "Caminho do arquivo de credenciais OAuth do Claude Code."
+    },
+    "warn_percent": {
+      "label": "Limite de alerta (%)",
+      "description": "Percentual de uso a partir do qual o widget muda para a cor de alerta."
+    },
+    "deepseek_poll_seconds": {
+      "label": "Intervalo de atualização DeepSeek (segundos)",
+      "description": "Com que frequência consultar o saldo DeepSeek. Mínimo de 60s."
+    },
+    "deepseek_api_key": {
+      "label": "Chave da API DeepSeek",
+      "description": "Opcional. Usa a variável DEEPSEEK_API_KEY como alternativa, depois o arquivo de chaves abaixo."
+    },
+    "deepseek_key_path": {
+      "label": "Arquivo de chave DeepSeek",
+      "description": "Arquivo JSON com um campo deepseek.key, ex.: auth.json do opencode."
+    },
+    "low_balance": {
+      "label": "Limite de saldo baixo",
+      "description": "Saldo abaixo deste valor muda o widget para a cor de alerta."
+    },
+    "show_label": {
+      "label": "Mostrar rótulo"
+    },
+    "show_label_session": {
+      "description": "Prefixa o percentual com \"5h\"."
+    },
+    "show_label_week": {
+      "description": "Prefixa o percentual com \"7d\"."
+    },
+    "show_label_deepseek": {
+      "description": "Prefixa o saldo com \"DS\"."
+    }
+  }
+}

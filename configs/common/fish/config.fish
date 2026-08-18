@@ -1,10 +1,8 @@
 source /usr/share/cachyos-fish-config/cachyos-config.fish
 
-# overwrite greeting
-# potentially disabling fastfetch
-#function fish_greeting
-#    # smth smth
-#end
+# overwrite greeting (disables fastfetch)
+function fish_greeting
+end
 
 # node (nvm)
 fish_add_path /home/noirelab/.nvm/versions/node/v22.23.1/bin
@@ -29,3 +27,7 @@ end
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# aliases
+abbr -a op "opencode --auto"
+abbr -a cc "claude --permission-mode auto"

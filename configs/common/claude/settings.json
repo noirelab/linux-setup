@@ -1,0 +1,198 @@
+{
+  "model": "opus",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/home/noirelab/.orca/agent-hooks/claude-hook.sh'; else { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/home/noirelab/.orca/agent-hooks/claude-hook.sh'; else { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/home/noirelab/.orca/agent-hooks/claude-hook.sh'; else { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/home/noirelab/.orca/agent-hooks/claude-hook.sh'; else { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/home/noirelab/.orca/agent-hooks/claude-hook.sh'; else { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/home/noirelab/.orca/agent-hooks/claude-hook.sh'; else { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/home/noirelab/.orca/agent-hooks/claude-hook.sh'; else { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/home/noirelab/.orca/agent-hooks/claude-hook.sh'; else { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/home/noirelab/.orca/agent-hooks/claude-hook.sh'; else { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/home/noirelab/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/home/noirelab/.orca/agent-hooks/claude-hook.sh'; else { command -p cat 2>/dev/null || cat; } >/dev/null 2>&1 || :; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/home/noirelab/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /home/noirelab/.claude/plugins/cache/ponytail/ponytail/*/hooks/ponytail-statusline.sh"
+  },
+  "enabledPlugins": {
+    "claude-mem@thedotmack": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true,
+    "figma@claude-plugins-official": false,
+    "ponytail@ponytail": true,
+    "vercel@claude-plugins-official": false,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "caveman@caveman": true,
+    "stripe@claude-plugins-official": true,
+    "21st@21st": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-market": {
+      "source": {
+        "source": "github",
+        "repo": "claude-market/marketplace"
+      }
+    },
+    "ui-ux-pro-max-skill": {
+      "source": {
+        "source": "github",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "trailofbits": {
+      "source": {
+        "source": "github",
+        "repo": "trailofbits/skills"
+      }
+    },
+    "21st": {
+      "source": {
+        "source": "github",
+        "repo": "21st-dev/claude-code-plugin"
+      }
+    }
+  },
+  "language": "portuguese",
+  "effortLevel": "high",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "theme": "dark",
+  "voiceEnabled": true
+}

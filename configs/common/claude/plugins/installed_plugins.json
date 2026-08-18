@@ -1,0 +1,94 @@
+{
+  "version": 2,
+  "plugins": {
+    "claude-mem@thedotmack": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/thedotmack/claude-mem/13.15.2",
+        "version": "13.15.2",
+        "installedAt": "2026-07-26T15:08:32.173Z",
+        "lastUpdated": "2026-08-17T19:35:59.026Z",
+        "gitCommitSha": "fae697a45d107aae567d605916391ab64d8ecae1"
+      }
+    ],
+    "ui-ux-pro-max@ui-ux-pro-max-skill": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.11.0",
+        "version": "2.11.0",
+        "installedAt": "2026-07-28T23:24:03.960Z",
+        "lastUpdated": "2026-07-28T23:24:03.960Z",
+        "gitCommitSha": "4857a2c5ef989794751a0f66b8545a4a49566286"
+      }
+    ],
+    "figma@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/figma/2.2.95",
+        "version": "2.2.95",
+        "installedAt": "2026-07-30T21:37:04.654Z",
+        "lastUpdated": "2026-08-14T13:39:58.507Z",
+        "gitCommitSha": "ef474d181a6eca44b37722f839e8a7eb58d644ec"
+      }
+    ],
+    "ponytail@ponytail": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/ponytail/ponytail/4.8.4",
+        "version": "4.8.4",
+        "installedAt": "2026-07-31T12:41:41.668Z",
+        "lastUpdated": "2026-07-31T12:41:41.668Z",
+        "gitCommitSha": "16f29800fd2681bdf24f3eb4ccffe38be3baec6b"
+      }
+    ],
+    "vercel@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/vercel/0.45.1",
+        "version": "0.45.1",
+        "installedAt": "2026-07-31T18:48:27.532Z",
+        "lastUpdated": "2026-07-31T18:48:27.532Z",
+        "gitCommitSha": "19606ac163fef2f8f967fa14ae13522d68efeccd"
+      }
+    ],
+    "rust-analyzer-lsp@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/rust-analyzer-lsp/1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-08-04T22:22:28.332Z",
+        "lastUpdated": "2026-08-04T22:22:28.332Z"
+      }
+    ],
+    "caveman@caveman": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/caveman/caveman/ec83e5bace4c",
+        "version": "ec83e5bace4c",
+        "installedAt": "2026-08-05T14:13:50.141Z",
+        "lastUpdated": "2026-08-05T14:13:50.141Z",
+        "gitCommitSha": "ec83e5bace4c20484d704dea21e12fc4eb94e9aa"
+      }
+    ],
+    "stripe@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/stripe/0.6.2",
+        "version": "0.6.2",
+        "installedAt": "2026-08-10T13:57:12.429Z",
+        "lastUpdated": "2026-08-18T11:37:28.677Z",
+        "gitCommitSha": "96cfe6bf30e661f674950cd8dbd47beaeadc5b6e"
+      }
+    ],
+    "21st@21st": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/21st/21st/0.4.0",
+        "version": "0.4.0",
+        "installedAt": "2026-08-10T14:17:48.861Z",
+        "lastUpdated": "2026-08-10T14:17:48.861Z",
+        "gitCommitSha": "887200a32152ad2a4af240d4ebb2f2da631f1c23"
+      }
+    ]
+  }
+}

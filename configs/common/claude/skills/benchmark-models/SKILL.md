@@ -1,0 +1,1 @@
+/home/noirelab/.claude/skills/gstack/benchmark-models/SKILL.md

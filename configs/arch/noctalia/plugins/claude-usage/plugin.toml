@@ -1,0 +1,116 @@
+# Claude Usage — shows the Claude Code 5-hour session limit and the weekly
+# limit in the bar at the same time, polling Anthropic's own OAuth usage
+# endpoint (the same one the `claude` CLI uses for `/status`).
+
+id = "noirelab/claude-usage"
+name = "Claude Usage"
+version = "1.1.0"
+plugin_api = 3
+author = "noirelab"
+license = "MIT"
+dependencies = []
+tags = ["monitor", "claude"]
+icon = "sparkles"
+description = "Claude Code 5-hour session and weekly usage limits, plus the DeepSeek account balance, side by side in the bar."
+
+[[setting]]
+key = "poll_seconds"
+type = "int"
+label_key = "settings.poll_seconds.label"
+description_key = "settings.poll_seconds.description"
+default = 90
+min = 20
+max = 900
+step = 10
+
+[[setting]]
+key = "credentials_path"
+type = "string"
+label_key = "settings.credentials_path.label"
+description_key = "settings.credentials_path.description"
+default = "~/.claude/.credentials.json"
+
+[[setting]]
+key = "warn_percent"
+type = "int"
+label_key = "settings.warn_percent.label"
+description_key = "settings.warn_percent.description"
+default = 90
+min = 1
+max = 100
+step = 1
+
+[[setting]]
+key = "deepseek_poll_seconds"
+type = "int"
+label_key = "settings.deepseek_poll_seconds.label"
+description_key = "settings.deepseek_poll_seconds.description"
+default = 300
+min = 60
+max = 3600
+step = 30
+
+[[setting]]
+key = "deepseek_api_key"
+type = "string"
+label_key = "settings.deepseek_api_key.label"
+description_key = "settings.deepseek_api_key.description"
+default = ""
+
+[[setting]]
+key = "deepseek_key_path"
+type = "file"
+extensions = [".json"]
+label_key = "settings.deepseek_key_path.label"
+description_key = "settings.deepseek_key_path.description"
+default = "~/.local/share/opencode/auth.json"
+
+[[setting]]
+key = "low_balance"
+type = "double"
+label_key = "settings.low_balance.label"
+description_key = "settings.low_balance.description"
+default = 0.5
+min = 0.0
+max = 100000.0
+
+[[service]]
+id = "usage_service"
+entry = "usage_service.luau"
+
+[[service]]
+id = "deepseek_service"
+entry = "deepseek_service.luau"
+
+[[widget]]
+id = "session"
+entry = "widget_session.luau"
+
+  [[widget.setting]]
+  key = "show_label"
+  type = "bool"
+  label_key = "settings.show_label.label"
+  description_key = "settings.show_label_session.description"
+  default = true
+
+[[widget]]
+id = "week"
+entry = "widget_week.luau"
+
+  [[widget.setting]]
+  key = "show_label"
+  type = "bool"
+  label_key = "settings.show_label.label"
+  description_key = "settings.show_label_week.description"
+  default = true
+
+[[widget]]
+id = "deepseek"
+entry = "widget_deepseek.luau"
+
+  [[widget.setting]]
+  key = "show_label"
+  type = "bool"
+  label_key = "settings.show_label.label"
+  description_key = "settings.show_label_deepseek.description"
+  default = true

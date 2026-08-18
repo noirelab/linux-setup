@@ -10,14 +10,14 @@
 hl.monitor({
     output    = MONITOR1,
     mode      = "preferred",
-    position  = "1920x0",
+    position  = "-1080x0",
     scale     = "1",
-    transform = 3, -- 3 = 270° (90° counter-clockwise, portrait)
+    transform = 1, -- 1 = 90° (portrait, flipped)
 })
 
 hl.monitor({
     output    = MONITOR2,
     mode      = "preferred",
-    position  = "0x800",
+    position  = "0x0",
     scale     = "1",
 })

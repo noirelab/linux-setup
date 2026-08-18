@@ -1,0 +1,1 @@
+/home/noirelab/.claude/skills/gstack/spec/SKILL.md

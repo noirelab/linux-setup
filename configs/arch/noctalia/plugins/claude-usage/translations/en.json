@@ -1,0 +1,44 @@
+{
+  "settings": {
+    "poll_seconds": {
+      "label": "Refresh interval (seconds)",
+      "description": "How often to poll the Claude usage endpoint. Minimum 20s."
+    },
+    "credentials_path": {
+      "label": "Credentials file",
+      "description": "Path to Claude Code's OAuth credentials file."
+    },
+    "warn_percent": {
+      "label": "Warning threshold (%)",
+      "description": "Usage percentage at which the widget switches to the warning color."
+    },
+    "deepseek_poll_seconds": {
+      "label": "DeepSeek refresh interval (seconds)",
+      "description": "How often to poll the DeepSeek balance endpoint. Minimum 60s."
+    },
+    "deepseek_api_key": {
+      "label": "DeepSeek API key",
+      "description": "Optional. Falls back to the DEEPSEEK_API_KEY environment variable, then to the key file below."
+    },
+    "deepseek_key_path": {
+      "label": "DeepSeek key file",
+      "description": "JSON file with a deepseek.key field, e.g. opencode's auth.json."
+    },
+    "low_balance": {
+      "label": "Low balance threshold",
+      "description": "Balance below this value switches the widget to the warning color."
+    },
+    "show_label": {
+      "label": "Show label"
+    },
+    "show_label_session": {
+      "description": "Prefix the percentage with \"5h\"."
+    },
+    "show_label_week": {
+      "description": "Prefix the percentage with \"7d\"."
+    },
+    "show_label_deepseek": {
+      "description": "Prefix the balance with \"DS\"."
+    }
+  }
+}
