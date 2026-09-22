@@ -100,6 +100,7 @@ The installer walks you through each section with y/n prompts.
 mint-setup/
 ├── setup.sh              # Interactive installer
 ├── save_profile.sh       # Back up live configs into the repo
+├── docs/                 # Troubleshooting / how-to notes
 └── configs/
     ├── common/           # Shared across all distros
     │   ├── .bashrc
@@ -295,3 +296,4 @@ system propagate into the repo and no build output is ever vendored.
 - **AUR helper** — `setup.sh` prefers `paru`, falls back to `yay`, or installs `yay` from source if neither exists.
 - **Conda** — installed to `~/miniconda3`, initializes in both bash and fish.
 - **Docker** — You'll need to log out/in after first install for `docker` group membership.
+- **Default browser** — Zen/Brave re-register themselves as the MIME default on install/update, and `~/.config/uwsm/env` is ignored because the session starts via `start-hyprland`, not UWSM. Fix + verification: `docs/firefox-default-browser.md`.
