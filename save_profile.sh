@@ -118,6 +118,7 @@ sync ~/.config/btop      "$CFG/common/btop"      && echo "    - btop saved."
 sync ~/.config/alacritty "$CFG/common/alacritty" && echo "    - Alacritty saved."
 sync ~/.config/herdr     "$CFG/common/herdr" \
     --exclude='*.log' --exclude='*.sock' --exclude='release-notes.json' --exclude='.plugins.lock' \
+    --exclude='session.json' \
     && echo "    - herdr config saved."
 sync ~/.config/opendeck  "$CFG/common/opendeck" --exclude=plugins/ && echo "    - OpenDeck profiles saved."
 [ -f ~/.codex/config.toml ] && mkdir -p "$CFG/common/codex" && cp ~/.codex/config.toml "$CFG/common/codex/config.toml" && echo "    - Codex config saved."
