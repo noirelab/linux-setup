@@ -1,0 +1,22 @@
+{
+  "app.name": "Notepad",
+  "widget.tooltip": "Notes",
+  "panel.title": "Notes",
+  "panel.new": "New note",
+  "panel.edit": "Edit",
+  "panel.delete": "Delete",
+  "panel.color": "Change color",
+  "panel.back": "Back",
+  "panel.close": "Close",
+  "panel.editing": "Editing…",
+  "panel.saved": "Saved",
+  "panel.counts": "{words} words · {chars} chars",
+  "panel.confirm_delete": "Delete?",
+  "panel.body_placeholder": "Write your note…",
+  "panel.untitled": "Untitled",
+  "panel.empty_body": "(empty)",
+  "panel.empty": "No notes yet. Click + to create one.",
+  "panel.err_data_dir": "Could not create the plugin data directory.",
+  "settings.seed_vimium.label": "Initial Vimium note",
+  "settings.seed_vimium.description": "Create a note with the Vimium shortcuts on first run."
+}

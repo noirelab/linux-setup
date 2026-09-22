@@ -112,14 +112,24 @@ mint-setup/
     │   │                 #   external-skills.json (gstack pin)
     │   ├── opencode/     # ~/.config/opencode — config, agents, plugins, commands, skills
     │   ├── opencode_home/# ~/.opencode — npm/ECC install root (skills, tools, prompts)
+    │   ├── vscode/       # VS Code User: settings, keybindings, mcp, snippets
+    │   ├── btop/         # btop.conf + theme
+    │   ├── alacritty/    # alacritty.toml + Noctalia theme
+    │   ├── opendeck/     # OpenDeck profiles + plugin settings (plugins/ excluded)
+    │   ├── herdr/        # config.toml
+    │   ├── codex/        # config.toml
+    │   ├── mimeapps.list # default-app associations (Firefox, streamdeck handlers)
+    │   ├── .gitconfig
     │   ├── systemd/      # ~/.config/systemd/user units (chico, awww-daemon, ydotool)
     │   ├── scripts/      # hand-written ~/.local/bin scripts (binaries excluded)
     │   └── wallpapers/
     ├── arch/             # Hyprland ecosystem
     │   ├── hypr/         # hyprland.lua + config/*.lua (the live Lua provider)
-    │   ├── noctalia/     # config.toml + plugins/claude-usage/
+    │   ├── noctalia/     # config.toml + plugins/ (claude-usage, notepad)
     │   ├── rofi/         # config.rasi
     │   ├── dunst/
+    │   ├── gtk-3.0/      # GTK settings + Noctalia CSS import
+    │   ├── uwsm/         # session env (BROWSER=firefox, ...)
     │   └── sddm/
     └── mint/             # Linux Mint
         └── opacify_windows.sh
@@ -253,15 +263,22 @@ system propagate into the repo and no build output is ever vendored.
 | `~/.opencode/` | `configs/common/opencode_home/` |
 | `~/.config/systemd/user/*.service` | `configs/common/systemd/` |
 | `~/.local/bin/` (text scripts only) | `configs/common/scripts/` |
+| `~/.config/{btop,alacritty,opendeck,herdr}/` | `configs/common/*/` |
+| `~/.config/Code/User/{settings,keybindings,mcp}.json` + `snippets/` | `configs/common/vscode/User/` |
+| `~/.gitconfig`, `~/.config/mimeapps.list` | `configs/common/` |
+| `~/.codex/config.toml` | `configs/common/codex/` |
 | `~/Pictures/wallpaper.jpg` | `configs/common/wallpapers/` |
 | `~/.config/hypr/` | `configs/arch/hypr/` (Arch only) |
 | `~/.config/noctalia/` | `configs/arch/noctalia/` (Arch only) |
-| `~/.config/{rofi,dunst}/` | `configs/arch/*/` (Arch only) |
+| `~/.config/{rofi,dunst,gtk-3.0,uwsm}/` | `configs/arch/*/` (Arch only) |
 | `/usr/share/sddm/themes/custom/` | `configs/arch/sddm/` (Arch only) |
 
 **Never saved:** `node_modules/`, `.venv/`, `ms-playwright/`, `__pycache__/`,
 `.git/`, `~/.claude/settings.local.json`, the Claude plugin cache, and the
-`gstack` / `seo` skills. Those are reinstalled, not versioned.
+`gstack` / `seo` skills. Those are reinstalled, not versioned. Also excluded as
+machine-local secrets: `~/.config/rclone/rclone.conf` (cloud credentials),
+`~/.config/gcloud/`, `~/.config/kdeconnect/`, `~/.codex/auth.json`, browser
+profiles, and `~/.config/opendeck/plugins/` (121M plugin cache).
 
 ## Workflow
 

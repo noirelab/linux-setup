@@ -1,0 +1,162 @@
+#!/usr/bin/env python3
+"""Remove um prefixo repetido do nome das subpastas.
+
+Uso:
+    strip-prefix <pasta> [prefixo] [--depth N] [--apply] [--undo]
+
+Sem --apply so mostra o que faria (dry-run). Sem [prefixo], detecta sozinho
+o prefixo comum mais repetido. Cada execucao com --apply grava um log dentro
+da pasta, permitindo desfazer com --undo.
+"""
+import json
+import os
+import sys
+from collections import Counter
+from pathlib import Path
+
+LOG_NAME = ".strip-prefix-log.json"
+TRIM = " -–—_.·|"
+
+
+def subdirs(root: Path, depth: int) -> list[Path]:
+    """Pastas exatamente no nivel `depth` abaixo de root."""
+    level = [root]
+    for _ in range(depth):
+        nxt = []
+        for d in level:
+            nxt += sorted(p for p in d.iterdir() if p.is_dir())
+        level = nxt
+    return level
+
+
+def trim_word(p: str) -> str:
+    """Corta o prefixo numa fronteira de palavra."""
+    if not p:
+        return ""
+    if p[-1] in TRIM:          # ja termina numa fronteira
+        return p.rstrip(TRIM).strip()
+    cut = max((p.rfind(c) for c in TRIM), default=-1)
+    return p[: cut + 1].rstrip(TRIM).strip() if cut >= 0 else p
+
+
+def candidates(names: list[str]) -> list[tuple[int, str, int]]:
+    """Prefixos candidatos, ordenados por caracteres removidos no total."""
+    ordered = sorted(names)
+    seen = set()
+    for a, b in zip(ordered, ordered[1:]):
+        c = trim_word(os.path.commonprefix([a, b]))
+        if len(c) >= 3:
+            seen.add(c)
+    scored = []
+    for c in seen:
+        n = sum(1 for x in names if x.startswith(c))
+        if n >= 2:
+            scored.append((len(c) * n, c, n))
+    return sorted(scored, reverse=True)
+
+
+def detect(names: list[str]) -> str:
+    got = candidates(names)
+    return got[0][1] if got else ""
+
+
+def undo(root: Path) -> int:
+    log = root / LOG_NAME
+    if not log.exists():
+        print(f"nada a desfazer: {log} nao existe", file=sys.stderr)
+        return 1
+    entries = json.loads(log.read_text())
+    for e in reversed(entries):
+        new, old = Path(e["new"]), Path(e["old"])
+        if new.exists() and not old.exists():
+            new.rename(old)
+            print(f"revertido: {new.name} -> {old.name}")
+    log.unlink()
+    return 0
+
+
+def main() -> int:
+    args = [a for a in sys.argv[1:]]
+    apply = "--apply" in args
+    do_undo = "--undo" in args
+    depth = 1
+    if "--depth" in args:
+        i = args.index("--depth")
+        depth = int(args[i + 1])
+        del args[i : i + 2]
+    args = [a for a in args if not a.startswith("--")]
+
+    if not args:
+        print(__doc__.strip(), file=sys.stderr)
+        return 1
+
+    root = Path(args[0]).expanduser().resolve()
+    if not root.is_dir():
+        print(f"nao e uma pasta: {root}", file=sys.stderr)
+        return 1
+    if do_undo:
+        return undo(root)
+
+    dirs = subdirs(root, depth)
+    if not dirs:
+        print(f"nenhuma subpasta no nivel {depth} de {root}", file=sys.stderr)
+        return 1
+
+    prefixes = args[1:] or ([detect([d.name for d in dirs])] if dirs else [])
+    prefixes = sorted((p for p in prefixes if p), key=len, reverse=True)
+    if not prefixes:
+        print("nenhum prefixo comum detectado; passe um explicitamente", file=sys.stderr)
+        return 1
+    print(f"pasta    : {root}")
+    for pre in prefixes:
+        print(f"prefixo  : {pre!r}")
+    print()
+
+    planned, skipped, taken = [], [], {d.name for d in dirs}
+    for d in dirs:
+        pre = next((p for p in prefixes if d.name.startswith(p)), None)
+        if pre is None:
+            continue
+        new_name = d.name[len(pre) :].lstrip(TRIM).strip()
+        if not new_name:
+            skipped.append((d.name, "ficaria com nome vazio"))
+            continue
+        if new_name in taken or (d.parent / new_name).exists():
+            skipped.append((d.name, f"colide com '{new_name}'"))
+            continue
+        taken.discard(d.name)
+        taken.add(new_name)
+        planned.append((d, d.parent / new_name))
+
+    for old, new in planned:
+        print(f"  {old.name}\n    -> {new.name}")
+    if skipped:
+        print("\npulados:")
+        for name, why in skipped:
+            print(f"  {name}  ({why})")
+
+    print(f"\n{len(planned)} renomeacoes, {len(skipped)} pulados, "
+          f"{len(dirs) - len(planned) - len(skipped)} sem o prefixo")
+
+    rest = [d.name for d in dirs if not any(d.name.startswith(p) for p in prefixes)]
+    for score, cand, n in candidates(rest)[:1]:
+        print(f"\nsobrou prefixo em {n} pastas: {cand!r}")
+        print(f"  para tirar tambem: strip-prefix '{root}' {' '.join(repr(p) for p in prefixes)} {cand!r}")
+
+    if not planned:
+        return 0
+    if not apply:
+        print("\ndry-run. adicione --apply para renomear de verdade.")
+        return 0
+
+    log = []
+    for old, new in planned:
+        old.rename(new)
+        log.append({"old": str(old), "new": str(new)})
+    (root / LOG_NAME).write_text(json.dumps(log, ensure_ascii=False, indent=1))
+    print(f"\nfeito. desfazer: strip-prefix '{root}' --undo")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

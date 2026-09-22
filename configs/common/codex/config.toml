@@ -1,0 +1,49 @@
+model = "gpt-5.6-luna"
+model_reasoning_effort = "high"
+[projects."/home/noirelab"]
+trust_level = "trusted"
+
+[projects."/home/noirelab/maegor"]
+trust_level = "trusted"
+
+[tui.model_availability_nux]
+"gpt-5.6-sol" = 3
+gpt-6-astra = 1
+
+[hooks.state]
+
+[hooks.state."/home/noirelab/.codex/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:3891be1567384f7556582eb0ef8242f92fb2f5e836e163a6bcfd6d9112375175"
+
+[hooks.state."/home/noirelab/.codex/hooks.json:permission_request:0:0"]
+trusted_hash = "sha256:d668e947a88620fa034968030f175bdcf37c46e58f3af134f696ecda7aadd684"
+
+[hooks.state."/home/noirelab/.codex/hooks.json:post_tool_use:1:0"]
+trusted_hash = "sha256:9dec35ec2f7add8525dbb6833b8570188b6df09c146a442547db9ef64f3cf18b"
+
+[hooks.state."/home/noirelab/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:3828fb4f31ae5995bb4b61c06a6b807a9d3febf6b24cc92de1c4c723d10e7afd"
+
+[hooks.state."/home/noirelab/.codex/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:d75e3d143f01c0f6933ec6f309036d1af31b660a90106922205d3cf6dfe0150a"
+
+[hooks.state."/home/noirelab/.codex/hooks.json:subagent_start:0:0"]
+trusted_hash = "sha256:e99397f7f46e326e0aff455bf2edb71d911ffe9a6cabe664bce34d7e0762328d"
+
+[hooks.state."/home/noirelab/.codex/hooks.json:subagent_stop:0:0"]
+trusted_hash = "sha256:81cd51b6e4714c928e99d4bd778b898304f9284c461a64b348a44aa69580ad21"
+
+[hooks.state."/home/noirelab/.codex/hooks.json:stop:1:0"]
+trusted_hash = "sha256:bab6597b116ff45ef3654c1a07958332166cec5f420de6c1282d07c59815f139"
+
+[hooks.state."/home/noirelab/.codex/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:115674dabdf2aa1f785578f705735257549255d125eb0a9a6b7de2f10c3700e6"
+
+[hooks.state."/home/noirelab/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:acb0bfa7fcbc5a96b293fd39c3607a03dc69f0f0ae47f4382c8483249ba3a4a3"
+
+[hooks.state."/home/noirelab/.codex/hooks.json:session_start:1:0"]
+trusted_hash = "sha256:e18ff5b11ef7ce4a7be341ad226d6b128b4e461e403bfc49987a24059668ca96"
+
+[features]
+hooks = true

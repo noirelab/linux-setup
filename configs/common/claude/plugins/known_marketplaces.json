@@ -5,7 +5,7 @@
       "repo": "thedotmack/claude-mem"
     },
     "installLocation": "/home/noirelab/.claude/plugins/marketplaces/thedotmack",
-    "lastUpdated": "2026-08-18T15:24:07.964Z",
+    "lastUpdated": "2026-09-22T23:22:04.937Z",
     "autoUpdate": true
   },
   "claude-market": {
@@ -30,7 +30,7 @@
       "repo": "anthropics/claude-plugins-official"
     },
     "installLocation": "/home/noirelab/.claude/plugins/marketplaces/claude-plugins-official",
-    "lastUpdated": "2026-08-18T15:24:06.298Z"
+    "lastUpdated": "2026-09-22T23:22:01.798Z"
   },
   "ponytail": {
     "source": {

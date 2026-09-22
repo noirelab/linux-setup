@@ -1,5 +1,5 @@
 {
-  "model": "opus",
+  "model": "opus[1m]",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -141,7 +141,8 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "caveman@caveman": true,
     "stripe@claude-plugins-official": true,
-    "21st@21st": true
+    "21st@21st": true,
+    "mattpocock-skills@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-market": {

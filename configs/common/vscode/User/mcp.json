@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "th0th": {
+      "command": "bunx",
+        "args": ["@th0th-ai/mcp-client"],
+      "env": {
+        "TH0TH_API_URL": "http://localhost:3333"
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Baixa uma pasta do Google Drive com rclone: mede o tamanho, pede confirmacao, depois copia.
+# Uso: gdrive-get "Pasta/Subpasta" [destino] [--shared]
+set -euo pipefail
+
+REMOTE=${GDRIVE_REMOTE:-appa}
+OPTS=()
+ARGS=()
+FOLDER_ID=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --shared) OPTS+=(--drive-shared-with-me) ;;
+    --id) FOLDER_ID=$2; shift ;;
+    --id=*) FOLDER_ID=${1#--id=} ;;
+    --pdf) OPTS+=(--include "*.pdf") ;;
+    --docs) OPTS+=(--include "*.{pdf,docx,doc,xlsx,xls,pptx,ppt,zip,rar,epub,txt,md}") ;;
+    --no-video) OPTS+=(--exclude "*.{mp4,mkv,avi,mov,wmv,flv,webm,m4v,ts}") ;;
+    --) shift; OPTS+=("$@"); break ;;
+    # aceita o link inteiro: .../folders/<ID>?usp=...
+    https://*) FOLDER_ID=$(printf '%s' "$1" | sed -E 's#.*/folders/([^/?#]+).*#\1#') ;;
+    *) ARGS+=("$1") ;;
+  esac
+  shift
+done
+
+if [ -n "$FOLDER_ID" ]; then
+  OPTS+=(--drive-root-folder-id "$FOLDER_ID")
+  SUB=${ARGS[0]:-}
+  SRC="$REMOTE:$SUB"
+  DEST=${ARGS[1]:-${ARGS[0]:-}}
+  DEST=${DEST:-"$HOME/Downloads/drive-$FOLDER_ID"}
+  case "$DEST" in /*|~*) ;; *) DEST="$HOME/Downloads/$(basename "$DEST")" ;; esac
+elif [ ${#ARGS[@]} -gt 0 ]; then
+  SRC="$REMOTE:${ARGS[0]}"
+  DEST=${ARGS[1]:-"$HOME/Downloads/$(basename "${ARGS[0]}")"}
+else
+  echo "uso: gdrive-get \"Pasta no Drive\" [destino] [--shared]" >&2
+  echo "     gdrive-get <link da pasta ou --id ID> [destino]" >&2
+  echo "filtros: --pdf | --docs | --no-video | -- <opcoes cruas do rclone>" >&2
+  echo "remotes disponiveis:" >&2
+  rclone listremotes >&2
+  exit 1
+fi
+
+echo "origem : $SRC"
+echo "destino: $DEST"
+echo
+echo "medindo (pode demorar em pastas grandes)..."
+rclone size "$SRC" "${OPTS[@]}"
+echo
+echo "espaco livre no destino:"
+df -h "$(dirname "$DEST")" | tail -1
+echo
+
+read -r -p "baixar? [s/N] " ok
+case "$ok" in
+  s|S|y|Y) ;;
+  *) echo "cancelado."; exit 0 ;;
+esac
+
+mkdir -p "$DEST"
+rclone copy "$SRC" "$DEST" "${OPTS[@]}" \
+  --progress --stats 5s \
+  --transfers 8 --checkers 16 \
+  --drive-chunk-size 128M \
+  --retries 20 --low-level-retries 50
+
+echo "pronto: $DEST"

@@ -1,0 +1,22 @@
+{
+  "app.name": "Notepad",
+  "widget.tooltip": "Notas",
+  "panel.title": "Notas",
+  "panel.new": "Nova nota",
+  "panel.edit": "Editar",
+  "panel.delete": "Apagar",
+  "panel.color": "Mudar cor",
+  "panel.back": "Voltar",
+  "panel.close": "Fechar",
+  "panel.editing": "Editando…",
+  "panel.saved": "Salvo",
+  "panel.counts": "{words} palavras · {chars} caracteres",
+  "panel.confirm_delete": "Apagar?",
+  "panel.body_placeholder": "Escreva sua nota…",
+  "panel.untitled": "Sem título",
+  "panel.empty_body": "(vazio)",
+  "panel.empty": "Nenhuma nota ainda. Clique em + para criar.",
+  "panel.err_data_dir": "Não foi possível criar o diretório de dados do plugin.",
+  "settings.seed_vimium.label": "Nota inicial do Vimium",
+  "settings.seed_vimium.description": "Cria uma nota com os atalhos do Vimium na primeira execução."
+}

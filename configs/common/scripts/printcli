@@ -1,0 +1,303 @@
+#!/bin/sh
+# printcli — tira uma "foto" de TODO o terminal (tela + histórico de rolagem)
+# e salva como UMA imagem PNG vertical de 1920px de largura, COM as cores.
+#
+#   printcli                 -> terminal-AAAAMMDD-HHMMSS.png na pasta atual
+#   printcli card03.png      -> nome escolhido
+#   printcli algum.log       -> converte um arquivo de texto em vez do terminal
+#   printcli --limpar        -> apaga tela + histórico (recomeça a captura do zero)
+#   printcli --sem-cor a.png -> versão preto e branco
+#
+# Requer kitty com remote control ligado (a mensagem de erro explica como).
+
+set -e
+
+if [ -n "${PRINTCLI_FONT:-}" ]; then
+  FONTE="$PRINTCLI_FONT"
+else
+  # mesma fonte do kitty: font_family da config, senão a monospace do sistema
+  FONTE="$(grep -hiE '^[[:space:]]*font_family[[:space:]]+' \
+             "$HOME/.config/kitty/kitty.conf" \
+             "$HOME"/.config/kitty/themes/*.conf 2>/dev/null \
+           | tail -1 | sed -E 's/^[[:space:]]*font_family[[:space:]]+//; s/[[:space:]]+$//')"
+  case "$FONTE" in
+    ''|monospace|auto|inherit) FONTE="$(fc-match -f '%{family[0]}' monospace)" ;;
+  esac
+fi
+TAMANHO="${PRINTCLI_SIZE:-19}"
+FUNDO="${PRINTCLI_BG:-#1f1f28}"
+TEXTO="${PRINTCLI_FG:-#dcd7ba}"
+LARGURA=1920
+MARGEM=20
+
+cor=1
+case "$1" in
+  --limpar|-l)
+    kitty @ clear-terminal --type=reset active 2>/dev/null \
+      || printf '\033[H\033[2J\033[3J'
+    echo "printcli: terminal e histórico limpos."
+    exit 0
+    ;;
+  --sem-cor|-s) cor=0; shift ;;
+esac
+
+arg="${1:-}"
+modo=arquivo
+tmp="$(mktemp)"
+pango="$(mktemp)"
+trap 'rm -f "$tmp" "$pango"' EXIT
+
+if [ -n "$arg" ] && [ -f "$arg" ]; then
+  saida="${2:-$(basename "${arg%.*}").png}"
+  cat "$arg" > "$tmp"
+else
+  saida="${arg:-terminal-$(date +%Y%m%d-%H%M%S).png}"
+  modo=terminal
+  if ! kitty @ get-text --extent all --ansi > "$tmp" 2>/dev/null; then
+    cat >&2 <<'AJUDA'
+printcli: não consegui ler o terminal.
+
+O kitty precisa estar com o controle remoto ligado. Faça uma vez:
+
+  echo 'allow_remote_control yes' >> ~/.config/kitty/kitty.conf
+  echo 'scrollback_lines 20000'   >> ~/.config/kitty/kitty.conf
+
+Depois FECHE e abra o kitty de novo (não basta recarregar).
+
+Fora do kitty, grave a sessão e converta o arquivo:
+
+  script -q ~/sessao.log
+  ... trabalhe ...
+  exit
+  printcli ~/sessao.log
+AJUDA
+    exit 1
+  fi
+fi
+
+PRINTCLI_FG="$TEXTO" PRINTCLI_BG="$FUNDO" PRINTCLI_COR="$cor" PRINTCLI_MODO="$modo" python3 - "$tmp" "$pango" <<'PYEOF'
+"""Converte texto com códigos ANSI em markup Pango colorido."""
+import os, re, sys
+
+PALETA = [
+    '#393836', '#c4746e', '#699469', '#c4b28a',
+    '#435965', '#a292a3', '#8ea49e', '#c8c093',
+    '#aca9a4', '#cc928e', '#72a072', '#d4c196',
+    '#698a9b', '#b4a7b5', '#96ada7', '#d5cd9d',
+]
+PADRAO = os.environ.get('PRINTCLI_FG', '#dcd7ba')
+FUNDO = os.environ.get('PRINTCLI_BG', '#1f1f28')
+CORTAR_CHAMADA = os.environ.get('PRINTCLI_MODO') == 'terminal'
+COLORIR = os.environ.get('PRINTCLI_COR', '1') == '1'
+
+SGR = re.compile(r'\x1b\[([0-9;:]*)m')
+OUTROS = re.compile(r'\x1b\][0-9]*;[^\x07\x1b]*(?:\x07|\x1b\\)|\x1b\[[0-9;?]*[a-lA-Z]|\x1b[()][A-Z0-9]|\x1b[=>]')
+
+
+def cor256(n):
+    if n < 16:
+        return PALETA[n]
+    if n < 232:
+        n -= 16
+        niveis = [0, 95, 135, 175, 215, 255]
+        return '#%02x%02x%02x' % (
+            niveis[n // 36], niveis[(n // 6) % 6], niveis[n % 6])
+    v = 8 + (n - 232) * 10
+    return '#%02x%02x%02x' % (v, v, v)
+
+
+def escapa(t):
+    return t.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+
+class Estado:
+    def __init__(self):
+        self.zerar()
+
+    def zerar(self):
+        self.fg = None
+        self.bg = None
+        self.negrito = False
+        self.italico = False
+        self.sublinhado = False
+        self.fraco = False
+        self.invertido = False
+
+    def aplica(self, params):
+        # os parâmetros vêm separados por ';', mas cores podem usar ':'
+        # (ex.: 38:2:131:148:150), o que quebra um int() direto
+        fatias = []
+        for parte in (params or '0').split(';'):
+            if ':' in parte:
+                fatias.append([self.numero(x) for x in parte.split(':')])
+            else:
+                fatias.append(self.numero(parte))
+
+        i = 0
+        while i < len(fatias):
+            atual = fatias[i]
+            if isinstance(atual, list):
+                self.subparametro(atual)
+            elif atual in (38, 48):
+                alvo = 'fg' if atual == 38 else 'bg'
+                seguinte = fatias[i + 1] if i + 1 < len(fatias) else None
+                if seguinte == 5 and i + 2 < len(fatias):
+                    setattr(self, alvo, cor256(fatias[i + 2]))
+                    i += 2
+                elif seguinte == 2 and i + 4 < len(fatias):
+                    r, g, b = fatias[i + 2:i + 5]
+                    setattr(self, alvo, '#%02x%02x%02x' % (r, g, b))
+                    i += 4
+            else:
+                self.codigo(atual)
+            i += 1
+
+    @staticmethod
+    def numero(texto):
+        try:
+            return int(texto)
+        except ValueError:
+            return 0
+
+    def subparametro(self, partes):
+        cabeca = partes[0]
+        if cabeca in (38, 48) and len(partes) >= 3:
+            alvo = 'fg' if cabeca == 38 else 'bg'
+            if partes[1] == 5:
+                setattr(self, alvo, cor256(partes[2]))
+            elif partes[1] == 2 and len(partes) >= 5:
+                r, g, b = partes[-3:]   # pula o campo de espaço de cor, se houver
+                setattr(self, alvo, '#%02x%02x%02x' % (r, g, b))
+        elif cabeca == 4:
+            self.sublinhado = partes[1] != 0 if len(partes) > 1 else True
+        elif cabeca != 58:   # 58 = cor do sublinhado, ignorado
+            self.codigo(cabeca)
+
+    def codigo(self, c):
+        if c == 0:
+            self.zerar()
+        elif c == 1:
+            self.negrito = True
+        elif c == 2:
+            self.fraco = True
+        elif c == 3:
+            self.italico = True
+        elif c == 4:
+            self.sublinhado = True
+        elif c == 7:
+            self.invertido = True
+        elif c in (21, 22):
+            self.negrito = self.fraco = False
+        elif c == 23:
+            self.italico = False
+        elif c == 24:
+            self.sublinhado = False
+        elif c == 27:
+            self.invertido = False
+        elif 30 <= c <= 37:
+            self.fg = PALETA[c - 30]
+        elif 90 <= c <= 97:
+            self.fg = PALETA[c - 90 + 8]
+        elif 40 <= c <= 47:
+            self.bg = PALETA[c - 40]
+        elif 100 <= c <= 107:
+            self.bg = PALETA[c - 100 + 8]
+        elif c == 39:
+            self.fg = None
+        elif c == 49:
+            self.bg = None
+
+    def envolve(self, texto):
+        # cada linha é fechada em si mesma: um <span> nunca atravessa \n,
+        # senão cortar linhas depois quebraria o markup
+        return '\n'.join(self.envolve_linha(p) for p in texto.split('\n'))
+
+    def envolve_linha(self, texto):
+        texto = escapa(texto)
+        if not COLORIR or not texto:
+            return texto
+        fg, bg = self.fg, self.bg
+        if self.invertido:
+            fg, bg = bg or FUNDO, fg or PADRAO
+        atributos = []
+        if fg:
+            atributos.append('foreground="%s"' % fg)
+        if bg:
+            atributos.append('background="%s"' % bg)
+        if self.negrito:
+            atributos.append('weight="bold"')
+        if self.fraco:
+            atributos.append('alpha="60%"')
+        if self.italico:
+            atributos.append('style="italic"')
+        if self.sublinhado:
+            atributos.append('underline="single"')
+        if not atributos:
+            return texto
+        return '<span %s>%s</span>' % (' '.join(atributos), texto)
+
+
+bruto = open(sys.argv[1], 'r', encoding='utf-8', errors='replace').read()
+bruto = bruto.replace('\r\n', '\n').replace('\r', '')
+
+estado = Estado()
+saida = []
+pos = 0
+for m in SGR.finditer(bruto):
+    saida.append(estado.envolve(OUTROS.sub('', bruto[pos:m.start()])))
+    estado.aplica(m.group(1))
+    pos = m.end()
+saida.append(estado.envolve(OUTROS.sub('', bruto[pos:])))
+
+linhas = ''.join(saida).split('\n')
+
+
+def texto_puro(linha):
+    return re.sub(r'<[^>]*>', '', linha)
+
+
+while linhas and not texto_puro(linhas[-1]).strip():
+    linhas.pop()
+
+# a última linha é o prompt onde o próprio printcli foi digitado: fora dela
+if CORTAR_CHAMADA:
+    vistas = 0
+    for i in range(len(linhas) - 1, -1, -1):
+        puro = texto_puro(linhas[i])
+        if re.search(r'\bprintcli\b', puro):
+            del linhas[i:]
+            # prompt de duas linhas: some também com a linha de caminho acima
+            for _ in range(2):
+                while linhas and not texto_puro(linhas[-1]).strip():
+                    linhas.pop()
+                if len(linhas) < 2:
+                    break
+                ultima = texto_puro(linhas[-1]).strip()
+                anterior = texto_puro(linhas[-2]).strip()
+                if anterior == '' and re.match(r'^[~/]\S*(\s.*)?$', ultima):
+                    linhas.pop()
+                else:
+                    break
+            break
+        if puro.strip():
+            vistas += 1
+            if vistas > 2:
+                break
+    while linhas and not texto_puro(linhas[-1]).strip():
+        linhas.pop()
+while linhas and not texto_puro(linhas[0]).strip():
+    linhas.pop(0)
+
+if not linhas:
+    sys.exit('printcli: nada para capturar (texto vazio)')
+
+open(sys.argv[2], 'w', encoding='utf-8').write('\n'.join(linhas))
+PYEOF
+
+magick -background "$FUNDO" -fill "$TEXTO" \
+  -font "$FONTE" -pointsize "$TAMANHO" \
+  -size "$((LARGURA - 2 * MARGEM))x" pango:@"$pango" \
+  -bordercolor "$FUNDO" -border "$MARGEM" \
+  "$saida"
+
+magick identify -format 'pronto: %f  %wx%h\n' "$saida"

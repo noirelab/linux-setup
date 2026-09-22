@@ -109,7 +109,33 @@ done
 sync ~/.local/bin/services "$CFG/common/scripts/services"
 echo "    - Custom scripts saved ($(ls "$CFG/common/scripts" | wc -l) entries)."
 
-# --- 6. OS SPECIFIC ---
+# --- 6. EXTRA APP CONFIGS (hand-tuned) ---
+echo "[+] Backing up extra app configs..."
+
+[ -f ~/.gitconfig ] && cp ~/.gitconfig "$CFG/common/.gitconfig" && echo "    - .gitconfig saved."
+[ -f ~/.config/mimeapps.list ] && cp ~/.config/mimeapps.list "$CFG/common/mimeapps.list" && echo "    - Default-app MIME associations saved."
+sync ~/.config/btop      "$CFG/common/btop"      && echo "    - btop saved."
+sync ~/.config/alacritty "$CFG/common/alacritty" && echo "    - Alacritty saved."
+sync ~/.config/herdr     "$CFG/common/herdr" \
+    --exclude='*.log' --exclude='*.sock' --exclude='release-notes.json' --exclude='.plugins.lock' \
+    && echo "    - herdr config saved."
+sync ~/.config/opendeck  "$CFG/common/opendeck" --exclude=plugins/ && echo "    - OpenDeck profiles saved."
+[ -f ~/.codex/config.toml ] && mkdir -p "$CFG/common/codex" && cp ~/.codex/config.toml "$CFG/common/codex/config.toml" && echo "    - Codex config saved."
+
+# VS Code: only the hand-edited files. The rest of User/ is machine state
+# (globalStorage, workspaceStorage, History) and would be huge.
+mkdir -p "$CFG/common/vscode/User/snippets"
+for f in settings.json keybindings.json mcp.json; do
+    [ -f ~/.config/Code/User/$f ] && cp ~/.config/Code/User/$f "$CFG/common/vscode/User/$f"
+done
+[ -d ~/.config/Code/User/snippets ] && cp ~/.config/Code/User/snippets/*.json "$CFG/common/vscode/User/snippets/" 2>/dev/null
+echo "    - VS Code (settings, keybindings, mcp, snippets) saved."
+
+# Deliberately NOT saved (machine-local secrets): ~/.config/rclone/rclone.conf
+# (cloud credentials), ~/.config/gcloud, ~/.config/kdeconnect, ~/.codex/auth.json,
+# browser profiles.
+
+# --- 7. OS SPECIFIC ---
 if [ -f /etc/arch-release ] || [ -f /etc/cachyos-release ]; then
     echo "[+] Arch/CachyOS Detected - Saving desktop specific files..."
 
@@ -120,6 +146,8 @@ if [ -f /etc/arch-release ] || [ -f /etc/cachyos-release ]; then
     sync ~/.config/noctalia "$CFG/arch/noctalia" && echo "    - Noctalia (config + plugins) saved."
     sync ~/.config/rofi     "$CFG/arch/rofi"     && echo "    - Rofi saved."
     sync ~/.config/dunst    "$CFG/arch/dunst"    && echo "    - Dunst saved."
+    sync ~/.config/gtk-3.0  "$CFG/arch/gtk-3.0"  && echo "    - GTK config saved."
+    sync ~/.config/uwsm     "$CFG/arch/uwsm"     && echo "    - UWSM env saved."
 
     if [ -d /usr/share/sddm/themes/custom ]; then
         mkdir -p "$CFG/arch/sddm"

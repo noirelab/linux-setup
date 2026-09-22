@@ -1,0 +1,7 @@
+[Unit]
+Description=Limpeza diaria das series (downloads importados e torrents antigos)
+
+[Service]
+Type=oneshot
+ExecStart=/home/noirelab/homelab/media/scripts/limpeza-series.sh
+User=noirelab

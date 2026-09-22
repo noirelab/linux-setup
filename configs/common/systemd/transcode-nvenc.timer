@@ -1,0 +1,9 @@
+[Unit]
+Description=Daily H.264 -> HEVC transcode
+
+[Timer]
+OnCalendar=*-*-* 04:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
