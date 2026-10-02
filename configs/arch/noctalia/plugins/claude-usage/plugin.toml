@@ -1,17 +1,19 @@
 # Claude Usage — shows the Claude Code 5-hour session limit and the weekly
 # limit in the bar at the same time, polling Anthropic's own OAuth usage
-# endpoint (the same one the `claude` CLI uses for `/status`).
+# endpoint (the same one the `claude` CLI uses for `/status`). Also shows
+# the Codex primary (5h) and secondary (weekly) rate-limit windows, polling
+# the same endpoint the Codex CLI uses for `/status`.
 
 id = "noirelab/claude-usage"
 name = "Claude Usage"
-version = "1.1.0"
+version = "1.2.1"
 plugin_api = 3
 author = "noirelab"
 license = "MIT"
 dependencies = []
-tags = ["monitor", "claude"]
+tags = ["monitor", "claude", "codex"]
 icon = "sparkles"
-description = "Claude Code 5-hour session and weekly usage limits, plus the DeepSeek account balance, side by side in the bar."
+description = "Claude Code and Codex 5-hour session and weekly usage limits, plus the DeepSeek account balance, side by side in the bar."
 
 [[setting]]
 key = "poll_seconds"
@@ -74,6 +76,24 @@ default = 0.5
 min = 0.0
 max = 100000.0
 
+[[setting]]
+key = "codex_poll_seconds"
+type = "int"
+label_key = "settings.codex_poll_seconds.label"
+description_key = "settings.codex_poll_seconds.description"
+default = 90
+min = 30
+max = 1800
+step = 10
+
+[[setting]]
+key = "codex_auth_path"
+type = "file"
+extensions = [".json"]
+label_key = "settings.codex_auth_path.label"
+description_key = "settings.codex_auth_path.description"
+default = "~/.codex/auth.json"
+
 [[service]]
 id = "usage_service"
 entry = "usage_service.luau"
@@ -81,6 +101,10 @@ entry = "usage_service.luau"
 [[service]]
 id = "deepseek_service"
 entry = "deepseek_service.luau"
+
+[[service]]
+id = "codex_service"
+entry = "codex_service.luau"
 
 [[widget]]
 id = "session"
@@ -108,9 +132,24 @@ entry = "widget_week.luau"
 id = "deepseek"
 entry = "widget_deepseek.luau"
 
+[[widget]]
+id = "codex_session"
+entry = "widget_codex_session.luau"
+
   [[widget.setting]]
   key = "show_label"
   type = "bool"
   label_key = "settings.show_label.label"
-  description_key = "settings.show_label_deepseek.description"
+  description_key = "settings.show_label_codex_session.description"
+  default = true
+
+[[widget]]
+id = "codex_week"
+entry = "widget_codex_week.luau"
+
+  [[widget.setting]]
+  key = "show_label"
+  type = "bool"
+  label_key = "settings.show_label.label"
+  description_key = "settings.show_label_codex_week.description"
   default = true

@@ -27,7 +27,7 @@ thickness = 35
     border = ""
     fill = "on_secondary"
     id = "g2"
-    members = [ "noirelab/claude-usage:session", "spacer_g2a", "noirelab/claude-usage:week", "spacer_g2b", "noirelab/claude-usage:deepseek" ]
+    members = [ "noirelab/claude-usage:deepseek", "spacer_g2c", "noirelab/claude-usage:codex_session", "spacer_g2d", "noirelab/claude-usage:codex_week" ]
     opacity = 1.0
     padding = 10.0
 
@@ -125,6 +125,14 @@ type = "spacer"
 length = 8
 
 [widget.spacer_g2b]
+type = "spacer"
+length = 8
+
+[widget.spacer_g2c]
+type = "spacer"
+length = 8
+
+[widget.spacer_g2d]
 type = "spacer"
 length = 8
 

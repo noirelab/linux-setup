@@ -28,6 +28,14 @@
       "label": "Limite de saldo baixo",
       "description": "Saldo abaixo deste valor muda o widget para a cor de alerta."
     },
+    "codex_poll_seconds": {
+      "label": "Intervalo de atualização Codex (segundos)",
+      "description": "Com que frequência consultar o uso do Codex. Mínimo de 30s."
+    },
+    "codex_auth_path": {
+      "label": "Arquivo de autenticação do Codex",
+      "description": "Arquivo auth.json do Codex com tokens.access_token e tokens.account_id."
+    },
     "show_label": {
       "label": "Mostrar rótulo"
     },
@@ -37,8 +45,11 @@
     "show_label_week": {
       "description": "Prefixa o percentual com \"7d\"."
     },
-    "show_label_deepseek": {
-      "description": "Prefixa o saldo com \"DS\"."
+    "show_label_codex_session": {
+      "description": "Prefixa o percentual com \"5h\"."
+    },
+    "show_label_codex_week": {
+      "description": "Prefixa o percentual com \"7d\"."
     }
   }
 }

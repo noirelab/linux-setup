@@ -28,6 +28,14 @@
       "label": "Low balance threshold",
       "description": "Balance below this value switches the widget to the warning color."
     },
+    "codex_poll_seconds": {
+      "label": "Codex refresh interval (seconds)",
+      "description": "How often to poll the Codex usage endpoint. Minimum 30s."
+    },
+    "codex_auth_path": {
+      "label": "Codex auth file",
+      "description": "Codex auth.json with tokens.access_token and tokens.account_id."
+    },
     "show_label": {
       "label": "Show label"
     },
@@ -37,8 +45,11 @@
     "show_label_week": {
       "description": "Prefix the percentage with \"7d\"."
     },
-    "show_label_deepseek": {
-      "description": "Prefix the balance with \"DS\"."
+    "show_label_codex_session": {
+      "description": "Prefix the percentage with \"5h\"."
+    },
+    "show_label_codex_week": {
+      "description": "Prefix the percentage with \"7d\"."
     }
   }
 }
