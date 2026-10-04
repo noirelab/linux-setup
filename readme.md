@@ -55,7 +55,7 @@ The installer walks you through each section with y/n prompts.
 | Component | Details |
 |---|---|
 | **Hyprland** | Dwindle layout, 7px gaps, 86%/70% active/inactive opacity, blur, shadow, smooth animations |
-| **Noctalia** | Current bar/shell — launcher, clock, capsule groups, plus the local `claude-usage` plugin (session / week / DeepSeek widgets) |
+| **Noctalia** | Current bar/shell — launcher, clock, capsule groups, plus the local usage plugin. Click its bar item to pin Claude or Codex session and weekly usage; DeepSeek polling is off by default. |
 | **awww** | Wallpaper daemon (`awww-daemon.service`), started from Hyprland autostart |
 | **Rofi** | App launcher with Catppuccin Mocha theme, JetBrains Mono font |
 | **Dunst** | Notification daemon |
@@ -305,7 +305,7 @@ profiles, and `~/.config/opendeck/plugins/` (121M plugin cache).
 - **Keyboard layout** — Set to Brazilian (`kb_layout = br`) in Hyprland. Edit `configs/arch/hypr/config/inputs.lua` to change.
 - **User paths** — Some configs reference `/home/noirelab/`. Adjust if your username differs.
 - **Noctalia replaced Waybar** — the bar/shell in use is Noctalia. The old Waybar config and its `cpu.sh` / `gpu.sh` / `window.sh` scripts are no longer versioned.
-- **Noctalia `claude-usage` plugin** — hand-written Luau widgets in `configs/arch/noctalia/plugins/claude-usage/` (session, week, DeepSeek). Not on any registry, so this repo is its only backup.
+- **Noctalia `claude-usage` plugin** — hand-written Luau plugin in `configs/arch/noctalia/plugins/claude-usage/`. The bar shows the pinned Claude or Codex provider, selected in the click menu and saved across restarts. DeepSeek is disabled by default. Not on any registry, so this repo is its only backup.
 - **Secrets are redacted** — `save_profile.sh` rewrites every MCP header value in `opencode.json` to `REPLACE_ME`. Fill them back in after running `setup.sh`. `~/.claude/settings.local.json` is never copied.
 - **Large skills are pinned, not vendored** — `gstack` is cloned from `github.com/garrytan/gstack` at the commit recorded in `configs/common/claude/external-skills.json`; the SEO skill comes from `install-opencode-seo.sh`.
 - **Claude plugins** — restored with `claude plugin marketplace add` + `claude plugin install`, driven by the two manifest JSONs. The ~770M plugin cache is re-downloaded, not stored.

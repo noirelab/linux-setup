@@ -27,7 +27,7 @@ thickness = 35
     border = ""
     fill = "on_secondary"
     id = "g2"
-    members = [ "noirelab/claude-usage:deepseek", "spacer_g2c", "noirelab/claude-usage:codex_session", "spacer_g2d", "noirelab/claude-usage:codex_week" ]
+    members = [ "noirelab/claude-usage:pinned" ]
     opacity = 1.0
     padding = 10.0
 
@@ -135,6 +135,9 @@ length = 8
 [widget.spacer_g2d]
 type = "spacer"
 length = 8
+
+[widget."noirelab/claude-usage:pinned"]
+type = "noirelab/claude-usage:pinned"
 
 [widget.temp]
 show_label = false

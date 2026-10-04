@@ -1,5 +1,9 @@
 {
   "settings": {
+    "enable_deepseek": {
+      "label": "Enable DeepSeek",
+      "description": "Poll the DeepSeek balance. Disabled by default."
+    },
     "poll_seconds": {
       "label": "Refresh interval (seconds)",
       "description": "How often to poll the Claude usage endpoint. Minimum 20s."

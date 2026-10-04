@@ -6,14 +6,21 @@
 
 id = "noirelab/claude-usage"
 name = "Claude Usage"
-version = "1.2.1"
-plugin_api = 3
+version = "1.3.0"
+plugin_api = 21
 author = "noirelab"
 license = "MIT"
 dependencies = []
 tags = ["monitor", "claude", "codex"]
 icon = "sparkles"
-description = "Claude Code and Codex 5-hour session and weekly usage limits, plus the DeepSeek account balance, side by side in the bar."
+description = "Pin Claude or Codex usage to the bar and switch providers from a menu."
+
+[[setting]]
+key = "enable_deepseek"
+type = "bool"
+label_key = "settings.enable_deepseek.label"
+description_key = "settings.enable_deepseek.description"
+default = false
 
 [[setting]]
 key = "poll_seconds"
@@ -105,6 +112,20 @@ entry = "deepseek_service.luau"
 [[service]]
 id = "codex_service"
 entry = "codex_service.luau"
+
+[[widget]]
+id = "pinned"
+entry = "widget_pinned.luau"
+
+[[panel]]
+id = "picker"
+entry = "panel_picker.luau"
+width = 330
+height = 270
+placement = "floating"
+position = "auto"
+open_near_click = true
+dismiss_on_outside_click = true
 
 [[widget]]
 id = "session"

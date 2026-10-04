@@ -97,6 +97,11 @@ local function handle429()
 end
 
 local function poll()
+  if noctalia.getConfig("enable_deepseek") ~= true then
+    backoffSec = 0
+    noctalia.state.set(STATE_KEY, { disabled = true })
+    return
+  end
   local key, keyErr = readApiKey()
   if not key then
     setPermanentError(keyErr)

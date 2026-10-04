@@ -1,5 +1,9 @@
 {
   "settings": {
+    "enable_deepseek": {
+      "label": "Ativar DeepSeek",
+      "description": "Consulta o saldo do DeepSeek. Desativado por padrão."
+    },
     "poll_seconds": {
       "label": "Intervalo de atualização (segundos)",
       "description": "Com que frequência consultar o uso do Claude. Mínimo de 20s."
