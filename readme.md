@@ -20,6 +20,18 @@ chmod +x setup.sh
 git add -A && git commit -m "update configs"
 ```
 
+**Repair a paired JBL Go 5 with missing PipeWire audio:**
+
+```bash
+./fix-bluetooth-audio.sh              # finds the paired JBL Go 5
+./fix-bluetooth-audio.sh AA:BB:CC:DD:EE:FF  # choose a device by MAC
+```
+
+The script reconnects the speaker to renegotiate its audio profile, sets its
+PipeWire sink as the default output, and retries after restarting WirePlumber
+if the sink does not appear. It needs `bluetoothctl`, `wpctl`, and
+`systemctl` in the active desktop session.
+
 ## Supported Systems
 
 | OS | Desktop | Details |
@@ -99,6 +111,7 @@ The installer walks you through each section with y/n prompts.
 ```
 mint-setup/
 ├── setup.sh              # Interactive installer
+├── fix-bluetooth-audio.sh # Reconnect a JBL Go 5 and restore its audio output
 ├── save_profile.sh       # Back up live configs into the repo
 ├── docs/                 # Troubleshooting / how-to notes
 └── configs/
