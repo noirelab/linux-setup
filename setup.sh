@@ -220,12 +220,12 @@ if confirm "Install Applications (Code, Spotify, Discord, Firefox)?"; then
     echo -e "${GREEN}[+] Installing Apps...${NC}"
 
     if [ "$DISTRO" == "arch" ]; then
-        sudo pacman -S --noconfirm firefox discord nemo
+        sudo pacman -S --noconfirm firefox discord nemo nemo-fileroller file-roller
         install_aur "visual-studio-code-bin"
         install_aur "spotify"
     else
         # Debian/Ubuntu Logic
-        sudo apt install -y firefox nemo
+        sudo apt install -y firefox nemo nemo-fileroller file-roller
 
         # VS Code Repo
         if ! command -v code &> /dev/null; then

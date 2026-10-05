@@ -90,7 +90,7 @@ The installer walks you through each section with y/n prompts.
 | Discord | pacman | .deb download |
 | VS Code | AUR (yay/paru) | Microsoft repo |
 | Spotify | AUR (yay/paru) | Spotify repo |
-| Nemo | pacman | apt |
+| Nemo + archive support (`nemo-fileroller`, `file-roller`) | pacman | apt |
 | btop | included with hyprland (Arch) or gnome shortcuts (Mint) | apt |
 
 ### Dev Tools
@@ -246,7 +246,7 @@ Interactive installer. Detects your OS and offers each section:
 1. System update + build tools
 2. Gaming packages
 3. Terminal & Shell (Kitty, Nerd Fonts, Fish, OpenCode, Tmux)
-4. Applications (Firefox, Discord, VS Code, Spotify, Nemo)
+4. Applications (Firefox, Discord, VS Code, Spotify, Nemo + archive support)
 5. OpenCode AI assistant
 6. OpenCode SEO Skills (25 SEO sub-skills with Python runtime)
 7. Claude Code (skills, hooks, agents, commands, settings + plugin restore, optional gstack clone)
