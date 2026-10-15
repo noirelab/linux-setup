@@ -1,1 +1,9 @@
 @import url("noctalia.css");
+
+/* Nemo, Nava-style: darker airy sidebar, quiet ice selection.
+   The places sidebar is a GtkTreeView, so rows cannot take border-radius. */
+.nemo-window .sidebar { background-color: alpha(#000000, 0.25); }
+.nemo-window .sidebar treeview.view { background-color: transparent; -GtkTreeView-vertical-separator: 8px; }
+.nemo-window .sidebar treeview.view:selected { background-color: alpha(#a9c4ef, 0.18); color: #f2f2f5; }
+.nemo-window iconview:selected { background-color: alpha(#a9c4ef, 0.22); border-radius: 8px; }
+.nemo-window .path-bar button { border-radius: 8px; }

@@ -363,6 +363,20 @@ if [ "$DISTRO" == "arch" ]; then
         sudo pacman -S --noconfirm inter-font
         gsettings set org.gnome.desktop.interface font-name 'Inter 10.5' 2>/dev/null || true
 
+        # macOS-style icons (WhiteSur dark) and cursor, installed per user
+        if [ ! -d ~/.local/share/icons/WhiteSur-dark ]; then
+            git clone -q --depth 1 https://github.com/vinceliuice/WhiteSur-icon-theme.git /tmp/whitesur-icons
+            bash /tmp/whitesur-icons/install.sh -d ~/.local/share/icons -t default
+        fi
+        if [ ! -d ~/.local/share/icons/macOS ]; then
+            mkdir -p /tmp/apple-cursor
+            curl -fsSL https://github.com/ful1e5/apple_cursor/releases/download/v2.0.1/macOS.tar.xz | tar -xJ -C /tmp/apple-cursor
+            cp -a /tmp/apple-cursor/macOS ~/.local/share/icons/
+        fi
+        gsettings set org.gnome.desktop.interface icon-theme 'WhiteSur-dark' 2>/dev/null || true
+        gsettings set org.gnome.desktop.interface cursor-theme 'macOS' 2>/dev/null || true
+        gsettings set org.nemo.window-state start-with-menu-bar false 2>/dev/null || true
+
         # Copy Configs
         mkdir -p ~/.config/hypr ~/.config/noctalia ~/.config/rofi ~/.config/dunst
         cp -r "$SCRIPT_DIR/configs/arch/hypr/"*     ~/.config/hypr/ 2>/dev/null
