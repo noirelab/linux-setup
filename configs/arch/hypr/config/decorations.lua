@@ -39,9 +39,13 @@ hl.config({
         inactive_opacity = 0.80,
         fullscreen_opacity = 1,
         blur = {
-            size = 8,
+            -- milky glass: wide blur, a little grain and lift so dark panes read as frosted
+            size = 10,
             passes = 3,
-            vibrancy = 0.2,
+            noise = 0.03,
+            brightness = 0.9,
+            contrast = 0.9,
+            vibrancy = 0.25,
             special = true,
         },
         shadow = {
