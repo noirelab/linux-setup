@@ -2,17 +2,18 @@
 
 hl.config({
     general = {
-        gaps_in = 3,
-        gaps_out = 8,
-        border_size = 2,
+        gaps_in = 5,
+        gaps_out = 12,
+        border_size = 1,
         extend_border_grab_area = 10,
         resize_on_border = true,
         col = {
+            -- Nava pastels: ice to lilac on the focused window, a faint hairline elsewhere
             active_border = {
-                colors = { CACHYLGREEN, CACHYDGREEN },
+                colors = { "rgba(a9c4efcc)", "rgba(c5b3f0cc)" },
                 angle = 45,
             },
-            inactive_border = CACHYGRAY,
+            inactive_border = "rgba(ffffff1a)",
         },
     },
     group = {
@@ -33,14 +34,21 @@ hl.config({
     },
     decoration = {
         dim_special = 0.3,
-        rounding = 10,
+        rounding = 16,
         active_opacity = 0.80,
         inactive_opacity = 0.80,
         fullscreen_opacity = 1,
         blur = {
-            size = 5,
-            passes = 4,
+            size = 8,
+            passes = 3,
+            vibrancy = 0.2,
             special = true,
+        },
+        shadow = {
+            enabled = true,
+            range = 28,
+            render_power = 3,
+            color = "rgba(00000066)",
         },
     },
 })
