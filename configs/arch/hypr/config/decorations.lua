@@ -4,16 +4,16 @@ hl.config({
     general = {
         gaps_in = 5,
         gaps_out = 12,
-        border_size = 1,
+        border_size = 2,
         extend_border_grab_area = 10,
         resize_on_border = true,
         col = {
             -- Nava pastels: ice to lilac on the focused window, a faint hairline elsewhere
             active_border = {
-                colors = { "rgba(a9c4efcc)", "rgba(c5b3f0cc)" },
+                colors = { "rgba(a9c4efff)", "rgba(c5b3f0ff)" },
                 angle = 45,
             },
-            inactive_border = "rgba(ffffff1a)",
+            inactive_border = "rgba(ffffff2e)",
         },
     },
     group = {
