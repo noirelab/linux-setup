@@ -117,9 +117,6 @@ card_borders = false
 [shell.launcher]
 categories = false
 show_app_origin_indicator = false
-
-[shell.window_switcher]
-mru = true
 [system.monitor]
 gpu_poll_seconds = 2
 
