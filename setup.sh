@@ -373,7 +373,13 @@ if [ "$DISTRO" == "arch" ]; then
             curl -fsSL https://github.com/ful1e5/apple_cursor/releases/download/v2.0.1/macOS.tar.xz | tar -xJ -C /tmp/apple-cursor
             cp -a /tmp/apple-cursor/macOS ~/.local/share/icons/
         fi
-        gsettings set org.gnome.desktop.interface icon-theme 'WhiteSur-dark' 2>/dev/null || true
+        # Obsidiana: WhiteSur folders and file types only, so apps keep their own icons
+        O=~/.local/share/icons/Obsidiana; W=~/.local/share/icons/WhiteSur-dark
+        mkdir -p "$O/apps/scalable"
+        cp "$SCRIPT_DIR/configs/common/icons/Obsidiana/index.theme" "$O/"
+        for d in places places@2x mimes mimes@2x; do ln -sfn "$(realpath "$W/$d")" "$O/$d"; done
+        for n in nemo system-file-manager org.gnome.Nautilus; do ln -sfn "$(realpath "$W/places/scalable/folder.svg")" "$O/apps/scalable/$n.svg"; done
+        gsettings set org.gnome.desktop.interface icon-theme 'Obsidiana' 2>/dev/null || true
         gsettings set org.gnome.desktop.interface cursor-theme 'macOS' 2>/dev/null || true
         gsettings set org.nemo.window-state start-with-menu-bar false 2>/dev/null || true
 
