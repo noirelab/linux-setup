@@ -352,7 +352,7 @@ if [ "$DISTRO" == "arch" ]; then
         echo -e "${GREEN}[+] Copying Arch Configs...${NC}"
 
         # Install Hyprland Basics if missing
-        sudo pacman -S --noconfirm hyprland rofi dunst polkit-kde-agent hyprlock hypridle hyprpicker
+        sudo pacman -S --noconfirm hyprland rofi dunst polkit-kde-agent hyprlock hypridle hyprpicker socat
         sudo pacman -S --noconfirm pipewire pipewire-pulse pipewire-alsa wireplumber nvtop btop wl-clipboard ydotool
 
         # Noctalia is the current bar/shell (Waybar is kept only as a fallback)
