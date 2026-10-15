@@ -2,12 +2,12 @@
 ui_scale = 1.20
 
 [bar.default]
-background_opacity = 0.35
+background_opacity = 0.0
 border = "outline"
 border_width = 0.0
-center = ["workspaces","active_window"]
+center = ["workspaces", "active_window"]
 concave_edge_corners = false
-end = ["media","noirelab/claude-usage:pinned","notifications","clock"]
+end = ["media", "group:time"]
 margin_edge = 0
 margin_ends = 0
 radius_bottom_left = 0
@@ -15,27 +15,31 @@ radius_bottom_right = 0
 radius_top_left = 0
 radius_top_right = 0
 scale = 1.0
-start = ["network","volume","tray"]
-thickness = 30
-padding = 16
+start = ["group:status"]
+thickness = 34
+padding = 10
 shadow = false
 font_weight = 500
-    [[bar.default.capsule_group]]
-    border = ""
-    fill = "on_secondary"
-    id = "g1"
-    members = [ "temp", "sysmon_2", "sysmon_3" ]
-    opacity = 1.0
-    padding = 6.0
+widget_spacing = 10
+[[bar.default.capsule_group]]
+id = "status"
+members = ["network", "volume", "notifications", "tray"]
+fill = "on_surface"
+opacity = 0.1
+border = "outline"
+foreground = "on_surface"
+padding = 12
+widget_spacing = 14
 
-    [[bar.default.capsule_group]]
-    border = ""
-    fill = "on_secondary"
-    id = "g2"
-    members = [ "noirelab/claude-usage:pinned" ]
-    opacity = 1.0
-    padding = 10.0
-
+[[bar.default.capsule_group]]
+id = "time"
+members = ["noirelab/claude-usage:pinned", "clock"]
+fill = "on_surface"
+opacity = 0.1
+border = "outline"
+foreground = "on_surface"
+padding = 12
+widget_spacing = 14
 [shell]
 corner_radius_scale = 1.6
 clipboard_image_action_command = "satty -f -"
@@ -111,10 +115,7 @@ wallpaper_scheme = "m3-tonal-spot"
     builtin_ids = [ "btop", "gtk3", "gtk4", "kcolorscheme", "kitty", "qt", "alacritty" ]
 
 [widget.clock]
-color = "on_surface"
 format = "{:%H:%M   %a, %d %b}"
-capsule = true
-capsule_fill = "surface_variant"
 [widget.launcher]
 color = "secondary"
 
@@ -126,11 +127,9 @@ hide_when_no_media = true
 title_scroll = "on_hover"
 
 [widget.network]
-color = "on_surface"
 show_label = false
 
 [widget.notifications]
-color = "on_surface"
 
 [widget.session]
 color = "error"
@@ -170,21 +169,24 @@ stat = "ram_used"
 type = "sysmon"
 
 [widget.tray]
-capsule = false
-capsule_fill = "on_secondary"
 
 [widget.volume]
-color = "on_surface"
 show_label = false
 
 [widget.workspaces]
-active_pill_size = 2.5
-capsule = false
-capsule_fill = "on_primary"
-inactive_pill_size = 1.0
-pill_scale = 0.80
 show_labels = false
+style = "regular"
+active_pill_size = 1.0
+inactive_pill_size = 1.0
+pill_scale = 0.6
+focused_color = "secondary"
+occupied_color = "#8a8d99"
+empty_color = "#4a4d5a"
+change_color_on_hover = false
 
+[widget.active_window]
+display = "text_only"
+max_length = 360
 [notification]
 position = "top_right"
 offset_x = 14
