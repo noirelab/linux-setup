@@ -24,19 +24,19 @@ widget_spacing = 10
 [[bar.default.capsule_group]]
 id = "ws"
 members = ["workspaces"]
-fill = "on_surface"
+fill = "#ffffff"
 opacity = 0.1
-border = "outline"
-foreground = "on_surface"
+border = "#4a4d58"
+foreground = "#f2f2f5"
 padding = 12
 
 [[bar.default.capsule_group]]
 id = "status"
 members = ["network", "volume", "notifications", "tray"]
-fill = "on_surface"
+fill = "#ffffff"
 opacity = 0.1
-border = "outline"
-foreground = "on_surface"
+border = "#4a4d58"
+foreground = "#f2f2f5"
 padding = 12
 widget_spacing = 14
 
@@ -46,10 +46,10 @@ widget_spacing = 14
 [[bar.default.capsule_group]]
 id = "time"
 members = ["noirelab/claude-usage:pinned", "clock"]
-fill = "on_surface"
+fill = "#ffffff"
 opacity = 0.1
-border = "outline"
-foreground = "on_surface"
+border = "#4a4d58"
+foreground = "#f2f2f5"
 padding = 12
 widget_spacing = 14
 [shell]
@@ -137,6 +137,7 @@ type = "noirelab/notepad:notes"
 [widget.media]
 hide_when_no_media = true
 title_scroll = "on_hover"
+color = "#f2f2f5"
 
 [widget.network]
 show_label = false
@@ -199,6 +200,7 @@ change_color_on_hover = false
 [widget.active_window]
 display = "text_only"
 max_length = 360
+color = "#f2f2f5"
 [notification]
 position = "top_right"
 offset_x = 14
