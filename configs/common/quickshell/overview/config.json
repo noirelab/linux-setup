@@ -1,0 +1,99 @@
+{
+  "appearance": {
+    "colorSource": "matugen",
+    "caelestia": {
+      "autoRefresh": true,
+      "refreshInterval": 2000,
+      "accentProfile": "vibrant"
+    },
+    "rounding": {
+      "unsharpen": 2,
+      "verysmall": 8,
+      "small": 12,
+      "normal": 18,
+      "large": 24,
+      "full": 9999,
+      "screenRounding": 23,
+      "windowRounding": 16
+    },
+    "font": {
+      "family": {
+        "main": "Inter",
+        "title": "Inter",
+        "expressive": "Inter"
+      },
+      "pixelSize": {
+        "smaller": 12,
+        "small": 15,
+        "normal": 16,
+        "larger": 19,
+        "huge": 22
+      }
+    },
+    "animation": {
+      "duration": {
+        "elementMove": 500,
+        "elementMoveEnter": 400,
+        "elementMoveFast": 200
+      }
+    },
+    "sizes": {
+      "elevationMargin": 10
+    }
+  },
+  "overview": {
+    "rows": 2,
+    "columns": 5,
+    "scale": 0.18,
+    "enable": true,
+    "hideEmptyRows": true,
+    "closeOnFocusLoss": true,
+    "useWorkspaceMap": false,
+    "workspaceMap": [
+      0,
+      10
+    ],
+    "orderRightLeft": false,
+    "orderBottomUp": false,
+    "previewsEnabled": true,
+    "previewMode": "live",
+    "includeInactiveMonitorPreviews": true,
+    "previewRecaptureDelayMs": 60,
+    "showSpecialWorkspaces": true,
+    "specialWorkspaces": [],
+    "specialWorkspaceColumns": 5,
+    "emptyWorkspaceWallpaper": "",
+    "specialEmptyWorkspaceWallpaper": "",
+    "effects": {
+      "enableBackdrop": true,
+      "backdropOpacity": 0.55,
+      "panelOpacity": 0.85,
+      "workspaceOpacity": 0.9,
+      "emptyWorkspaceWallpaperOverlayOpacity": 0.18,
+      "windowOverlayOpacity": 0.22,
+      "enableBlur": true,
+      "glassMode": true,
+      "glassTintStrength": 0.2,
+      "glassBorderOpacity": 0.35,
+      "glassShineOpacity": 0.08
+    },
+    "workspaceSpacing": 5,
+    "backgroundPadding": 10,
+    "workspaceNumberBaseSize": 250
+  },
+  "position": {
+    "topMargin": 100
+  },
+  "windowPreview": {
+    "showIcons": true,
+    "iconToWindowRatio": 0.25,
+    "iconToWindowRatioCompact": 0.45,
+    "xwaylandIndicatorToIconRatio": 0.35,
+    "inactiveMonitorOpacity": 0.4,
+    "cropToFill": false
+  },
+  "hacks": {
+    "arbitraryRaceConditionDelay": 150,
+    "hyprlandEventDebounceMs": 40
+  }
+}

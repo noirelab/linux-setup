@@ -359,6 +359,14 @@ if [ "$DISTRO" == "arch" ]; then
         install_aur "noctalia"
         install_aur "awww"
 
+        # Workspace overview (live previews), opened by tapping SUPER
+        sudo pacman -S --noconfirm quickshell
+        if [ ! -d ~/.config/quickshell/overview ]; then
+            git clone -q --depth 1 https://github.com/Shanu-Kumawat/quickshell-overview ~/.config/quickshell/overview
+        fi
+        cp "$SCRIPT_DIR/configs/common/quickshell/overview/config.json" ~/.config/quickshell/overview/
+        cp "$SCRIPT_DIR/configs/common/quickshell/overview/Appearance.colors.qml" ~/.config/quickshell/overview/common/
+
         # Inter is the UI font for Noctalia and GTK
         sudo pacman -S --noconfirm inter-font
         gsettings set org.gnome.desktop.interface font-name 'Inter 10.5' 2>/dev/null || true
