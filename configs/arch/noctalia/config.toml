@@ -5,9 +5,9 @@ ui_scale = 1.20
 background_opacity = 0.0
 border = "outline"
 border_width = 0.0
-center = ["workspaces", "active_window"]
+center = []
 concave_edge_corners = false
-end = ["media", "group:time"]
+end = ["media", "group:status", "group:time"]
 margin_edge = 0
 margin_ends = 0
 radius_bottom_left = 0
@@ -15,12 +15,21 @@ radius_bottom_right = 0
 radius_top_left = 0
 radius_top_right = 0
 scale = 1.0
-start = ["group:status"]
+start = ["group:ws", "active_window"]
 thickness = 34
 padding = 10
 shadow = false
 font_weight = 500
 widget_spacing = 10
+[[bar.default.capsule_group]]
+id = "ws"
+members = ["workspaces"]
+fill = "on_surface"
+opacity = 0.1
+border = "outline"
+foreground = "on_surface"
+padding = 12
+
 [[bar.default.capsule_group]]
 id = "status"
 members = ["network", "volume", "notifications", "tray"]
@@ -30,6 +39,9 @@ border = "outline"
 foreground = "on_surface"
 padding = 12
 widget_spacing = 14
+
+
+
 
 [[bar.default.capsule_group]]
 id = "time"
@@ -176,12 +188,12 @@ show_label = false
 [widget.workspaces]
 show_labels = false
 style = "regular"
-active_pill_size = 1.0
+active_pill_size = 2.4
 inactive_pill_size = 1.0
-pill_scale = 0.6
+pill_scale = 0.75
 focused_color = "secondary"
-occupied_color = "#8a8d99"
-empty_color = "#4a4d5a"
+occupied_color = "#b4b7c2"
+empty_color = "#80838f"
 change_color_on_hover = false
 
 [widget.active_window]
