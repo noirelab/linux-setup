@@ -233,7 +233,152 @@ show_instance_count = false
 
 [lockscreen]
 blurred_desktop = true
-blur_intensity = 0.7
-tint_intensity = 0.35
+blur_intensity = 0.85
+tint_intensity = 0.25
+
 [osd]
 background_opacity = 0.7
+[lockscreen_widgets]
+enabled = true
+schema_version = 2
+widget_order = ["lockscreen-clock@DP-1", "lockscreen-date@DP-1", "lockscreen-login-box@DP-1", "lockscreen-clock@HDMI-A-1", "lockscreen-date@HDMI-A-1", "lockscreen-login-box@HDMI-A-1"]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
+    box_height = 120.0
+    box_width = 440.0
+    cx = 960.0
+    cy = 885.5999999999999
+    output = "DP-1"
+    placement_height = 1080.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
+        background_color = "#ffffff"
+        background_opacity = 0.1
+        background_radius = 28.0
+        center_password_text = true
+        input_opacity = 0.9
+        input_radius = 18.0
+        layout = "compact"
+        show_caps_lock = true
+        show_keyboard_layout = false
+        show_login_button = false
+        show_media = false
+        show_session_buttons = false
+        show_unlock_hint = true
+        show_weather = false
+
+    [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1"]
+    box_height = 120.0
+    box_width = 440.0
+    cx = 540.0
+    cy = 1574.3999999999999
+    output = "HDMI-A-1"
+    placement_height = 1920.0
+    placement_width = 1080.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1".settings]
+        background_color = "#ffffff"
+        background_opacity = 0.1
+        background_radius = 28.0
+        center_password_text = true
+        input_opacity = 0.9
+        input_radius = 18.0
+        layout = "compact"
+        show_caps_lock = true
+        show_keyboard_layout = false
+        show_login_button = false
+        show_media = false
+        show_session_buttons = false
+        show_unlock_hint = true
+        show_weather = false
+
+
+[lockscreen_widgets.widget."lockscreen-clock@DP-1"]
+type = "clock"
+output = "DP-1"
+cx = 960.0
+cy = 324.0
+box_width = 620.0
+box_height = 200.0
+rotation = 0.0
+placement_width = 1920.0
+placement_height = 1080.0
+
+[lockscreen_widgets.widget."lockscreen-clock@DP-1".settings]
+clock_style = "digital"
+format = "{:%H:%M}"
+center_text = true
+color = "#f2f2f5"
+font_family = "Inter Thin"
+shadow = false
+background_opacity = 0.0
+
+[lockscreen_widgets.widget."lockscreen-date@DP-1"]
+type = "clock"
+output = "DP-1"
+cx = 960.0
+cy = 459.0
+box_width = 420.0
+box_height = 44.0
+rotation = 0.0
+placement_width = 1920.0
+placement_height = 1080.0
+
+[lockscreen_widgets.widget."lockscreen-date@DP-1".settings]
+clock_style = "digital"
+format = "{:%A, %d de %B}"
+center_text = true
+color = "#c9cbd3"
+font_family = "Inter"
+shadow = false
+background_opacity = 0.0
+
+[lockscreen_widgets.widget."lockscreen-clock@HDMI-A-1"]
+type = "clock"
+output = "HDMI-A-1"
+cx = 540.0
+cy = 576.0
+box_width = 620.0
+box_height = 200.0
+rotation = 0.0
+placement_width = 1080.0
+placement_height = 1920.0
+
+[lockscreen_widgets.widget."lockscreen-clock@HDMI-A-1".settings]
+clock_style = "digital"
+format = "{:%H:%M}"
+center_text = true
+color = "#f2f2f5"
+font_family = "Inter Thin"
+shadow = false
+background_opacity = 0.0
+
+[lockscreen_widgets.widget."lockscreen-date@HDMI-A-1"]
+type = "clock"
+output = "HDMI-A-1"
+cx = 540.0
+cy = 711.0
+box_width = 420.0
+box_height = 44.0
+rotation = 0.0
+placement_width = 1080.0
+placement_height = 1920.0
+
+[lockscreen_widgets.widget."lockscreen-date@HDMI-A-1".settings]
+clock_style = "digital"
+format = "{:%A, %d de %B}"
+center_text = true
+color = "#c9cbd3"
+font_family = "Inter"
+shadow = false
+background_opacity = 0.0
