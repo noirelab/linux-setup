@@ -21,9 +21,6 @@ hl.bind(mainMod .. " + Up",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + Down",  hl.dsp.focus({ direction = "down" }))
 hl.bind("ALT + Tab",           hl.dsp.window.cycle_next())
 hl.bind(mainMod .. " + Tab",   hl.dsp.exec_cmd(noctCall .. "window-switcher"))
--- Tapping SUPER alone opens the workspace overview, like GNOME Activities.
--- It fires on release only when no other key was pressed with SUPER.
-hl.bind(mainMod .. " + Super_L", hl.dsp.exec_cmd("qs ipc -c overview call overview toggle"), { release = true })
 
 -- Move active window around workspaces & monitors
 hl.bind(mainMod .. " + SHIFT + Up",                   hl.dsp.window.move({ direction = "u" }))
