@@ -4,6 +4,10 @@
 hl.on("hyprland.start", function ()
     -- chico needs WAYLAND_DISPLAY in the systemd user env, so chain it after the import
     hl.exec_cmd("bash -c 'dbus-update-activation-environment --systemd --all && systemctl --user start chico.service'")
+    -- opendeck starts hidden to tray (--hide); same env import chain as chico
+    hl.exec_cmd("bash -c 'dbus-update-activation-environment --systemd --all && systemctl --user start opendeck.service'")
+    -- spotify opens on special:minimized (window rule), toggle with SUPER+N
+    hl.exec_cmd("spotify")
     hl.exec_cmd("systemctl --user start awww-daemon.service")
     hl.exec_cmd("awww img " .. os.getenv("HOME") .. "/Pictures/wallpaper.jpg --outputs DP-1,HDMI-A-1")
     hl.exec_cmd("noctalia")

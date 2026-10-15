@@ -92,7 +92,8 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noctCall .. "brightness-down"),
 
 -- Screen Capture
 hl.bind(mainMod .. " + P",     hl.dsp.exec_cmd("hyprpicker -a"))
-hl.bind("Print",               hl.dsp.exec_cmd(noctCall .. "screenshot-region"))
+hl.bind("Print",               hl.dsp.exec_cmd("/home/noirelab/.local/bin/screenshot.sh shoot"))
+hl.bind("CONTROL + Print",     hl.dsp.exec_cmd("/home/noirelab/.local/bin/screenshot.sh choose"))
 hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd(noctCall .. "screenshot-fullscreen"))
 
 -- Theming and Wallpaper
