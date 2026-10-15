@@ -37,7 +37,7 @@ font_weight = 500
     padding = 10.0
 
 [shell]
-corner_radius_scale = 1.4
+corner_radius_scale = 1.6
 clipboard_image_action_command = "satty -f -"
 launch_apps_as_systemd_services = true
 polkit_agent = true
@@ -48,7 +48,9 @@ font_family = "Inter"
     open_near_click_control_center = true
     session_placement = "floating"
     session_position = "center"
-
+    launcher_position = "top"
+    launcher_placement = "floating"
+    control_center_placement = "floating"
     [shell.shadow]
     alpha = 0.35
 
@@ -93,6 +95,10 @@ font_family = "Inter"
     shortcut = "5"
     variant = "destructive"
 
+
+[shell.launcher]
+categories = false
+show_app_origin_indicator = false
 [system.monitor]
 gpu_poll_seconds = 2
 
@@ -208,3 +214,10 @@ inactive_scale = 1.0
 inactive_opacity = 1.0
 show_dots = true
 show_instance_count = false
+
+[lockscreen]
+blurred_desktop = true
+blur_intensity = 0.7
+tint_intensity = 0.35
+[osd]
+background_opacity = 0.7
