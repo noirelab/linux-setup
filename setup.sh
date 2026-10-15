@@ -359,6 +359,10 @@ if [ "$DISTRO" == "arch" ]; then
         install_aur "noctalia"
         install_aur "awww"
 
+        # Inter is the UI font for Noctalia and GTK
+        sudo pacman -S --noconfirm inter-font
+        gsettings set org.gnome.desktop.interface font-name 'Inter 10.5' 2>/dev/null || true
+
         # Copy Configs
         mkdir -p ~/.config/hypr ~/.config/noctalia ~/.config/rofi ~/.config/dunst
         cp -r "$SCRIPT_DIR/configs/arch/hypr/"*     ~/.config/hypr/ 2>/dev/null
