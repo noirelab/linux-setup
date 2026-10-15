@@ -366,6 +366,10 @@ if [ "$DISTRO" == "arch" ]; then
         cp -r "$SCRIPT_DIR/configs/arch/rofi/"*     ~/.config/rofi/ 2>/dev/null
         cp -r "$SCRIPT_DIR/configs/arch/dunst/"*    ~/.config/dunst/ 2>/dev/null
 
+        # dunst is D-Bus activated and wins the race for org.freedesktop.Notifications
+        # at login, which silently disables Noctalia's own notifications.
+        systemctl --user mask dunst.service 2>/dev/null || true
+
         echo "    - Hyprland + Noctalia configs deployed."
         echo "      Keybinds: ~/.config/hypr/config/binds.lua"
         echo "      Noctalia bar + plugins: ~/.config/noctalia/"

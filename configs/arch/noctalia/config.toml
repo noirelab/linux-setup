@@ -32,15 +32,20 @@ thickness = 35
     padding = 10.0
 
 [shell]
+corner_radius_scale = 1.4
 clipboard_image_action_command = "satty -f -"
 launch_apps_as_systemd_services = true
 polkit_agent = true
 settings_show_advanced = true
 
     [shell.panel]
+    transparency_mode = "glass"
     open_near_click_control_center = true
     session_placement = "floating"
     session_position = "center"
+
+    [shell.shadow]
+    alpha = 0.35
 
     [shell.screenshot]
     copy_to_clipboard = false
@@ -167,3 +172,10 @@ capsule_fill = "on_primary"
 display = "none"
 inactive_pill_size = 1.0
 pill_scale = 0.80
+
+[notification]
+position = "top_right"
+offset_x = 14
+offset_y = 12
+background_opacity = 0.78
+border = true
