@@ -185,3 +185,26 @@ offset_x = 14
 offset_y = 12
 background_opacity = 0.78
 border = true
+
+[dock]
+enabled = true
+position = "bottom"
+active_monitor_only = true
+pinned = ["nemo","firefox","kitty","code","obsidian","spotify","discord"]
+icon_size = 40
+item_spacing = 8
+main_axis_padding = 12
+cross_axis_padding = 8
+background_opacity = 0.55
+radius = 20
+border = "outline"
+border_width = 0.5
+concave_edge_corners = false
+margin_edge = 12
+smart_auto_hide = true
+reserve_space = false
+magnification = false
+inactive_scale = 1.0
+inactive_opacity = 1.0
+show_dots = true
+show_instance_count = false
