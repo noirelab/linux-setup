@@ -59,6 +59,8 @@ launch_apps_as_systemd_services = true
 polkit_agent = true
 settings_show_advanced = true
 font_family = "Inter"
+card_borders = false
+
     [shell.panel]
     transparency_mode = "glass"
     open_near_click_control_center = true
@@ -382,3 +384,27 @@ color = "#c9cbd3"
 font_family = "Inter"
 shadow = false
 background_opacity = 0.0
+
+[control_center]
+sidebar = "none"
+sidebar_section = "compact"
+show_shortcut_labels = true
+show_session_button = true
+
+[[control_center.shortcuts]]
+type = "wifi"
+
+[[control_center.shortcuts]]
+type = "bluetooth"
+
+[[control_center.shortcuts]]
+type = "notification"
+
+[[control_center.shortcuts]]
+type = "nightlight"
+
+[[control_center.shortcuts]]
+type = "caffeine"
+
+[[control_center.shortcuts]]
+type = "power_profile"
