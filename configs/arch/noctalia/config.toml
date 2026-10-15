@@ -209,6 +209,7 @@ offset_x = 14
 offset_y = 12
 background_opacity = 0.78
 border = true
+follow_focused_output = true
 
 [dock]
 enabled = true
