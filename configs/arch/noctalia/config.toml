@@ -2,22 +2,24 @@
 ui_scale = 1.20
 
 [bar.default]
-background_opacity = 0.62
+background_opacity = 0.35
 border = "outline"
-border_width = 0.5
-center = [ "workspaces", "spacer_1", "active_window" ]
+border_width = 0.0
+center = ["workspaces","active_window"]
 concave_edge_corners = false
-end = [ "media", "spacer_1", "tray", "notifications", "network", "volume", "session" ]
-margin_edge = 8
-margin_ends = 8
-radius_bottom_left = 14
-radius_bottom_right = 14
-radius_top_left = 14
-radius_top_right = 14
-scale = 1.10
-start = [ "launcher", "clock", "notepad", "spacer_1", "group:g1", "spacer_1", "group:g2" ]
-thickness = 35
-
+end = ["media","notifications","clock"]
+margin_edge = 0
+margin_ends = 0
+radius_bottom_left = 0
+radius_bottom_right = 0
+radius_top_left = 0
+radius_top_right = 0
+scale = 1.0
+start = ["network","volume","tray"]
+thickness = 30
+padding = 16
+shadow = false
+font_weight = 500
     [[bar.default.capsule_group]]
     border = ""
     fill = "on_secondary"
@@ -103,9 +105,10 @@ wallpaper_scheme = "m3-tonal-spot"
     builtin_ids = [ "btop", "gtk3", "gtk4", "kcolorscheme", "kitty", "qt", "alacritty" ]
 
 [widget.clock]
-color = "secondary"
-format = "{:%H:%M %A %m/%d/%y}"
-
+color = "on_surface"
+format = "{:%H:%M   %a, %d %b}"
+capsule = true
+capsule_fill = "surface_variant"
 [widget.launcher]
 color = "secondary"
 
@@ -117,10 +120,11 @@ hide_when_no_media = true
 title_scroll = "on_hover"
 
 [widget.network]
-color = "secondary"
+color = "on_surface"
+show_label = false
 
 [widget.notifications]
-color = "secondary"
+color = "on_surface"
 
 [widget.session]
 color = "error"
@@ -148,11 +152,9 @@ length = 8
 type = "noirelab/claude-usage:pinned"
 
 [widget.temp]
-show_label = false
 
 [widget.sysmon_2]
 glyph = "gpu-usage"
-show_label = false
 stat = "gpu_temp"
 type = "sysmon"
 
@@ -162,19 +164,20 @@ stat = "ram_used"
 type = "sysmon"
 
 [widget.tray]
-capsule = true
+capsule = false
 capsule_fill = "on_secondary"
 
 [widget.volume]
-color = "secondary"
+color = "on_surface"
+show_label = false
 
 [widget.workspaces]
 active_pill_size = 2.5
-capsule = true
+capsule = false
 capsule_fill = "on_primary"
-display = "none"
 inactive_pill_size = 1.0
 pill_scale = 0.80
+show_labels = false
 
 [notification]
 position = "top_right"
