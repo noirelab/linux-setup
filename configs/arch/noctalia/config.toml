@@ -118,6 +118,12 @@ card_borders = false
 [shell.launcher]
 categories = false
 show_app_origin_indicator = false
+compact = true
+width = 560
+search_position = "top"
+show_session_button = false
+show_settings_button = false
+layout = "simple"
 [system.monitor]
 gpu_poll_seconds = 2
 
