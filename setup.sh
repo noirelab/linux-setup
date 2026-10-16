@@ -420,6 +420,30 @@ if [ "$DISTRO" == "arch" ]; then
         fi
     fi
 
+    # chico.service runs ~/chico/chico-start.sh, so the unit alone is a dead
+    # Super+\ until the repo is cloned, its venv filled and the app shell built.
+    # Rerunning updates it: pull, reinstall requirements, rebuild, restart.
+    if confirm "Install/update chico (Super+\\ dictation)?"; then
+        sudo pacman -S --needed --noconfirm webkit2gtk-4.1 wtype libnotify python openssl
+        # rustup and the rust package conflict; keep whichever is already there
+        command -v cargo >/dev/null || sudo pacman -S --needed --noconfirm rust
+        if [ -d ~/chico/.git ]; then
+            git -C ~/chico pull --ff-only || echo -e "${YELLOW}chico: local changes or diverged branch, pull skipped${NC}"
+        else
+            # private repo: needs the GitHub SSH key on this machine
+            git clone git@github.com:noirelab/chico.git ~/chico
+        fi
+        if [ -d ~/chico/.git ]; then
+            [ -d ~/chico/venv ] || python3 -m venv ~/chico/venv
+            ~/chico/venv/bin/pip install -q -r ~/chico/requirements.txt
+            cargo build --release --manifest-path ~/chico/app-shell/src-tauri/Cargo.toml
+            # only if already running: on a fresh install the Hyprland autostart
+            # starts it once WAYLAND_DISPLAY is in the systemd env
+            systemctl --user try-restart chico.service 2>/dev/null || true
+            echo "    - chico at $(git -C ~/chico log --oneline -1)"
+        fi
+    fi
+
 else
     # --- DEBIAN / MINT PATH ---
     if confirm "Configure GNOME/Cinnamon Shortcuts?"; then
