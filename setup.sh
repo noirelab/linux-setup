@@ -359,6 +359,13 @@ if [ "$DISTRO" == "arch" ]; then
         install_aur "noctalia"
         install_aur "awww"
 
+        # Walker is the SUPER+Space launcher. Elephant and its apps plugin must be
+        # built from source together: elephant-bin uses a different Go and the
+        # plugin then fails to load, so every search returns nothing.
+        install_aur "walker"
+        install_aur "elephant"
+        install_aur "elephant-desktopapplications"
+
         # Inter is the UI font for Noctalia and GTK
         sudo pacman -S --noconfirm inter-font
         gsettings set org.gnome.desktop.interface font-name 'Inter 10.5' 2>/dev/null || true
@@ -384,11 +391,13 @@ if [ "$DISTRO" == "arch" ]; then
         gsettings set org.nemo.window-state start-with-menu-bar false 2>/dev/null || true
 
         # Copy Configs
-        mkdir -p ~/.config/hypr ~/.config/noctalia ~/.config/rofi ~/.config/dunst
+        mkdir -p ~/.config/hypr ~/.config/noctalia ~/.config/rofi ~/.config/dunst ~/.config/walker
         cp -r "$SCRIPT_DIR/configs/arch/hypr/"*     ~/.config/hypr/ 2>/dev/null
         cp -r "$SCRIPT_DIR/configs/arch/noctalia/"* ~/.config/noctalia/ 2>/dev/null
         cp -r "$SCRIPT_DIR/configs/arch/rofi/"*     ~/.config/rofi/ 2>/dev/null
         cp -r "$SCRIPT_DIR/configs/arch/dunst/"*    ~/.config/dunst/ 2>/dev/null
+        cp -r "$SCRIPT_DIR/configs/arch/walker/"*   ~/.config/walker/ 2>/dev/null
+        elephant service enable 2>/dev/null || true
 
         # dunst is D-Bus activated and wins the race for org.freedesktop.Notifications
         # at login, which silently disables Noctalia's own notifications.

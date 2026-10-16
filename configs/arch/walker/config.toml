@@ -1,0 +1,9 @@
+theme = "nava"
+hide_quick_activation = true
+hide_action_hints = true
+ext_background_effect_blur = true
+
+[providers]
+default = ["desktopapplications", "calc", "websearch"]
+empty = []
+max_results = 6

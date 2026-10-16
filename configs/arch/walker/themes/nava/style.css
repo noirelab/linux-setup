@@ -1,0 +1,57 @@
+/* Nava launcher: frosted glass panel, Hyprland blurs what is behind it */
+@define-color text #f5f5f7;
+@define-color muted rgba(245, 245, 247, 0.5);
+@define-color ice #8fa8f5;
+/* selection fill: deeper ice/lilac so white text clears 4.5:1 (5.2 and 5.9) */
+@define-color sel_a #4a63d6;
+@define-color sel_b #6450cc;
+
+* { all: unset; font-family: "Inter"; }
+
+/* dim the desktop behind the launcher, Spotlight style */
+.window { background: rgba(0, 0, 0, 0.35); }
+
+scrollbar { opacity: 0; }
+.normal-icons { -gtk-icon-size: 16px; }
+.large-icons { -gtk-icon-size: 22px; }
+
+.box-wrapper {
+  min-width: 520px;
+  padding: 6px;
+  border-radius: 22px;
+  /* thin tint: dark enough to read, light enough to show the blur */
+  background: linear-gradient(180deg, rgba(30, 31, 40, 0.70), rgba(14, 15, 20, 0.78));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.search-container { padding: 0 4px; }
+.input {
+  padding: 12px 10px;
+  color: @text;
+  caret-color: @ice;
+  font-size: 17px;
+  font-weight: 400;
+}
+.input placeholder { color: @muted; }
+.input selection { background: alpha(@ice, 0.35); }
+
+.content-container { padding-top: 2px; }
+
+.list { color: @text; }
+.item-box { border-radius: 14px; padding: 8px 10px; }
+.item-text { font-size: 14px; font-weight: 500; }
+.item-subtext { font-size: 0; min-height: 0; opacity: 0; }
+
+child:selected .item-box,
+row:selected .item-box {
+  background: linear-gradient(90deg, @sel_a, @sel_b);
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 4px 14px alpha(@sel_a, 0.35);
+}
+
+.calc .item-text { font-size: 18px; }
+.keybinds, .elephant-hint, .placeholder, .preview { opacity: 0; min-height: 0; font-size: 0; }
+.error { padding: 8px; border-radius: 12px; background: rgba(255, 92, 82, 0.2); color: @text; }

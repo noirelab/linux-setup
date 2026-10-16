@@ -135,3 +135,12 @@ hl.layer_rule({
     blur         = true,
     blur_popups  = true,
 })
+
+-- Walker launcher (SUPER+Space): same frosted glass as the Noctalia panels
+hl.layer_rule({
+    name  = "walker",
+    match = { namespace = "^walker$" },
+    ignore_alpha = 0.5,
+    blur         = true,
+    blur_popups  = true,
+})
