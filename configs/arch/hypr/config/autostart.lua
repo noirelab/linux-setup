@@ -6,6 +6,8 @@ hl.on("hyprland.start", function ()
     hl.exec_cmd("bash -c 'dbus-update-activation-environment --systemd --all && systemctl --user start chico.service'")
     -- opendeck starts hidden to tray (--hide); same env import chain as chico
     hl.exec_cmd("bash -c 'dbus-update-activation-environment --systemd --all && systemctl --user start opendeck.service'")
+    -- elephant feeds walker (SUPER+Space); graphical-session.target never activates here
+    hl.exec_cmd("bash -c 'dbus-update-activation-environment --systemd --all && systemctl --user start elephant.service'")
     -- spotify opens on special:minimized (window rule), toggle with SUPER+N
     hl.exec_cmd("spotify")
     hl.exec_cmd("systemctl --user start awww-daemon.service")

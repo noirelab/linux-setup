@@ -397,6 +397,8 @@ if [ "$DISTRO" == "arch" ]; then
         cp -r "$SCRIPT_DIR/configs/arch/rofi/"*     ~/.config/rofi/ 2>/dev/null
         cp -r "$SCRIPT_DIR/configs/arch/dunst/"*    ~/.config/dunst/ 2>/dev/null
         cp -r "$SCRIPT_DIR/configs/arch/walker/"*   ~/.config/walker/ 2>/dev/null
+        # the unit is WantedBy graphical-session.target, which Hyprland without UWSM
+        # never reaches; hypr/config/autostart.lua starts it on login instead
         elephant service enable 2>/dev/null || true
 
         # dunst is D-Bus activated and wins the race for org.freedesktop.Notifications
