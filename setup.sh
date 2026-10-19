@@ -341,6 +341,26 @@ if confirm "Install/update claude-preview (previews next to Claude Code in kitty
     fi
 fi
 
+# --- 3.9 CLAUDE HOP ---
+# Shortcut (ctrl+shift+o) in kitty to jump to the commands and paths of the Claude
+# Code conversation. Same flow as 3.8: pull, then install.sh (idempotent).
+if confirm "Install/update claude-hop (jump to commands and paths of a Claude Code conversation)?"; then
+    if [ "$DISTRO" == "arch" ]; then
+        sudo pacman -S --needed --noconfirm jq fzf python wl-clipboard
+    else
+        sudo apt install -y jq fzf python3 wl-clipboard
+    fi
+    if [ -d ~/claude-hop/.git ]; then
+        git -C ~/claude-hop pull --ff-only || echo -e "${YELLOW}claude-hop: local changes or diverged branch, pull skipped${NC}"
+    else
+        git clone https://github.com/noirelab/claude-hop.git ~/claude-hop
+    fi
+    if [ -d ~/claude-hop/.git ]; then
+        ~/claude-hop/install.sh
+        echo "    - claude-hop at $(git -C ~/claude-hop log --oneline -1)"
+    fi
+fi
+
 # --- 4. DEV TOOLS (Docker, Nvidia, Conda) ---
 if confirm "Install Dev Tools (Docker, Nvidia Toolkit, Miniconda)?"; then
 
