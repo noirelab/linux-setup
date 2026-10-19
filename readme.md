@@ -60,6 +60,7 @@ The installer walks you through each section with y/n prompts.
 | **OpenCode SEO** | 25 SEO sub-skills — site audits, technical SEO, schema, content (E-E-A-T), GEO/AI search, backlinks, local SEO, maps, e-commerce, Google APIs, SPA-aware rendering |
 | **Claude Code** | CLI installed via `curl`, then 205 skills, hooks, agents, commands and `settings.json` restored from the repo |
 | **Claude plugins** | 9 plugins re-installed from their marketplaces (claude-mem, ponytail, caveman, figma, stripe, vercel, 21st, ui-ux-pro-max, rust-analyzer-lsp) |
+| **claude-preview** | [noirelab/claude-preview](https://github.com/noirelab/claude-preview): a kitty split next to Claude Code that previews the PDFs, decks, images, diagrams and dev server pages it makes. Cloned to `~/claude-preview`, updated on rerun |
 | **Wallpaper** | Single source of truth: `configs/common/wallpapers/wallpaper.jpg` → `~/Pictures/wallpaper.jpg`, used by `awww` (desktop), Hyprlock and SDDM |
 
 ### Desktop Environment (Arch/CachyOS)
@@ -250,11 +251,12 @@ Interactive installer. Detects your OS and offers each section:
 5. OpenCode AI assistant
 6. OpenCode SEO Skills (25 SEO sub-skills with Python runtime)
 7. Claude Code (skills, hooks, agents, commands, settings + plugin restore, optional gstack clone)
-8. Dev tools (Docker + NVIDIA toolkit, Miniconda3)
-9. Desktop config (Hyprland+Noctalia+Rofi+Dunst or GNOME/Cinnamon shortcuts)
-10. systemd user units (Arch only)
-11. Hyprlock + Hypridle (Arch only)
-12. .bashrc
+8. claude-preview (clone/update, its dependencies, hook and kitty socket)
+9. Dev tools (Docker + NVIDIA toolkit, Miniconda3)
+10. Desktop config (Hyprland+Noctalia+Rofi+Dunst or GNOME/Cinnamon shortcuts)
+11. systemd user units (Arch only)
+12. Hyprlock + Hypridle (Arch only)
+13. .bashrc
 
 ### `save_profile.sh`
 

@@ -314,6 +314,33 @@ if confirm "Install/restore Claude Code config (skills, plugins, hooks)?"; then
     fi
 fi
 
+# --- 3.8 CLAUDE PREVIEW ---
+# Live preview of documents, diagrams and sites in a kitty split next to Claude
+# Code. Runs after 3.7 because that one overwrites settings.json, and install.sh
+# adds the hook back. Rerunning updates it: pull, then install.sh (idempotent).
+if confirm "Install/update claude-preview (previews next to Claude Code in kitty)?"; then
+    if [ "$DISTRO" == "arch" ]; then
+        # libreoffice-fresh and -still conflict; keep whichever is already there
+        command -v soffice >/dev/null || sudo pacman -S --needed --noconfirm libreoffice-fresh
+        sudo pacman -S --needed --noconfirm jq curl poppler imagemagick librsvg firefox python-markdown graphviz
+    else
+        sudo apt install -y jq curl poppler-utils libreoffice imagemagick librsvg2-bin firefox python3-markdown graphviz
+    fi
+    if [ -d ~/claude-preview/.git ]; then
+        git -C ~/claude-preview pull --ff-only || echo -e "${YELLOW}claude-preview: local changes or diverged branch, pull skipped${NC}"
+    else
+        git clone https://github.com/noirelab/claude-preview.git ~/claude-preview
+    fi
+    if [ -d ~/claude-preview/.git ]; then
+        ~/claude-preview/install.sh
+        # Mermaid diagrams: mermaid-cli on the system Chromium, not a second downloaded one
+        if ! command -v mmdc >/dev/null && command -v npm >/dev/null && command -v chromium >/dev/null; then
+            PUPPETEER_SKIP_DOWNLOAD=1 npm i -g @mermaid-js/mermaid-cli
+        fi
+        echo "    - claude-preview at $(git -C ~/claude-preview log --oneline -1)"
+    fi
+fi
+
 # --- 4. DEV TOOLS (Docker, Nvidia, Conda) ---
 if confirm "Install Dev Tools (Docker, Nvidia Toolkit, Miniconda)?"; then
 
