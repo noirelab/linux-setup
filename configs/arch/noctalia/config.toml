@@ -5,7 +5,7 @@ ui_scale = 1.20
 background_opacity = 0.0
 border = "outline"
 border_width = 0.0
-center = []
+center = ["noirelab/hub:clock"]
 concave_edge_corners = false
 end = ["media", "group:status", "group:time"]
 margin_edge = 0
@@ -33,7 +33,7 @@ padding = 12
 
 [[bar.default.capsule_group]]
 id = "status"
-members = ["network", "volume", "notifications", "tray", "session"]
+members = ["volume", "battery", "tray"]
 fill = "#e6ecff"
 opacity = 0.12
 border = "#ffffff26"
@@ -46,7 +46,7 @@ widget_spacing = 14
 
 [[bar.default.capsule_group]]
 id = "time"
-members = ["noirelab/claude-usage:pinned", "clock"]
+members = ["noirelab/claude-usage:pinned"]
 fill = "#e6ecff"
 opacity = 0.12
 border = "#ffffff26"
@@ -137,6 +137,9 @@ wallpaper_scheme = "m3-tonal-spot"
 
 [widget.clock]
 format = "{:%H:%M   %a, %d %b}"
+[widget."noirelab/hub:clock"]
+type = "noirelab/hub:clock"
+
 [widget.launcher]
 color = "secondary"
 
@@ -147,6 +150,9 @@ type = "noirelab/notepad:notes"
 hide_when_no_media = true
 title_scroll = "on_hover"
 color = "#f2f2f5"
+[widget.media.actions]
+left = "panel-toggle noirelab/hub:home media"
+
 
 [widget.network]
 show_label = false
@@ -193,7 +199,11 @@ type = "sysmon"
 [widget.tray]
 
 [widget.volume]
-show_label = false
+show_label = true
+[widget.volume.actions]
+left = "panel-toggle noirelab/hub:home audio"
+right = "panel-toggle noirelab/hub:home audio"
+
 
 [widget.workspaces]
 show_labels = false
@@ -416,3 +426,11 @@ type = "caffeine"
 
 [[control_center.shortcuts]]
 type = "power_profile"
+
+[widget.battery]
+[widget.battery.actions]
+left = "panel-toggle noirelab/hub:home power"
+right = "panel-toggle noirelab/hub:home power"
+
+[shell.mpris]
+blacklist = ["firefox"]

@@ -1,0 +1,28 @@
+# Hub: painel proprio que substitui o menu padrao aberto pelo relogio.
+# Performance ao vivo, atalhos do sistema, volume e relogio num lugar so.
+
+id = "noirelab/hub"
+name = "Hub"
+version = "0.1.0"
+plugin_api = 34
+author = "noirelab"
+license = "MIT"
+dependencies = []
+tags = ["panel", "monitor"]
+icon = "layout-dashboard"
+description = "Painel de controle proprio com performance, atalhos e volume."
+
+[[widget]]
+id = "clock"
+entry = "widget_clock.luau"
+hover_highlight = false
+
+[[panel]]
+id = "home"
+entry = "panel_home.luau"
+width = 660
+height = 375
+placement = "floating"
+position = "top_center"
+open_near_click = false
+dismiss_on_outside_click = true
