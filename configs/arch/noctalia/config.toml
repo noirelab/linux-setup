@@ -22,6 +22,10 @@ shadow = false
 font_weight = 500
 widget_spacing = 10
 capsule_border_width = 1.0
+# Monitor vertical (1080px de largura): sem o widget de musica, que era espremido ate virar uma letra
+[bar.default.monitor."HDMI-A-1"]
+end = ["group:status", "group:time"]
+
 [[bar.default.capsule_group]]
 id = "ws"
 members = ["workspaces"]
