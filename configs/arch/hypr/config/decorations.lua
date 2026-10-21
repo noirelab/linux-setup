@@ -35,8 +35,8 @@ hl.config({
     decoration = {
         dim_special = 0.3,
         rounding = 16,
-        active_opacity = 0.80,
-        inactive_opacity = 0.80,
+        active_opacity = 1.0,
+        inactive_opacity = 1.0,
         fullscreen_opacity = 1,
         blur = {
             -- milky glass: wide blur, a little grain and lift so dark panes read as frosted
