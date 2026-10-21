@@ -82,6 +82,7 @@ end
 -- ---------- Leituras ----------
 
 local refreshMedia
+local refreshCalendar
 
 local function refreshHome()
   sh("nmcli radio wifi", function(out) s.wifi = trim(out) == "enabled" end)
@@ -305,10 +306,11 @@ local function refreshView()
   elseif view == "bluetooth" then refreshBluetooth()
   elseif view == "notifications" then refreshNotifications()
   elseif view == "media" then refreshMedia()
-  elseif view == "power" then refreshPower() end
+  elseif view == "power" then refreshPower()
+  elseif view == "calendar" then refreshCalendar() end
 end
 
-local REFRESH_EVERY = { home = 2, audio = 2, network = 6, bluetooth = 5, notifications = 5, media = 1, power = 5 }
+local REFRESH_EVERY = { home = 2, audio = 2, network = 6, bluetooth = 5, notifications = 5, media = 1, power = 5, calendar = 60 }
 
 -- Uma amostra por tick (nao por render, que tambem roda em cliques).
 -- Historico vazio comeca como linha reta no valor atual, em vez de grafico vazio
@@ -801,17 +803,46 @@ end
 
 local WEEKDAYS = { "D", "S", "T", "Q", "Q", "S", "S" }
 -- Largura fixa por dia: com flexGrow as colunas variam com o texto e a grade entorta
-local CELL = 84
+local CELL = 40
+local GCAL = (noctalia.getenv("HOME") or "") .. "/.config/noctalia/plugins/hub/gcal.py"
 
 local function daysIn(year, month)
   if month == 2 then return (year % 4 == 0 and (year % 100 ~= 0 or year % 400 == 0)) and 29 or 28 end
   return ({ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 })[month]
 end
 
+-- Eventos do Google Calendar via gcal.py (endereco iCal secreto em ~/.config/noctalia/gcal.urls)
+refreshCalendar = function()
+  local y, m = s.calYear, s.calMonth
+  sh(`test -f "$HOME/.config/noctalia/gcal.urls" || \{ echo NOURLS; exit 0; }; python3 "{GCAL}" {y} {m} 2>/dev/null`, function(out, code)
+    if y ~= s.calYear or m ~= s.calMonth then return end
+    if out:find("NOURLS", 1, true) then
+      s.calEvents, s.calStatus = {}, "Google Calendar não conectado"
+      return
+    end
+    if code ~= 0 then
+      s.calStatus = "Erro ao ler a agenda"
+      return
+    end
+    local byDay = {}
+    for line in out:gmatch("[^\n]+") do
+      local e = noctalia.json.decode(line)
+      if type(e) == "table" and e.date then
+        local d = tonumber(e.date:sub(9, 10))
+        byDay[d] = byDay[d] or {}
+        table.insert(byDay[d], e)
+      end
+    end
+    s.calEvents, s.calStatus = byDay, ""
+  end)
+end
+
 local function shiftMonth(delta)
   local m = s.calMonth + delta
   s.calYear += math.floor((m - 1) / 12)
   s.calMonth = (m - 1) % 12 + 1
+  s.calSel, s.calEvents = 1, {}
+  refreshCalendar()
   render()
 end
 
@@ -820,25 +851,27 @@ local function calendarView()
   local y, m = s.calYear, s.calMonth
   local first = os.date("*t", os.time({ year = y, month = m, day = 1, hour = 12 })).wday
   local total = daysIn(y, m)
+  local events = s.calEvents or {}
 
   local function cell(d)
     local today = d and y == now.year and m == now.month and d == now.day
+    local selected = d and d == s.calSel
     local wday = d and (first + d - 2) % 7 + 1
-    return ui.row({ width = CELL, height = 34, align = "center", justify = "center" }, {
-      ui.row({ width = 32, height = 32, radius = 16, align = "center", justify = "center", fill = today and ACCENT or "#00000000" }, {
-        ui.label({
-          text = d and tostring(d) or "", fontSize = 13, fontWeight = today and "bold" or "medium",
-          color = today and ON_ACCENT or ((wday == 1 or wday == 7) and "on_surface_variant" or "on_surface"),
-        }),
+    local color = today and ON_ACCENT or ((wday == 1 or wday == 7) and "on_surface_variant" or "on_surface")
+    return ui.column({ width = CELL, height = 34, align = "center", gap = 1, onClick = d and function() s.calSel = d; render() end or nil }, {
+      ui.row({
+        width = 28, height = 28, radius = 14, align = "center", justify = "center",
+        fill = today and ACCENT or (selected and TILE_RAISED or "#00000000"),
+      }, {
+        ui.label({ text = d and tostring(d) or "", fontSize = 12, fontWeight = (today or selected) and "bold" or "medium", color = color }),
       }),
+      ui.row({ width = 4, height = 4, radius = 2, fill = d and events[d] and ACCENT or "#00000000" }, {}),
     })
   end
 
-  local weeks = { ui.row({ gap = 4, justify = "center" }, (function()
-    local r = {}
-    for _, w in ipairs(WEEKDAYS) do r[#r + 1] = ui.row({ width = CELL, justify = "center" }, { muted(w, 11) }) end
-    return r
-  end)()) }
+  local head = {}
+  for _, w in ipairs(WEEKDAYS) do head[#head + 1] = ui.row({ width = CELL, justify = "center" }, { muted(w, 11) }) end
+  local weeks = { ui.row({ gap = 2 }, head) }
   local d = 2 - first
   while d <= total do
     local row = {}
@@ -846,22 +879,39 @@ local function calendarView()
       row[#row + 1] = cell(d >= 1 and d <= total and d or nil)
       d += 1
     end
-    weeks[#weeks + 1] = ui.row({ gap = 4, justify = "center" }, row)
+    weeks[#weeks + 1] = ui.row({ gap = 2 }, row)
   end
+
+  local sel = s.calSel
+  local selWday = (first + sel - 2) % 7 + 1
+  local dayTitle = (y == now.year and m == now.month and sel == now.day) and "Hoje" or `{DAYS[selWday]}, {sel}`
+  local rows = {}
+  for _, e in ipairs(events[sel] or {}) do
+    rows[#rows + 1] = listRow("calendar-event", e.title, e.time ~= "" and e.time or "Dia inteiro", false)
+  end
+  local agenda = #rows > 0 and group(rows) or empty(s.calStatus ~= "" and s.calStatus or "Nada marcado")
 
   local month = MONTHS[m]:sub(1, 1):upper() .. MONTHS[m]:sub(2)
   local right = ui.row({ gap = 2, align = "center" }, {
     (y ~= now.year or m ~= now.month) and ui.button({ text = "Hoje", variant = "ghost", controlSize = "sm", onClick = function()
       s.calYear, s.calMonth = now.year, now.month
+      shiftMonth(0)
+      s.calSel = now.day
       render()
     end }) or ui.spacer({ width = 0 }),
     ui.button({ glyph = "chevron-up", variant = "ghost", controlSize = "sm", tooltip = "Mês anterior", onClick = function() shiftMonth(-1) end }),
     ui.button({ glyph = "chevron-down", variant = "ghost", controlSize = "sm", tooltip = "Próximo mês", onClick = function() shiftMonth(1) end }),
   })
-  return ui.column({ gap = 10 }, {
+  return ui.column({ gap = 10, flexGrow = 1 }, {
     header(`{month} de {y}`, right),
-    -- A chave muda com o mes: 5 ou 6 semanas, sem reaproveitar linhas da grade anterior
-    surface(ui.column, { gap = 4, padding = 10, radius = 18, key = `cal-{y}-{m}` }, weeks),
+    ui.row({ gap = 12, align = "start", flexGrow = 1 }, {
+      -- A chave muda com o mes: 5 ou 6 semanas, sem reaproveitar linhas da grade anterior
+      surface(ui.column, { gap = 2, padding = 10, radius = 18, key = `cal-{y}-{m}` }, weeks),
+      ui.column({ gap = 6, flexGrow = 1 }, {
+        ui.row({ paddingH = 4 }, { heading(dayTitle) }),
+        listBox({ agenda }, `{y}-{m}-{sel}-{#rows}-{s.calStatus}`),
+      }),
+    }),
   })
 end
 
@@ -879,7 +929,7 @@ end
 function setView(id)
   if id == "calendar" then
     local t = os.date("*t")
-    s.calYear, s.calMonth = t.year, t.month
+    s.calYear, s.calMonth, s.calSel = t.year, t.month, t.day
   end
   view = id
   ticks = 0
@@ -971,7 +1021,7 @@ function onOpen(context)
     if id == context then view = context end
   end
   local today = os.date("*t")
-  s.calYear, s.calMonth = today.year, today.month
+  s.calYear, s.calMonth, s.calSel = today.year, today.month, today.day
   s.user = noctalia.getenv("USER") or ""
   local host = noctalia.readFile("/etc/hostname")
   s.host = host and trim(host) or ""

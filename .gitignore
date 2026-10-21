@@ -11,3 +11,6 @@ __pycache__/
 configs/common/claude/settings.local.json
 configs/common/opencode/opencode.json.bak
 configs/common/opencode/auth.json
+
+# Secret Google Calendar iCal address: never commit
+gcal.urls

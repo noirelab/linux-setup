@@ -413,6 +413,10 @@ if [ "$DISTRO" == "arch" ]; then
         install_aur "elephant"
         install_aur "elephant-desktopapplications"
 
+        # Hub calendar reads Google Calendar through its secret iCal address
+        # (~/.config/noctalia/gcal.urls, one per line, created by hand)
+        sudo pacman -S --needed --noconfirm python-recurring-ical-events
+
         # Inter is the UI font for Noctalia and GTK
         sudo pacman -S --noconfirm inter-font
         gsettings set org.gnome.desktop.interface font-name 'Inter 10.5' 2>/dev/null || true
