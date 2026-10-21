@@ -21,7 +21,7 @@ local TILE_RAISED = "#ffffff1c"
 local EDGE = "#ffffff24"
 local TRACK = "#ffffff14"
 
-local VIEWS = { "home", "audio", "network", "bluetooth", "notifications", "media", "power" }
+local VIEWS = { "home", "audio", "network", "bluetooth", "notifications", "media", "power", "calendar" }
 
 local DAYS = { "Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado" }
 local MONTHS = {
@@ -529,6 +529,7 @@ local function homeView()
       ui.row({ gap = 6, align = "center" }, {
         orb("coffee", s.caffeine, "onCaffeine", 30),
         orb("moon", s.nightlight, "onNight", 30),
+        orb("calendar", false, function() setView("calendar") end, 30),
         orb("bell", false, function() setView("notifications") end, 30),
         orb("power", false, function() setView("power") end, 30),
         orb("settings", false, "onSettings", 30),
@@ -798,9 +799,75 @@ local function powerView()
   })
 end
 
+local WEEKDAYS = { "D", "S", "T", "Q", "Q", "S", "S" }
+-- Largura fixa por dia: com flexGrow as colunas variam com o texto e a grade entorta
+local CELL = 84
+
+local function daysIn(year, month)
+  if month == 2 then return (year % 4 == 0 and (year % 100 ~= 0 or year % 400 == 0)) and 29 or 28 end
+  return ({ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 })[month]
+end
+
+local function shiftMonth(delta)
+  local m = s.calMonth + delta
+  s.calYear += math.floor((m - 1) / 12)
+  s.calMonth = (m - 1) % 12 + 1
+  render()
+end
+
+local function calendarView()
+  local now = os.date("*t")
+  local y, m = s.calYear, s.calMonth
+  local first = os.date("*t", os.time({ year = y, month = m, day = 1, hour = 12 })).wday
+  local total = daysIn(y, m)
+
+  local function cell(d)
+    local today = d and y == now.year and m == now.month and d == now.day
+    local wday = d and (first + d - 2) % 7 + 1
+    return ui.row({ width = CELL, height = 34, align = "center", justify = "center" }, {
+      ui.row({ width = 32, height = 32, radius = 16, align = "center", justify = "center", fill = today and ACCENT or "#00000000" }, {
+        ui.label({
+          text = d and tostring(d) or "", fontSize = 13, fontWeight = today and "bold" or "medium",
+          color = today and ON_ACCENT or ((wday == 1 or wday == 7) and "on_surface_variant" or "on_surface"),
+        }),
+      }),
+    })
+  end
+
+  local weeks = { ui.row({ gap = 4, justify = "center" }, (function()
+    local r = {}
+    for _, w in ipairs(WEEKDAYS) do r[#r + 1] = ui.row({ width = CELL, justify = "center" }, { muted(w, 11) }) end
+    return r
+  end)()) }
+  local d = 2 - first
+  while d <= total do
+    local row = {}
+    for _ = 1, 7 do
+      row[#row + 1] = cell(d >= 1 and d <= total and d or nil)
+      d += 1
+    end
+    weeks[#weeks + 1] = ui.row({ gap = 4, justify = "center" }, row)
+  end
+
+  local month = MONTHS[m]:sub(1, 1):upper() .. MONTHS[m]:sub(2)
+  local right = ui.row({ gap = 2, align = "center" }, {
+    (y ~= now.year or m ~= now.month) and ui.button({ text = "Hoje", variant = "ghost", controlSize = "sm", onClick = function()
+      s.calYear, s.calMonth = now.year, now.month
+      render()
+    end }) or ui.spacer({ width = 0 }),
+    ui.button({ glyph = "chevron-up", variant = "ghost", controlSize = "sm", tooltip = "Mês anterior", onClick = function() shiftMonth(-1) end }),
+    ui.button({ glyph = "chevron-down", variant = "ghost", controlSize = "sm", tooltip = "Próximo mês", onClick = function() shiftMonth(1) end }),
+  })
+  return ui.column({ gap = 10 }, {
+    header(`{month} de {y}`, right),
+    -- A chave muda com o mes: 5 ou 6 semanas, sem reaproveitar linhas da grade anterior
+    surface(ui.column, { gap = 4, padding = 10, radius = 18, key = `cal-{y}-{m}` }, weeks),
+  })
+end
+
 local BUILDERS = {
   home = homeView, audio = audioView, network = networkView, bluetooth = bluetoothView,
-  notifications = notificationsView, media = mediaView, power = powerView,
+  notifications = notificationsView, media = mediaView, power = powerView, calendar = calendarView,
 }
 
 -- A chave por tela recria a arvore na troca; sem ela o Noctalia reaproveita nos da tela
@@ -810,6 +877,10 @@ render = function()
 end
 
 function setView(id)
+  if id == "calendar" then
+    local t = os.date("*t")
+    s.calYear, s.calMonth = t.year, t.month
+  end
   view = id
   ticks = 0
   refreshView()
@@ -899,6 +970,8 @@ function onOpen(context)
   for _, id in ipairs(VIEWS) do
     if id == context then view = context end
   end
+  local today = os.date("*t")
+  s.calYear, s.calMonth = today.year, today.month
   s.user = noctalia.getenv("USER") or ""
   local host = noctalia.readFile("/etc/hostname")
   s.host = host and trim(host) or ""
