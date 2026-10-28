@@ -135,7 +135,7 @@ local function refreshAudio()
     local sinkList, all = {}, noctalia.json.decode(sinks)
     if type(all) == "table" then
       for _, d in ipairs(all) do
-        table.insert(sinkList, { name = d.name, label = d.description or d.name, bt = (d.name or ""):find("^bluez") ~= nil, default = d.name == defSink })
+        if d.name and not d.name:find("^%-") then table.insert(sinkList, { name = d.name, label = d.description or d.name, bt = (d.name or ""):find("^bluez") ~= nil, default = d.name == defSink }) end
       end
     end
     s.sinks = sinkList
@@ -145,7 +145,7 @@ local function refreshAudio()
     if type(allSrc) == "table" then
       for _, d in ipairs(allSrc) do
         -- ignora os "monitor" (captura do que toca nas saidas), que nao sao microfones
-        if not (d.name or ""):find("%.monitor$") then
+        if d.name and not d.name:find("^%-") and not d.name:find("%.monitor$") then
           table.insert(sourceList, { name = d.name, label = d.description or d.name, bt = (d.name or ""):find("^bluez") ~= nil, default = d.name == defSource })
         end
       end
@@ -598,6 +598,7 @@ local function audioView()
   for _, k in ipairs(s.sinks) do
     sinkRows[#sinkRows + 1] = listRow(k.bt and "bluetooth" or "volume", k.label, nil, k.default, nil, function()
       -- troca o padrao e leva junto os apps que ja estao tocando
+      holdUntil = os.clock() + 1.2
       local cmd = { "sh", "-c", 'pactl set-default-sink "$1"; for i in $(pactl list short sink-inputs | cut -f1); do pactl move-sink-input "$i" "$1"; done', "sh", k.name }
       for _, o in ipairs(s.sinks) do o.default = o == k end
       noctalia.runAsync(cmd, function() refreshAudio() end)
@@ -606,6 +607,7 @@ local function audioView()
   local sourceRows = {}
   for _, k in ipairs(s.sources) do
     sourceRows[#sourceRows + 1] = listRow(k.bt and "bluetooth" or "microphone", k.label, nil, k.default, nil, function()
+      holdUntil = os.clock() + 1.2
       local cmd = { "sh", "-c", 'pactl set-default-source "$1"; for i in $(pactl list short source-outputs | cut -f1); do pactl move-source-output "$i" "$1"; done', "sh", k.name }
       for _, o in ipairs(s.sources) do o.default = o == k end
       noctalia.runAsync(cmd, function() refreshAudio() end)
@@ -651,7 +653,7 @@ local function audioView()
     }))
   end
   table.insert(items, section("Apps", #appRows > 0 and group(appRows) or empty("Nenhum app tocando agora")))
-  return ui.column({ gap = 10, flexGrow = 1 }, { header("Áudio"), listBox(items, #s.apps) })
+  return ui.column({ gap = 10, flexGrow = 1 }, { header("Áudio"), listBox(items, `{#s.apps}-{#s.sinks}-{#s.sources}`) })
 end
 
 local function networkView()
