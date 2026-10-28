@@ -43,7 +43,7 @@ local s = {
   profile = "balanced", volume = nil, muted = false, brightness = nil,
   time = "--:--", date = "", uptime = "", host = "", user = "", fullname = "",
   -- audio
-  out = { name = "", volume = 0, muted = false }, inp = { name = "", volume = 0, muted = false }, apps = {},
+  out = { name = "", volume = 0, muted = false }, inp = { name = "", volume = 0, muted = false }, apps = {}, sinks = {}, sources = {},
   -- rede
   netCurrent = nil, networks = {}, netMsg = "", ip = "",
   -- bluetooth
@@ -132,8 +132,25 @@ local function refreshAudio()
       end
       return list[1]
     end
+    local sinkList, all = {}, noctalia.json.decode(sinks)
+    if type(all) == "table" then
+      for _, d in ipairs(all) do
+        table.insert(sinkList, { name = d.name, label = d.description or d.name, bt = (d.name or ""):find("^bluez") ~= nil, default = d.name == defSink })
+      end
+    end
+    s.sinks = sinkList
     local sk = pick(sinks, defSink)
     if sk then s.out = { name = sk.description or sk.name or "", volume = pctNumber(sk.volume), muted = sk.mute == true } end
+    local sourceList, allSrc = {}, noctalia.json.decode(sources)
+    if type(allSrc) == "table" then
+      for _, d in ipairs(allSrc) do
+        -- ignora os "monitor" (captura do que toca nas saidas), que nao sao microfones
+        if not (d.name or ""):find("%.monitor$") then
+          table.insert(sourceList, { name = d.name, label = d.description or d.name, bt = (d.name or ""):find("^bluez") ~= nil, default = d.name == defSource })
+        end
+      end
+    end
+    s.sources = sourceList
     local sc = pick(sources, defSource)
     if sc then s.inp = { name = sc.description or sc.name or "", volume = pctNumber(sc.volume), muted = sc.mute == true } end
     local list = noctalia.json.decode(inputs)
@@ -577,8 +594,27 @@ end
 -- ---------- Detalhes ----------
 
 local function audioView()
+  local sinkRows = {}
+  for _, k in ipairs(s.sinks) do
+    sinkRows[#sinkRows + 1] = listRow(k.bt and "bluetooth" or "volume", k.label, nil, k.default, nil, function()
+      -- troca o padrao e leva junto os apps que ja estao tocando
+      local cmd = { "sh", "-c", 'pactl set-default-sink "$1"; for i in $(pactl list short sink-inputs | cut -f1); do pactl move-sink-input "$i" "$1"; done', "sh", k.name }
+      for _, o in ipairs(s.sinks) do o.default = o == k end
+      noctalia.runAsync(cmd, function() refreshAudio() end)
+    end)
+  end
+  local sourceRows = {}
+  for _, k in ipairs(s.sources) do
+    sourceRows[#sourceRows + 1] = listRow(k.bt and "bluetooth" or "microphone", k.label, nil, k.default, nil, function()
+      local cmd = { "sh", "-c", 'pactl set-default-source "$1"; for i in $(pactl list short source-outputs | cut -f1); do pactl move-source-output "$i" "$1"; done', "sh", k.name }
+      for _, o in ipairs(s.sources) do o.default = o == k end
+      noctalia.runAsync(cmd, function() refreshAudio() end)
+    end)
+  end
   local items = {
-    section("Saída", surface(ui.column, { gap = 4, padding = 10, radius = 18 }, {
+    section("Dispositivo de saída", #sinkRows > 0 and group(sinkRows) or empty("Nenhuma saída encontrada")),
+    section("Dispositivo de entrada", #sourceRows > 0 and group(sourceRows) or empty("Nenhuma entrada encontrada")),
+    section("Saída",surface(ui.column, { gap = 4, padding = 10, radius = 18 }, {
       ui.row({ paddingH = 4 }, { ui.label({ text = s.out.name ~= "" and s.out.name or "Sem dispositivo", fontSize = 13, fontWeight = "bold", maxLines = 1 }) }),
       sliderRow("volume", s.out.volume, s.out.muted, function(v)
         s.out.volume = v
