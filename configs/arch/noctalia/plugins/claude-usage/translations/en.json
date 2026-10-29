@@ -12,6 +12,10 @@
       "label": "Credentials file",
       "description": "Path to Claude Code's OAuth credentials file."
     },
+    "credentials_path_2": {
+      "label": "Credentials file (cc2)",
+      "description": "OAuth credentials of the second Claude Code account."
+    },
     "warn_percent": {
       "label": "Warning threshold (%)",
       "description": "Usage percentage at which the widget switches to the warning color."

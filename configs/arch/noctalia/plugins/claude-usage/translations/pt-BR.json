@@ -12,6 +12,10 @@
       "label": "Arquivo de credenciais",
       "description": "Caminho do arquivo de credenciais OAuth do Claude Code."
     },
+    "credentials_path_2": {
+      "label": "Arquivo de credenciais (cc2)",
+      "description": "Credenciais OAuth da segunda conta do Claude Code."
+    },
     "warn_percent": {
       "label": "Limite de alerta (%)",
       "description": "Percentual de uso a partir do qual o widget muda para a cor de alerta."

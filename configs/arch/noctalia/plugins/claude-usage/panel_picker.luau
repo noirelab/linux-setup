@@ -69,21 +69,22 @@ end
 
 local function provider()
   local current = noctalia.state.get(PIN_KEY)
-  if current == "claude" or current == "codex" then
+  if current == "claude" or current == "claude2" or current == "codex" then
     return current
   end
   local dir = noctalia.pluginDataDir()
   local raw = dir and noctalia.readFile(dir .. "/pinned-provider.json")
   local data = raw and noctalia.json.decode(raw)
-  return data and data.provider == "codex" and "codex" or "claude"
+  return data and (data.provider == "codex" or data.provider == "claude2") and data.provider or "claude"
 end
 
 local function summary(key)
-  local data = noctalia.state.get(key == "claude" and "usage" or "codex") or {}
-  local session = key == "claude" and data.fiveHourPercent or data.primaryPercent
-  local week = key == "claude" and data.sevenDayPercent or data.secondaryPercent
-  local sessionReset = key == "claude" and data.fiveHourResetsAt or data.primaryResetsAt
-  local weekReset = key == "claude" and data.sevenDayResetsAt or data.secondaryResetsAt
+  local isClaude = key ~= "codex"
+  local data = noctalia.state.get(key == "claude" and "usage" or key == "claude2" and "usage2" or "codex") or {}
+  local session = isClaude and data.fiveHourPercent or data.primaryPercent
+  local week = isClaude and data.sevenDayPercent or data.secondaryPercent
+  local sessionReset = isClaude and data.fiveHourResetsAt or data.primaryResetsAt
+  local weekReset = isClaude and data.sevenDayResetsAt or data.secondaryResetsAt
   local function pct(value)
     return value and (`{math.floor(value + 0.5)}%`) or "--"
   end
@@ -95,7 +96,7 @@ local function choice(key, title, glyph)
   local usageText, resetText = summary(key)
   local clockPath = clockIconPath()
   local pluginDir = noctalia.pluginDir()
-  local claudeIcon = key == "claude" and pluginDir and (pluginDir .. "/claude-logo.svg") or nil
+  local claudeIcon = key ~= "codex" and pluginDir and (pluginDir .. "/claude-logo.svg") or nil
   return ui.row({ align = "center", gap = 10 }, {
     claudeIcon and ui.image({ path = claudeIcon, width = 22, height = 22, fit = "contain" })
       or ui.glyph({ name = glyph, size = 22, color = active and "primary" or "secondary" }),
@@ -119,6 +120,7 @@ local function choice(key, title, glyph)
 end
 
 noctalia.state.watch("usage", function() if panelOpen then render() end end)
+noctalia.state.watch("usage2", function() if panelOpen then render() end end)
 noctalia.state.watch("codex", function() if panelOpen then render() end end)
 
 render = function()
@@ -128,13 +130,14 @@ render = function()
       ui.button({ glyph = "close", variant = "ghost", onClick = "onClosePanel" }),
     }),
     choice("claude", "Claude", "sparkles"),
+    choice("claude2", "Claude (cc2)", "sparkles"),
     choice("codex", "Codex", "brand-openai"),
     ui.label({ text = "DeepSeek desativado por enquanto", fontSize = 11, color = "outline" }),
   }))
 end
 
 function onPin(key)
-  if key ~= "claude" and key ~= "codex" then
+  if key ~= "claude" and key ~= "claude2" and key ~= "codex" then
     return
   end
   local dir = noctalia.pluginDataDir()

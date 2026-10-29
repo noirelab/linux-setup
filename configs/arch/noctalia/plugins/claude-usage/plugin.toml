@@ -40,6 +40,13 @@ description_key = "settings.credentials_path.description"
 default = "~/.claude/.credentials.json"
 
 [[setting]]
+key = "credentials_path_2"
+type = "string"
+label_key = "settings.credentials_path_2.label"
+description_key = "settings.credentials_path_2.description"
+default = "~/.claude-conta2/.credentials.json"
+
+[[setting]]
 key = "warn_percent"
 type = "int"
 label_key = "settings.warn_percent.label"
@@ -106,6 +113,10 @@ id = "usage_service"
 entry = "usage_service.luau"
 
 [[service]]
+id = "usage2_service"
+entry = "usage2_service.luau"
+
+[[service]]
 id = "deepseek_service"
 entry = "deepseek_service.luau"
 
@@ -121,7 +132,7 @@ entry = "widget_pinned.luau"
 id = "picker"
 entry = "panel_picker.luau"
 width = 330
-height = 270
+height = 350
 placement = "floating"
 position = "auto"
 open_near_click = true

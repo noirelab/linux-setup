@@ -50,7 +50,7 @@ local function savedProvider()
   local dir = noctalia.pluginDataDir()
   local raw = dir and noctalia.readFile(dir .. "/pinned-provider.json")
   local data = raw and noctalia.json.decode(raw)
-  if data and (data.provider == "claude" or data.provider == "codex") then
+  if data and (data.provider == "claude" or data.provider == "claude2" or data.provider == "codex") then
     return data.provider
   end
   return "claude"
@@ -58,8 +58,8 @@ end
 
 local function render()
   local provider = noctalia.state.get(PIN_KEY) or savedProvider()
-  local claude = provider == "claude"
-  local usage = noctalia.state.get(claude and "usage" or "codex") or {}
+  local claude = provider ~= "codex"
+  local usage = noctalia.state.get(provider == "claude" and "usage" or provider == "claude2" and "usage2" or "codex") or {}
   local session = claude and usage.fiveHourPercent or usage.primaryPercent
   local week = claude and usage.sevenDayPercent or usage.secondaryPercent
   local sessionReset = claude and usage.fiveHourResetsAt or usage.primaryResetsAt
@@ -82,15 +82,21 @@ local function render()
   local color = ((session and session >= warn) or (week and week >= warn)) and "error" or "secondary"
   barWidget.setColor(color)
   barWidget.setGlyphColor(color)
-  local tooltip = `{claude and "Claude" or "Codex"}\n5h {percent(session)} · reseta em {resetRemaining(sessionReset)}\n7d {percent(week)} · reseta em {resetRemaining(weekReset)}`
+  local tooltip = `{provider == "claude" and "Claude" or provider == "claude2" and "Claude (cc2)" or "Codex"}\n5h {percent(session)} · reseta em {resetRemaining(sessionReset)}\n7d {percent(week)} · reseta em {resetRemaining(weekReset)}`
   if usage.error then
     tooltip = tooltip .. `\n{usage.error}`
+  end
+  if claude then
+    local otherKey = provider == "claude" and "usage2" or "usage"
+    local other = noctalia.state.get(otherKey) or {}
+    tooltip = tooltip .. `\n\n{provider == "claude" and "Claude (cc2)" or "Claude"}\n5h {percent(other.fiveHourPercent)} · reseta em {resetRemaining(other.fiveHourResetsAt)}\n7d {percent(other.sevenDayPercent)} · reseta em {resetRemaining(other.sevenDayResetsAt)}`
   end
   barWidget.setTooltip(tooltip)
 end
 
 noctalia.state.watch(PIN_KEY, render)
 noctalia.state.watch("usage", render)
+noctalia.state.watch("usage2", render)
 noctalia.state.watch("codex", render)
 
 function update()
