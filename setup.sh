@@ -475,7 +475,7 @@ if [ "$DISTRO" == "arch" ]; then
     # Super+\ until the repo is cloned, its venv filled and the app shell built.
     # Rerunning updates it: pull, reinstall requirements, rebuild, restart.
     if confirm "Install/update chico (Super+\\ dictation)?"; then
-        sudo pacman -S --needed --noconfirm webkit2gtk-4.1 wtype libnotify python openssl
+        sudo pacman -S --needed --noconfirm webkit2gtk-4.1 xdotool wtype libnotify python openssl
         # rustup and the rust package conflict; keep whichever is already there
         command -v cargo >/dev/null || sudo pacman -S --needed --noconfirm rust
         if [ -d ~/chico/.git ]; then

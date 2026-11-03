@@ -1,4 +1,5 @@
 theme = "nava"
+force_keyboard_focus = true # sem isso o campo de busca pode abrir sem foco e não aceitar digitação
 hide_quick_activation = true
 hide_action_hints = true
 ext_background_effect_blur = true
