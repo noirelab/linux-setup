@@ -69,8 +69,9 @@ The installer walks you through each section with y/n prompts.
 
 | Component | Details |
 |---|---|
-| **Hyprland** | Dwindle layout, 7px gaps, 86%/70% active/inactive opacity, blur, shadow, smooth animations |
-| **Noctalia** | Current bar/shell — launcher, clock, capsule groups, plus the local usage plugin. Click its bar item to pin Claude or Codex session and weekly usage; DeepSeek polling is off by default. |
+| **Hyprland** | Dwindle layout, 7px gaps, opaque windows (only the kitty background is translucent, 62%), blur, shadow, smooth animations |
+| **Noctalia** | Current bar and shell: launcher, centered hub clock, capsule groups (volume, battery, tray), plus the local usage plugin. Click its bar item to pin Claude, Claude (cc2) or Codex session and weekly usage; DeepSeek polling is off by default. The bar also runs on the vertical `HDMI-A-1` monitor, without the media widget |
+| **Nava hub** | Local Noctalia plugin that replaces the stock control center. Opened from the bar clock, volume, battery and media widgets: live performance, system shortcuts, volume with input/output device selectors, media, power, and a month calendar with Google Calendar events |
 | **awww** | Wallpaper daemon (`awww-daemon.service`), started from Hyprland autostart |
 | **Rofi** | App launcher with Catppuccin Mocha theme, JetBrains Mono font |
 | **Dunst** | Notification daemon |
@@ -141,7 +142,7 @@ mint-setup/
     │   └── wallpapers/
     ├── arch/             # Hyprland ecosystem
     │   ├── hypr/         # hyprland.lua + config/*.lua (the live Lua provider)
-    │   ├── noctalia/     # config.toml + plugins/ (claude-usage, notepad)
+    │   ├── noctalia/     # config.toml + plugins/ (claude-usage, hub, notepad)
     │   ├── rofi/         # config.rasi
     │   ├── dunst/
     │   ├── gtk-3.0/      # GTK settings + Noctalia CSS import
@@ -323,9 +324,10 @@ profiles, and `~/.config/opendeck/plugins/` (121M plugin cache).
 - **Keyboard layout** — Set to Brazilian (`kb_layout = br`) in Hyprland. Edit `configs/arch/hypr/config/inputs.lua` to change.
 - **User paths** — Some configs reference `/home/noirelab/`. Adjust if your username differs.
 - **Noctalia replaced Waybar** — the bar/shell in use is Noctalia. The old Waybar config and its `cpu.sh` / `gpu.sh` / `window.sh` scripts are no longer versioned.
-- **Noctalia `claude-usage` plugin** — hand-written Luau plugin in `configs/arch/noctalia/plugins/claude-usage/`. The bar shows the pinned Claude or Codex provider, selected in the click menu and saved across restarts. DeepSeek is disabled by default. Not on any registry, so this repo is its only backup.
+- **Noctalia `claude-usage` plugin** — hand-written Luau plugin in `configs/arch/noctalia/plugins/claude-usage/`. The bar shows the pinned Claude, Claude (cc2) or Codex provider, selected in the click menu and saved across restarts. DeepSeek is disabled by default. Not on any registry, so this repo is its only backup.
 - **Secrets are redacted** — `save_profile.sh` rewrites every MCP header value in `opencode.json` to `REPLACE_ME`. Fill them back in after running `setup.sh`. `~/.claude/settings.local.json` is never copied.
 - **Large skills are pinned, not vendored** — `gstack` is cloned from `github.com/garrytan/gstack` at the commit recorded in `configs/common/claude/external-skills.json`; the SEO skill comes from `install-opencode-seo.sh`.
+- **Nava hub plugin**: hand-written Luau plugin in `configs/arch/noctalia/plugins/hub/`, only backed up here. The calendar reads Google Calendar through the secret iCal address of each calendar, one per line in `~/.config/noctalia/gcal.urls`, created by hand (Google Calendar > Settings > calendar > "Secret address in iCal format"). That file is in `.gitignore` and must never be committed, since the address gives read access to the calendar. `gcal.py` caches each feed in `~/.cache/noctalia-hub` for 10 minutes and needs `python-recurring-ical-events`, installed by `setup.sh`. Without the file the calendar just shows no events.
 - **Second Claude account (`cc2`)**: `~/.claude-conta2` is not versioned. On a new machine run `cc2` once and log in with the second account; the Noctalia `claude-usage` plugin reads `~/.claude-conta2/.credentials.json` to show its usage. Both shortcuts skip permission prompts, so use them only in trusted directories.
 - **Claude plugins** — restored with `claude plugin marketplace add` + `claude plugin install`, driven by the two manifest JSONs. The ~770M plugin cache is re-downloaded, not stored.
 - **chico** — `Super+\` POSTs to `/run/user/1000/chico-trigger.sock`; `chico.service` is started from the Hyprland autostart chain (needs `WAYLAND_DISPLAY` in the systemd user env first).
