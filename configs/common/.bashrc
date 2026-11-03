@@ -680,3 +680,7 @@ export PATH=/home/noirelab/.opencode/bin:$PATH
 # Added by Antigravity CLI installer
 export PATH="/home/noirelab/.local/bin:$PATH"
 . "$HOME/.cargo/env"
+
+# AI CLIs
+cc() { command claude --dangerously-skip-permissions "$@"; }
+cc2() { CLAUDE_CONFIG_DIR="$HOME/.claude-conta2" command claude --dangerously-skip-permissions "$@"; }

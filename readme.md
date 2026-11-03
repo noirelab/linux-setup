@@ -59,6 +59,7 @@ The installer walks you through each section with y/n prompts.
 | **OpenCode** | AI assistant CLI — installed via `curl` + config deployed from repo |
 | **OpenCode SEO** | 25 SEO sub-skills — site audits, technical SEO, schema, content (E-E-A-T), GEO/AI search, backlinks, local SEO, maps, e-commerce, Google APIs, SPA-aware rendering |
 | **Claude Code** | CLI installed via `curl`, then 205 skills, hooks, agents, commands and `settings.json` restored from the repo |
+| **Claude shortcuts** | `cc` runs `claude --dangerously-skip-permissions`; `cc2` does the same with `CLAUDE_CONFIG_DIR=~/.claude-conta2`, a second Claude account with its own login and usage. Defined for fish (`config.fish` abbr + `functions/cc2.fish`) and bash (`.bashrc`) |
 | **Claude plugins** | 9 plugins re-installed from their marketplaces (claude-mem, ponytail, caveman, figma, stripe, vercel, 21st, ui-ux-pro-max, rust-analyzer-lsp) |
 | **claude-preview** | [noirelab/claude-preview](https://github.com/noirelab/claude-preview): a kitty split next to Claude Code that previews the PDFs, decks, images, diagrams and dev server pages it makes. Cloned to `~/claude-preview`, updated on rerun |
 | **claude-hop** | [noirelab/claude-hop](https://github.com/noirelab/claude-hop): `ctrl+shift+o` in kitty lists the commands and file paths of the Claude Code conversation; Enter types a command in a new split (waiting for Enter) or opens the file. Cloned to `~/claude-hop`, updated on rerun |
@@ -325,6 +326,7 @@ profiles, and `~/.config/opendeck/plugins/` (121M plugin cache).
 - **Noctalia `claude-usage` plugin** — hand-written Luau plugin in `configs/arch/noctalia/plugins/claude-usage/`. The bar shows the pinned Claude or Codex provider, selected in the click menu and saved across restarts. DeepSeek is disabled by default. Not on any registry, so this repo is its only backup.
 - **Secrets are redacted** — `save_profile.sh` rewrites every MCP header value in `opencode.json` to `REPLACE_ME`. Fill them back in after running `setup.sh`. `~/.claude/settings.local.json` is never copied.
 - **Large skills are pinned, not vendored** — `gstack` is cloned from `github.com/garrytan/gstack` at the commit recorded in `configs/common/claude/external-skills.json`; the SEO skill comes from `install-opencode-seo.sh`.
+- **Second Claude account (`cc2`)**: `~/.claude-conta2` is not versioned. On a new machine run `cc2` once and log in with the second account; the Noctalia `claude-usage` plugin reads `~/.claude-conta2/.credentials.json` to show its usage. Both shortcuts skip permission prompts, so use them only in trusted directories.
 - **Claude plugins** — restored with `claude plugin marketplace add` + `claude plugin install`, driven by the two manifest JSONs. The ~770M plugin cache is re-downloaded, not stored.
 - **chico** — `Super+\` POSTs to `/run/user/1000/chico-trigger.sock`; `chico.service` is started from the Hyprland autostart chain (needs `WAYLAND_DISPLAY` in the systemd user env first).
 - **AUR helper** — `setup.sh` prefers `paru`, falls back to `yay`, or installs `yay` from source if neither exists.

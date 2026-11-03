@@ -30,7 +30,7 @@ set --export PATH $BUN_INSTALL/bin $PATH
 
 # aliases
 abbr -a op "opencode --auto"
-abbr -a cc "claude --permission-mode auto"
+abbr -a cc "claude --dangerously-skip-permissions"
 
 # CUDA toolkit (Arch instala em /opt/cuda, fora do PATH padrao)
 set --export CUDA_HOME /opt/cuda
