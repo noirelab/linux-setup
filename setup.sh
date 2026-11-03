@@ -302,6 +302,27 @@ if confirm "Install/restore Claude Code config (skills, plugins, hooks)?"; then
         echo -e "${YELLOW}    ! jq missing or no plugin manifest. Skipping plugin restore.${NC}"
     fi
 
+    # Telegram (/tg skill). The channel plugin must stay disabled in normal sessions:
+    # its server runs in every session where it is enabled and kills the previous
+    # bot, so any new window would steal the bot from the Telegram session. The
+    # install above enables it, so turn it back off; handoff.sh enables it only for
+    # the tmux claude-tg session. The bot token is never versioned.
+    if [ -d ~/.claude/skills/tg ]; then
+        command -v bun &> /dev/null || curl -fsSL https://bun.sh/install | bash
+        env -u CLAUDE_CONFIG_DIR claude plugin disable telegram@claude-plugins-official --scope user >/dev/null 2>&1
+        # Second account (cc2): same skill and same bot state as the main one
+        if [ -d ~/.claude-conta2 ]; then
+            mkdir -p ~/.claude-conta2/skills ~/.claude-conta2/channels ~/.claude/channels/telegram
+            [ -e ~/.claude-conta2/skills/tg ] || ln -s ~/.claude/skills/tg ~/.claude-conta2/skills/tg
+            [ -e ~/.claude-conta2/channels/telegram ] || ln -s ~/.claude/channels/telegram ~/.claude-conta2/channels/telegram
+            CLAUDE_CONFIG_DIR=~/.claude-conta2 claude plugin marketplace add anthropics/claude-plugins-official >/dev/null 2>&1
+            CLAUDE_CONFIG_DIR=~/.claude-conta2 claude plugin install telegram@claude-plugins-official --scope user >/dev/null 2>&1
+            CLAUDE_CONFIG_DIR=~/.claude-conta2 claude plugin disable telegram@claude-plugins-official --scope user >/dev/null 2>&1
+        fi
+        [ -f ~/.claude/channels/telegram/.env ] || echo -e "${YELLOW}    ! Telegram: put the bot token in /tmp/telegram-token.txt (nano) and run ~/.claude/skills/tg/set-token.sh${NC}"
+        echo "    - Telegram /tg skill ready (plugin enabled only in the claude-tg session)."
+    fi
+
     # gstack lives in its own git repo (too large to vendor here).
     GSTACK_JSON="$CLAUDE_SRC/external-skills.json"
     if [ -f "$GSTACK_JSON" ] && [ ! -d ~/.claude/skills/gstack ] && command -v jq &> /dev/null; then

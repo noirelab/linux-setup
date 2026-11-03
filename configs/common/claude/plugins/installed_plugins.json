@@ -99,6 +99,16 @@
         "lastUpdated": "2026-08-19T15:51:40.238Z",
         "gitCommitSha": "9c9f36ccd3995266cd675468af71639c8dde1ec5"
       }
+    ],
+    "telegram@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/telegram/0.0.7",
+        "version": "0.0.7",
+        "installedAt": "2026-11-03T16:43:34.574Z",
+        "lastUpdated": "2026-11-03T16:43:34.574Z",
+        "gitCommitSha": "a7ba5b93db0c7c8d17f3f1d25853adca79598a1a"
+      }
     ]
   }
 }

@@ -142,7 +142,8 @@
     "caveman@caveman": true,
     "stripe@claude-plugins-official": true,
     "21st@21st": true,
-    "mattpocock-skills@claude-plugins-official": true
+    "mattpocock-skills@claude-plugins-official": true,
+    "telegram@claude-plugins-official": false
   },
   "extraKnownMarketplaces": {
     "claude-market": {
