@@ -220,7 +220,10 @@ Passing tests do not show what the user sees. After any change to a UI surface, 
 2. Capture each changed surface at a desktop width (~1440px) and a mobile width (~390px), in light and dark if the product has both.
 3. Capture the states, not only the happy frame: force loading, empty, error, and long-content variants through fixtures, route interception, or test data. Include one pass with strings ~40% longer when the product ships in more than one language.
 4. Wait for fonts, network idle, and running animations to finish (`document.fonts.ready`, `page.waitForLoadState('networkidle')`, `prefers-reduced-motion: reduce` emulation) before capturing.
-5. Measure instead of eyeballing where a number exists: read computed colors with `getComputedStyle` to check contrast, `getBoundingClientRect` to check target sizes and overflow, and `document.documentElement.scrollWidth > innerWidth` to catch horizontal scroll on mobile.
+5. Measure instead of eyeballing where a number exists: read computed colors with `getComputedStyle` to check contrast, `getBoundingClientRect` to check target sizes and overflow, and `document.documentElement.scrollWidth > innerWidth` to catch horizontal scroll on mobile. Know the limits of DOM measurement:
+   - computed-color contrast is only valid on a solid background; for text over an image, video, or gradient, sample the screenshot pixels behind the text and use the lightest region;
+   - skip visually hidden elements (skip links, `sr-only`) when checking targets and contrast;
+   - dev-only overlays (the Next.js dev indicator, Vite error overlay, devtools badges) cover content in screenshots; disable them or validate against a production build before reporting an overlap.
 6. Open the screenshots and critique them against the lenses. Fix what they show, then capture again. Two rounds is usually enough; stop when a round finds nothing new.
 
 Report the screenshot paths and what each round changed. When no browser or dev server can run, say so plainly; rendered validation skipped is not rendered validation passed.
