@@ -1,6 +1,6 @@
 ---
 name: ux-psychic
-description: Audit, redesign, and implement product UX with behavioral psychology while preserving user autonomy. Use for onboarding, forms, signup, activation, checkout, pricing, upgrades, empty states, calls to action, conversion, retention, decision fatigue, abandonment, UX copy, microcopy, labels, flow optimization, dashboards, tables, data-dense screens, visual hierarchy, spacing, typography, color, dark mode, shadows, button and input states, micro-interactions, screen transitions, and overlays. Inspect the existing product first; apply smart defaults, honest progress, value before gates, user investment, truthful consequence framing, transparent contrast, data-driven form, progressive disclosure, the invisible UI layer, signifiers, perceptual hierarchy, a response to every action, copy economy, and continuity between screens; reject dark patterns.
+description: Audit, redesign, and implement product UX with behavioral psychology while preserving user autonomy. Use for onboarding, forms, signup, activation, checkout, pricing, upgrades, empty states, calls to action, conversion, retention, decision fatigue, abandonment, UX copy, microcopy, labels, flow optimization, dashboards, tables, data-dense screens, information hierarchy, button and input states, loading and latency feedback, micro-interactions, screen transitions, and rendered validation of UI changes. Inspect the existing product first; apply smart defaults, honest progress, value before gates, user investment, truthful consequence framing, transparent contrast, data-driven form, progressive disclosure, the invisible UI layer, signifiers, perceptual hierarchy, a response to every action, copy economy, and continuity between screens; reject dark patterns. Does not choose aesthetic direction (typeface, palette, visual style); that comes from the brief, the existing product, or a dedicated design skill.
 ---
 
 # UX-PSYCHIC
@@ -15,9 +15,10 @@ Make the product easier to understand and complete without tricking the user. Op
 
 - Inspect the existing interface, code, routes, copy, state, and design system before proposing changes.
 - Preserve the product's established visual language unless the user explicitly requests a redesign.
+- Do not choose the aesthetic direction. Typeface, palette, and visual style come from the brief, the existing product, or a design skill the user picked. This skill owns behavior, states, and legibility; it enforces the floor in [references/visual-craft.md](references/visual-craft.md), never a look.
 - Distinguish observed evidence from hypotheses. Never invent analytics, research results, user behavior, or conversion impact.
 - Prefer the smallest coherent change that removes meaningful friction.
-- When unsure, choose the simpler treatment. An ambitious effect that does not land is worse than a plain one that works.
+- When unsure about behavior, choose the simpler treatment. This is about mechanics, not looks: never use it to flatten a committed visual direction into a generic one.
 - Keep defaults reversible, consequences truthful, prices complete, and exits easy to understand.
 - Match the user's language in all user-facing copy and explanations.
 - Never trade accessibility, privacy, safety, or informed consent for conversion.
@@ -140,7 +141,16 @@ Rank the elements of a surface by what the user needs first, then encode that ra
 
 #### Lens 12 — Response to every action
 
-Every user action produces a visible response. Interactive elements need default, hover, active, disabled, and where relevant loading states; inputs additionally need focus, error with a specific message, and any warning state. Beyond acknowledging the click, confirm the outcome: an action whose result is invisible — copy, save, send, apply — needs a confirmation that says it happened. Keep these responses immediate, brief, and respectful of reduced-motion preferences.
+Every user action produces a visible response. Interactive elements need default, hover, active, disabled, and where relevant loading states; inputs additionally need focus, error with a specific message, and any warning state. Beyond acknowledging the click, confirm the outcome: an action whose result is invisible — copy, save, send, apply — needs a confirmation that says it happened. Keep these responses brief and respectful of reduced-motion preferences, and size them to the wait:
+
+- under ~100ms: the state change itself is the feedback; add nothing;
+- ~100ms to 1s: a pressed or pending state on the control; no spinner, which only flashes;
+- 1s to 10s: a skeleton shaped like the result, or a determinate progress indicator when the size is known;
+- over 10s: progress plus a way to cancel or leave, and a notification when the result lands elsewhere.
+
+Update the UI optimistically when the action is likely to succeed and cheap to roll back (toggle, rename, reorder, like): show the result at once, reconcile on response, and on failure restore the prior state with a message that names what failed. Do not be optimistic about payments, sends to other people, or anything irreversible.
+
+Prefer undo to confirmation for reversible actions: do it, then offer "Undo" for a few seconds. Reserve the "are you sure?" dialog for actions that cannot be undone, and make it name exactly what will be lost.
 
 #### Lens 13 — Copy economy
 
@@ -150,7 +160,7 @@ Say it once, in the fewest words that stay clear. A label must name what the act
 
 A product is a sequence, not a set of screens. Specify what happens between states, not only what each state contains: what carries over, what moves, what the user's eye should follow. Where an element persists across a transition, let it move rather than disappear and reappear elsewhere, so the user does not have to relocate it. Keep scroll position, filters, selections, and entered values across navigation and return. Reserve deliberate motion for the few moments worth making memorable, and give every one of them a reduced-motion equivalent that preserves the meaning.
 
-Concrete values for typography, spacing, color, dark mode, shadows, icons, buttons, and overlays are in [references/visual-craft.md](references/visual-craft.md).
+The visual floor (contrast, targets, radius and optical alignment, numerals, overlays) and optional defaults for products with no visual direction yet are in [references/visual-craft.md](references/visual-craft.md). The floor always applies; the defaults never override a chosen direction.
 
 ### 4. Prioritize opportunities
 
@@ -190,6 +200,8 @@ When editing code:
 - preserve user-entered values across validation and navigation where safe;
 - use inline validation and specific recovery instructions;
 - keep keyboard navigation, focus order, labels, semantics, contrast, reduced motion, and touch targets intact;
+- on mobile, keep primary actions within thumb reach, keep focused inputs above the on-screen keyboard, respect safe areas, and give inputs the right `type`, `inputmode`, and `autocomplete`;
+- leave room for translation: strings grow 30–40% in Portuguese or German, so no fixed-width buttons or labels that truncate a verb; format numbers, currency, and dates with `Intl` for the user's locale, never by string concatenation;
 - avoid unrelated refactors;
 - add or update focused tests when the project supports them;
 - add analytics only through the project's existing instrumentation pattern.
@@ -199,6 +211,19 @@ When editing code:
 Test the primary path plus loading, empty, error, cancel, back, retry, and success states. Confirm that defaults can be changed, exits remain clear, prices are complete, progress is accurate, and user work is not lost unexpectedly.
 
 Use the project's available validation commands. Report commands that could not be run and why.
+
+#### Rendered validation
+
+Passing tests do not show what the user sees. After any change to a UI surface, render it and look at it before calling the work done:
+
+1. Run the app (the project's dev server or preview) and drive it with Playwright: the project's own install if present, otherwise `npx playwright`. Run headless; a headed window is never needed for screenshots. If launch fails with `Executable doesn't exist at ~/.cache/ms-playwright/...`, the project's Playwright version wants a browser build that is not downloaded: launch the system browser instead with `chromium.launch({ executablePath: '/usr/bin/chromium' })` (or `npx playwright install chromium` when the project must use its pinned build). Do not use `chromium --screenshot`; it captures mid-transition and invents defects such as half-applied themes.
+2. Capture each changed surface at a desktop width (~1440px) and a mobile width (~390px), in light and dark if the product has both.
+3. Capture the states, not only the happy frame: force loading, empty, error, and long-content variants through fixtures, route interception, or test data. Include one pass with strings ~40% longer when the product ships in more than one language.
+4. Wait for fonts, network idle, and running animations to finish (`document.fonts.ready`, `page.waitForLoadState('networkidle')`, `prefers-reduced-motion: reduce` emulation) before capturing.
+5. Measure instead of eyeballing where a number exists: read computed colors with `getComputedStyle` to check contrast, `getBoundingClientRect` to check target sizes and overflow, and `document.documentElement.scrollWidth > innerWidth` to catch horizontal scroll on mobile.
+6. Open the screenshots and critique them against the lenses. Fix what they show, then capture again. Two rounds is usually enough; stop when a round finds nothing new.
+
+Report the screenshot paths and what each round changed. When no browser or dev server can run, say so plainly; rendered validation skipped is not rendered validation passed.
 
 ## Dark-pattern firewall
 
@@ -283,3 +308,6 @@ Before finishing, verify:
 - Every action produces a visible response, and invisible outcomes are confirmed.
 - Labels name the actual action, and no word repeats what its container already says.
 - Transitions, carried-over state, and preserved scroll and input are specified, with reduced-motion equivalents.
+- Feedback is sized to the wait, optimistic updates roll back visibly on failure, and reversible actions offer undo instead of a confirmation.
+- Layouts survive mobile width, the on-screen keyboard, and longer translated strings.
+- Every changed surface was rendered and inspected at desktop and mobile widths, or the report says why it could not be.

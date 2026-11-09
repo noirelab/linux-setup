@@ -2,7 +2,7 @@
 
 This guide distills fourteen UX ideas. Sections 1–6 are behavioral lenses for flows and decisions. Sections 7–9 are structural lenses for surfaces that display data. Sections 10–12 are perceptual lenses covering whether a surface can be read and acted on at all. Sections 13–14 cover the words and the movement between screens. Treat them all as design hypotheses and lenses, not universal laws or proof of a guaranteed conversion lift.
 
-Concrete default values — type scales, spacing steps, shadow settings, dark-mode adjustments, icon and button sizing, overlay treatments — live in [visual-craft.md](visual-craft.md).
+The visual floor (contrast, targets, numerals, radius and optical alignment, overlays) and plain defaults for products with no visual direction yet live in [visual-craft.md](visual-craft.md). The floor always applies; the defaults never override a chosen direction.
 
 ## 1. Smart defaults and decision fatigue
 

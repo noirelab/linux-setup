@@ -312,8 +312,7 @@ if confirm "Install/restore Claude Code config (skills, plugins, hooks)?"; then
         env -u CLAUDE_CONFIG_DIR claude plugin disable telegram@claude-plugins-official --scope user >/dev/null 2>&1
         # Second account (cc2): same skill and same bot state as the main one
         if [ -d ~/.claude-conta2 ]; then
-            mkdir -p ~/.claude-conta2/skills ~/.claude-conta2/channels ~/.claude/channels/telegram
-            [ -e ~/.claude-conta2/skills/tg ] || ln -s ~/.claude/skills/tg ~/.claude-conta2/skills/tg
+            mkdir -p ~/.claude-conta2/channels ~/.claude/channels/telegram
             [ -e ~/.claude-conta2/channels/telegram ] || ln -s ~/.claude/channels/telegram ~/.claude-conta2/channels/telegram
             CLAUDE_CONFIG_DIR=~/.claude-conta2 claude plugin marketplace add anthropics/claude-plugins-official >/dev/null 2>&1
             CLAUDE_CONFIG_DIR=~/.claude-conta2 claude plugin install telegram@claude-plugins-official --scope user >/dev/null 2>&1
@@ -321,6 +320,22 @@ if confirm "Install/restore Claude Code config (skills, plugins, hooks)?"; then
         fi
         [ -f ~/.claude/channels/telegram/.env ] || echo -e "${YELLOW}    ! Telegram: put the bot token in /tmp/telegram-token.txt (nano) and run ~/.claude/skills/tg/set-token.sh${NC}"
         echo "    - Telegram /tg skill ready (plugin enabled only in the claude-tg session)."
+    fi
+
+    # Second account (cc2): share CLAUDE.md, every skill and the home-folder
+    # memory with the main account through symlinks, so a skill or memory
+    # added once works in both. Skills are linked one by one because
+    # ~/.claude-conta2/skills/synced belongs to Claude Code itself.
+    if [ -d ~/.claude-conta2 ]; then
+        mkdir -p ~/.claude-conta2/skills ~/.claude/projects/-home-noirelab/memory ~/.claude-conta2/projects/-home-noirelab
+        ln -sfn ~/.claude/CLAUDE.md ~/.claude-conta2/CLAUDE.md
+        for s in ~/.claude/skills/*; do
+            [ -e ~/.claude-conta2/skills/"$(basename "$s")" ] || ln -s "$s" ~/.claude-conta2/skills/
+        done
+        M2=~/.claude-conta2/projects/-home-noirelab/memory
+        [ -e "$M2" ] || ln -s ~/.claude/projects/-home-noirelab/memory "$M2"
+        [ -L "$M2" ] || echo -e "${YELLOW}    ! cc2 has its own memory folder at $M2; merge it into ~/.claude/projects/-home-noirelab/memory and rerun${NC}"
+        echo "    - cc2 shares CLAUDE.md, skills and memory with the main account."
     fi
 
     # gstack lives in its own git repo (too large to vendor here).

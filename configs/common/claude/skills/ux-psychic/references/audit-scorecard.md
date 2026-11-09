@@ -112,6 +112,8 @@ Do not add scores into a false scientific total. Use them to expose weak areas a
 - Do inputs have focus, specific inline errors, and any needed warning state?
 - Are otherwise invisible outcomes — copy, save, send, apply — confirmed?
 - Are state changes announced to assistive technology, and is there a reduced-motion equivalent?
+- Is feedback sized to the wait (nothing under ~100ms, pending state under 1s, skeleton or progress beyond), and do optimistic updates roll back visibly on failure?
+- Do reversible actions offer undo rather than an "are you sure?" dialog?
 
 ### Copy economy
 
