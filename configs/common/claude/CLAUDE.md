@@ -53,8 +53,9 @@ say so and stop before the PR.
 
 When a task changed code, run the `entrega` skill before declaring it done,
 after the PR review skills above. It writes the PR message with the file
-table, a plain-language PDF and a simple PPTX for the team. Trivial diffs get
-only the PR message.
+table, the activity validation message (Trello card template), a
+plain-language PDF and a simple PPTX for the team. Trivial diffs get only the
+PR and validation messages.
 
 ## No sycophancy: agree only when it is right
 
@@ -72,3 +73,32 @@ not by who said it.
 - When you were wrong earlier, admit it plainly and correct course.
 - Disagreeing is not refusing: after stating the objection, still do what the
   user decides unless it is destructive or unsafe.
+
+## Frontend UI: use libraries, not hand-built components
+
+When building React UI, do not hand-roll components that a proven library
+already does well. Hand-built toasts stack wrong, drawers don't drag, and
+command menus break on keyboard; these are the details that read as "AI made
+this".
+
+- Check `package.json` first and use what the project already has.
+- Behavior primitives (dialogs, menus, selects, tabs, focus, keyboard, a11y):
+  shadcn/ui on top of Base UI or Radix. Install through the CLI or registry so
+  the code lives in the repo and can be edited.
+- Default shadcn is itself an AI look (same radius, same grey, same fonts).
+  Always change radius, palette and type to the product's brand; ask for the
+  brand colors and fonts up front if they are not in the repo.
+- Specialists: Sonner (toasts), cmdk (command menu), NumberFlow (animated
+  numbers), Vaul (drag-to-close bottom drawer; unmaintained, check before
+  adding), motion (springs, layout, exit animations). Plain CSS for simple
+  hover and fades.
+- For any other library choice (charts, drag and drop, virtualization, state,
+  className helpers, OTP inputs), read the curated list in
+  `~/.claude/skills/pick-ui-library/SKILL.md` (the skill is manual-only, so
+  read the file instead of invoking it).
+- Styled/animated components, free and MIT only: Beautiful UI
+  (beautifului.dev: chat agents, thinking states, human-in-the-loop
+  approvals) and RareUI (rareui.in). Copy the code in and restyle it to the
+  brand. Do not suggest paid or freemium kits.
+- One standout moment per page: one animated hero or one interactive
+  background. Ten effects on one page is the next AI look.

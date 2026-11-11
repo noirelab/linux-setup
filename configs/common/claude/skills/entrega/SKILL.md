@@ -1,6 +1,6 @@
 ---
 name: entrega
-description: Fecha uma task com três entregas: a mensagem do PR (com tabela de arquivos criados, alterados e removidos), um PDF curto para leigos (fluxogramas, gráficos, sem jargão) e um PPTX de slides simples para apresentar ao grupo. Use antes de dizer que uma task terminou, ou quando o usuário pedir "entrega", "fecha a task", "mensagem do PR", "PDF da task", "slides da task" ou "preparar apresentação".
+description: Fecha uma task com quatro entregas: a mensagem do PR (com tabela de arquivos criados, alterados e removidos), a mensagem de validação da atividade (card do Trello, resultados, dificuldades, conclusão, próximos passos, evidências), um PDF curto para leigos (fluxogramas, gráficos, sem jargão) e um PPTX de slides simples para apresentar ao grupo. Use antes de dizer que uma task terminou, ou quando o usuário pedir "entrega", "fecha a task", "mensagem do PR", "mensagem de validação", "validação da atividade", "PDF da task", "slides da task" ou "preparar apresentação".
 ---
 
 # Entrega da task
@@ -11,10 +11,10 @@ Rode depois das skills de revisão do PR (`verification-loop`, `simplify`, `code
 
 Leia o diff completo (`git diff <base>...HEAD`, mais `git status` para arquivos não commitados) e o histórico da conversa. Base = branch de destino do PR (normalmente `develop` ou `main`).
 
-- **Diff trivial** (typo, bump de versão, valor de config, só formatação): faça só a mensagem do PR e diga que pulou PDF e PPTX.
-- **Qualquer outra coisa:** as três entregas.
+- **Diff trivial** (typo, bump de versão, valor de config, só formatação): faça a mensagem do PR e a de validação, e diga que pulou PDF e PPTX.
+- **Qualquer outra coisa:** as quatro entregas.
 
-Saída em `~/Downloads/<slug-da-task>/`: `PR.md`, `<slug>.pdf`, `<slug>.pptx` e `figs/`. Não coloque no repositório; pergunte ao usuário se quer versionar.
+Saída em `~/Downloads/<slug-da-task>/`: `PR.md`, `VALIDACAO.md`, `<slug>.pdf`, `<slug>.pptx` e `figs/`. Não coloque no repositório; pergunte ao usuário se quer versionar.
 
 ## 1. Mensagem do PR (`PR.md`)
 
@@ -40,6 +40,39 @@ Saída em `~/Downloads/<slug-da-task>/`: `PR.md`, `<slug>.pdf`, `<slug>.pptx` e 
 - A coluna Situação vem de `git diff --name-status` (A = criado, M = alterado, D = removido, R = renomeado), nunca da memória.
 - Uma linha por arquivo. Testes entram na tabela.
 - Sem atribuição de IA (regra do CLAUDE.md global).
+
+## 1b. Mensagem de validação (`VALIDACAO.md`)
+
+Mensagem que o time posta para validar a atividade do card. Segue o modelo do time; as seções abaixo são o mínimo, e dá para acrescentar outras (por exemplo uma por subatividade).
+
+```markdown
+# Card #<número> <título que descreve a atividade sendo validada>
+<1 a 3 frases: o que foi feito e por quê.>
+
+### Resultados
+- <resultado medido, com número e unidade>
+
+### Dificuldades Encontradas
+- <dificuldade e o contexto dela>
+
+### Conclusão a respeito da Atividade Sendo Validada
+- <conclusão>
+
+### Pontos de melhoria e próximos passos
+- <melhoria e o passo a passo para chegar nela>
+
+## Resultados e Evidências
+<imagem, link ou relatório de cada resultado>
+```
+
+- Número do card: pegue do nome da branch, do commit ou da conversa. Se não achar, pergunte; não invente.
+- Resultados com números reais desta task (porcentagem, quantidade, tempo), em negrito o principal. Sem número medido, descreva o que foi feito e diga que não houve medição.
+- Dificuldades reais da task (o que travou, o que precisou contornar). Sem dificuldade, escreva "Nenhuma relevante" em vez de inventar.
+- Conclusão explica o resultado, inclusive quando piorou, e por quê.
+- Evidências: liste as figuras do PDF (`figs/`), links de planilha, notebook ou PR. Imagem não vai embutida no texto; anote o arquivo para anexar.
+- Para leitores do time: termos técnicos da área podem ficar, mas sem código e sem caminhos de arquivo.
+- Até 2000 caracteres (limite do Discord). Se passar, divida em duas mensagens na quebra de seção.
+- Sem atribuição de IA.
 
 ## 2. PDF para leigos
 
@@ -79,4 +112,4 @@ Use a skill `anthropic-skills:pptx` (PptxGenJS). Público: o grupo, nem todos da
 
 ## 4. Fechar
 
-Responda com o caminho dos três arquivos, o resumo do PR e qualquer coisa que ficou de fora (por exemplo, "sem gráfico de desempenho: não houve medição nesta task").
+Responda com o caminho dos arquivos, o resumo do PR, a mensagem de validação inteira (pronta para colar) e qualquer coisa que ficou de fora (por exemplo, "sem gráfico de desempenho: não houve medição nesta task").
