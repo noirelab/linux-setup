@@ -5,7 +5,7 @@
       "repo": "thedotmack/claude-mem"
     },
     "installLocation": "/home/noirelab/.claude/plugins/marketplaces/thedotmack",
-    "lastUpdated": "2026-09-22T23:22:04.937Z",
+    "lastUpdated": "2026-11-11T01:11:24.942Z",
     "autoUpdate": true
   },
   "claude-market": {
@@ -30,7 +30,7 @@
       "repo": "anthropics/claude-plugins-official"
     },
     "installLocation": "/home/noirelab/.claude/plugins/marketplaces/claude-plugins-official",
-    "lastUpdated": "2026-09-22T23:22:01.798Z"
+    "lastUpdated": "2026-11-11T01:11:25.119Z"
   },
   "ponytail": {
     "source": {
@@ -63,5 +63,13 @@
     },
     "installLocation": "/home/noirelab/.claude/plugins/marketplaces/21st",
     "lastUpdated": "2026-08-10T14:17:48.614Z"
+  },
+  "claude-video": {
+    "source": {
+      "source": "github",
+      "repo": "bradautomates/claude-video"
+    },
+    "installLocation": "/home/noirelab/.claude/plugins/marketplaces/claude-video",
+    "lastUpdated": "2026-09-23T18:19:46.478Z"
   }
 }

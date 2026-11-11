@@ -4,11 +4,11 @@
     "claude-mem@thedotmack": [
       {
         "scope": "user",
-        "installPath": "/home/noirelab/.claude/plugins/cache/thedotmack/claude-mem/13.25.3",
-        "version": "13.25.3",
+        "installPath": "/home/noirelab/.claude/plugins/cache/thedotmack/claude-mem/15.16.0",
+        "version": "15.16.0",
         "installedAt": "2026-07-26T15:08:32.173Z",
-        "lastUpdated": "2026-09-22T00:16:27.163Z",
-        "gitCommitSha": "4520de9e0f8d6cdc20597520e383d8b51d93137f"
+        "lastUpdated": "2026-11-11T01:11:28.038Z",
+        "gitCommitSha": "1f979cd67dd4e7450443bea326b6eec1a9f987f2"
       }
     ],
     "ui-ux-pro-max@ui-ux-pro-max-skill": [
@@ -24,11 +24,11 @@
     "figma@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/figma/2.2.120",
-        "version": "2.2.120",
+        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/figma/2.2.157",
+        "version": "2.2.157",
         "installedAt": "2026-07-30T21:37:04.654Z",
-        "lastUpdated": "2026-09-22T21:02:45.093Z",
-        "gitCommitSha": "172920731eedf414e9b22ae60017d9a5b6c9f81f"
+        "lastUpdated": "2026-10-15T11:09:02.657Z",
+        "gitCommitSha": "f2789420e7e8b4e2465dfeb1e12e1fc6a31397e5"
       }
     ],
     "ponytail@ponytail": [
@@ -73,11 +73,11 @@
     "stripe@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/stripe/0.10.3",
-        "version": "0.10.3",
+        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/stripe/0.11.17",
+        "version": "0.11.17",
         "installedAt": "2026-08-10T13:57:12.429Z",
-        "lastUpdated": "2026-09-22T21:02:46.371Z",
-        "gitCommitSha": "97b2164821c378f246c3903852057b36a8bd0296"
+        "lastUpdated": "2026-10-20T19:51:38.156Z",
+        "gitCommitSha": "deae744bc0cbf6034b4b6f22f51c690b71a4e779"
       }
     ],
     "21st@21st": [
@@ -93,11 +93,21 @@
     "mattpocock-skills@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/mattpocock-skills/1.2.3",
-        "version": "1.2.3",
+        "installPath": "/home/noirelab/.claude/plugins/cache/claude-plugins-official/mattpocock-skills/1.3.1",
+        "version": "1.3.1",
         "installedAt": "2026-08-19T15:51:40.238Z",
-        "lastUpdated": "2026-08-19T15:51:40.238Z",
-        "gitCommitSha": "9c9f36ccd3995266cd675468af71639c8dde1ec5"
+        "lastUpdated": "2026-10-16T01:26:42.853Z",
+        "gitCommitSha": "49dd158d1076134a641b33efb035946536778336"
+      }
+    ],
+    "watch@claude-video": [
+      {
+        "scope": "user",
+        "installPath": "/home/noirelab/.claude/plugins/cache/claude-video/watch/0.2.0",
+        "version": "0.2.0",
+        "installedAt": "2026-09-23T18:19:50.699Z",
+        "lastUpdated": "2026-09-23T18:19:50.699Z",
+        "gitCommitSha": "83da59fa78c3eee9e20f515fe75c438bb5166efd"
       }
     ],
     "telegram@claude-plugins-official": [

@@ -290,13 +290,17 @@ if confirm "Install/restore Claude Code config (skills, plugins, hooks)?"; then
 
     # Plugins: re-add marketplaces, then reinstall each plugin from its manifest.
     if command -v jq &> /dev/null && [ -f "$CLAUDE_SRC/plugins/known_marketplaces.json" ]; then
-        jq -r 'to_entries[] | select(.value.source.source == "github") | .value.source.repo' \
-            "$CLAUDE_SRC/plugins/known_marketplaces.json" | while read -r repo; do
-            claude plugin marketplace add "$repo" 2>/dev/null && echo "    - marketplace: $repo"
-        done
+        # Both accounts get the same plugins; cc2 (~/.claude-conta2) only when it exists.
+        for cfg in ~/.claude ~/.claude-conta2; do
+            [ -d "$cfg" ] || continue
+            jq -r 'to_entries[] | select(.value.source.source == "github") | .value.source.repo' \
+                "$CLAUDE_SRC/plugins/known_marketplaces.json" | while read -r repo; do
+                CLAUDE_CONFIG_DIR="$cfg" claude plugin marketplace add "$repo" 2>/dev/null && echo "    - marketplace ($cfg): $repo"
+            done
 
-        jq -r '.plugins | keys[]' "$CLAUDE_SRC/plugins/installed_plugins.json" 2>/dev/null | while read -r plugin; do
-            claude plugin install "$plugin" 2>/dev/null && echo "    - plugin: $plugin"
+            jq -r '.plugins | keys[]' "$CLAUDE_SRC/plugins/installed_plugins.json" 2>/dev/null | while read -r plugin; do
+                CLAUDE_CONFIG_DIR="$cfg" claude plugin install "$plugin" --scope user 2>/dev/null && echo "    - plugin ($cfg): $plugin"
+            done
         done
     else
         echo -e "${YELLOW}    ! jq missing or no plugin manifest. Skipping plugin restore.${NC}"
