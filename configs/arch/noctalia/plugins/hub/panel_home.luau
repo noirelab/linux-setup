@@ -1,5 +1,5 @@
 --!nonstrict
--- Hub: Central de Controle do Nava OS, no lugar do menu nativo do Noctalia.
+-- Balerion OS: Central de Controle, no lugar do menu nativo do Noctalia.
 -- Inicio em tiles; tocar num tile abre o detalhe (Audio, Rede, Bluetooth, Notificacoes, Midia, Energia).
 -- Estetica: vidro sobre azul-marinho, um acento so (azul-gelo), rosa e verde apenas para estado.
 -- Leituras sem `noctalia msg` (derruba o shell de dentro de plugins); `msg` so em acoes de clique.

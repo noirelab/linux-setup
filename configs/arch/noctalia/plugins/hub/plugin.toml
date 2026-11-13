@@ -1,8 +1,8 @@
-# Hub: painel proprio que substitui o menu padrao aberto pelo relogio.
+# Balerion OS: painel proprio que substitui o menu padrao aberto pelo relogio.
 # Performance ao vivo, atalhos do sistema, volume e relogio num lugar so.
 
 id = "noirelab/hub"
-name = "Hub"
+name = "Balerion OS"
 version = "0.1.0"
 plugin_api = 34
 author = "noirelab"
